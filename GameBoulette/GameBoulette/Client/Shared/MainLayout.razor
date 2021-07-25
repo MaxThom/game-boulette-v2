@@ -1,17 +1,64 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<MudThemeProvider Theme="currentTheme" />
+<MudDialogProvider />
+<MudSnackbarProvider />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="http://blazor.net" target="_blank" class="ml-md-auto">About</a>
-        </div>
-
-        <article class="content px-4">
+<MudLayout>
+    <MudAppBar>
+        <img class="d-flex " src="images/boulette-de-papier.png" width="120" style="padding-top:50px;"/>
+        <MudText Typo="Typo.h5" Class="ml-3">@currentLanguage.Index.Title</MudText>
+        <MudSpacer />
+        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Language" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => ToggleLanguage())">@currentLanguageText</MudButton>
+        <MudIconButton Icon="@currentThemeIcon" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => ToggleTheme())" />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>    
+    <MudMainContent>
+        <MudContainer MaxWidth="MaxWidth.Medium">            
             @Body
-        </article>
-    </main>
-</div>
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    string currentLanguageText = Constants.Languages.French.ShortName;
+    Language currentLanguage = Constants.Languages.French;
+
+    string currentThemeIcon = Icons.Material.Filled.NightlightRound;
+    MudTheme currentTheme = Constants.Themes.DefaultTheme;
+
+    protected override void OnInitialized()
+    {
+    }
+
+    void ToggleTheme()
+    {
+        if (currentTheme == Constants.Themes.DefaultTheme)
+        {
+            currentTheme = Constants.Themes.DarkTheme;
+            currentThemeIcon = Icons.Material.Filled.WbSunny;
+        }
+        else
+        {
+            currentTheme = Constants.Themes.DefaultTheme;
+            currentThemeIcon = Icons.Material.Filled.NightlightRound;
+            
+        }
+    }
+
+    void ToggleLanguage()
+    {
+        if (currentLanguage == Constants.Languages.English)
+        {
+            currentLanguageText = Constants.Languages.French.ShortName;
+            currentLanguage = Constants.Languages.French;
+        }
+        else
+        {
+            currentLanguageText = Constants.Languages.English.ShortName;
+            currentLanguage = Constants.Languages.English;          
+        }
+    }
+}
+
+    

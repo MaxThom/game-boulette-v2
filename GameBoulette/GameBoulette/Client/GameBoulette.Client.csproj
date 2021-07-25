@@ -8,9 +8,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-preview.6.21355.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.6.21355.2" PrivateAssets="all" />
+    <PackageReference Include="MudBlazor" Version="5.0.15" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\GameBoulette.Client.Model\GameBoulette.Client.Model.csproj" />
     <ProjectReference Include="..\Shared\GameBoulette.Shared.csproj" />
   </ItemGroup>
 
