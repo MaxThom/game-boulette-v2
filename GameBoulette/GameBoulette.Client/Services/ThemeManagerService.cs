@@ -14,19 +14,19 @@ namespace GameBoulette.Client.Services
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public MudTheme CurrentTheme = Constants.Themes.DefaultTheme;
-        public string CurrentThemeIcon = Icons.Material.Filled.NightlightRound;
+        public MudTheme CurrentTheme = Constants.Themes.DarkTheme;
+        public string CurrentThemeIcon = Icons.Material.Filled.WbSunny;
 
         public void CycleToNextTheme()
         {
-            if (CurrentTheme == Constants.Themes.DefaultTheme)
+            if (CurrentTheme == Constants.Themes.LightTheme)
             {
                 CurrentTheme = Constants.Themes.DarkTheme;
                 CurrentThemeIcon = Icons.Material.Filled.WbSunny;
             }
             else
             {
-                CurrentTheme = Constants.Themes.DefaultTheme;
+                CurrentTheme = Constants.Themes.LightTheme;
                 CurrentThemeIcon = Icons.Material.Filled.NightlightRound;
             }
 

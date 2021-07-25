@@ -9,7 +9,7 @@ namespace GameBoulette.Client.Constants
 {
     public static class Themes
     {
-        public static MudTheme DefaultTheme = new MudTheme()
+        public static MudTheme LightTheme = new MudTheme()
         {
             Palette = new Palette()
             {

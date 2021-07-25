@@ -1,52 +1,86 @@
 ﻿@inherits AppBaseComponent
 @page "/"
 @inject LanguageManagerService LanguageManager
+@inject IJSRuntime js
 
 <MudContainer Class="mt-16">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@LanguageManager.CurrentLanguage.IndexPage.Title</strong></MudText>
     <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.IndexPage.Description</MudText>
     <MudGrid Class="mt-8" Justify="Justify.Center">        
-        <MudItem xs="12" sm="6" md="4">
-            <MudCard Elevation="25" Class="rounded-lg pb-4">
+        <MudItem xs="12" sm="10" md="8">
+            <MudCard Elevation="25" Class="rounded-lg pb-4 mb-2">
                 <MudCardHeader>
                     <CardHeaderContent>
-                        <MudCardMedia Image="images/join.png" Height="200"/>
-                    </CardHeaderContent>
+                        <MudText Typo="Typo.h6" Align="Align.Center">@LanguageManager.CurrentLanguage.IndexPage.AvatarTitle</MudText>
+                    </CardHeaderContent>                   
                 </MudCardHeader>
+                <MudCardContent  Class="d-flex justify-center">                    
+                    <MudButton Variant="Variant.Filled" Color="@AvatarColor">@AvatarName</MudButton>
+                    <MudTextField Class="px-5" Label="@LanguageManager.CurrentLanguage.IndexPage.AvatarInput" Variant="Variant.Outlined" @bind-Value="AvatarName" Immediate="true"></MudTextField>                    
+                </MudCardContent>
+                <MudCardContent  Class="d-flex justify-space-around py-2 px-1 "> 
+                    <MudFab Class="px-auto" Color="Color.Default" Size="Size.Small" OnClick="() => AvatarColor = Color.Default" />
+                    <MudFab Class="px-auto" Color="Color.Primary" Size="Size.Small" OnClick="() => AvatarColor = Color.Primary" />
+                    <MudFab Class="px-auto" Color="Color.Secondary" Size="Size.Small" OnClick="() => AvatarColor = Color.Secondary" />                    
+                    <MudFab Class="px-auto" Color="Color.Tertiary" Size="Size.Small" OnClick="() => AvatarColor = Color.Tertiary" />
+                    <MudFab Class="px-auto" Color="Color.Info" Size="Size.Small" OnClick="() => AvatarColor = Color.Info" />
+                    <MudFab Class="px-auto" Color="Color.Success" Size="Size.Small" OnClick="() => AvatarColor = Color.Success" />
+                    <MudFab Class="px-auto" Color="Color.Warning" Size="Size.Small" OnClick="() => AvatarColor = Color.Warning" />
+                    <MudFab Class="px-auto" Color="Color.Error" Size="Size.Small" OnClick="() => AvatarColor = Color.Error" />
+                    <MudFab Class="px-auto" Color="Color.Dark" Size="Size.Small" OnClick="() => AvatarColor = Color.Dark" />
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+    <MudGrid Class="" Justify="Justify.Center">   
+        <MudItem xs="12" sm="5" md="4">
+            <MudCard Elevation="25" Class="rounded-lg pb-4">
+                <MudCardActions Class="d-flex justify-center pt-5 mb-n5">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
+                </MudCardActions>
                 <MudCardContent>
-                    <MudList Class="mx-auto mt-4" Style="width:300px;">
+                    <MudList Class="mx-auto" Style="width:300px;">
                         <MudListItem Icon="@Icons.Material.Filled.Info">
                             @LanguageManager.CurrentLanguage.IndexPage.JoinGameSub
                         </MudListItem>
                     </MudList>
-                </MudCardContent>
-                <MudCardActions Class="d-flex justify-center">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
-                </MudCardActions>
-            </MudCard>
-        </MudItem>
-        <MudItem xs="12" sm="12" md="4">
-            <MudCard Elevation="25" Class="rounded-lg pb-4">
-                <MudCardHeader>
+                </MudCardContent>   
+                <MudCardHeader Class=""> 
                     <CardHeaderContent>
-                        <MudCardMedia Image="images/host.png" Height="200" />
+                        <MudCardMedia Image="images/join.png" Height="150" Style="width:150px" Class="mx-auto" />
                     </CardHeaderContent>
                 </MudCardHeader>
+                             
+            </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="4" md="4">
+            <MudCard Elevation="25" Class="rounded-lg pb-4">                
+                <MudCardActions Class="d-flex justify-center pt-5 mb-n5">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="">@LanguageManager.CurrentLanguage.IndexPage.CreateGame</MudButton>
+                </MudCardActions>
                 <MudCardContent>
-                    <MudList Class="mx-auto mt-4" Style="width:300px;">
+                    <MudList Class="mx-auto " Style="width:300px;">
                         <MudListItem Icon="@Icons.Material.Filled.Info">
                             @LanguageManager.CurrentLanguage.IndexPage.CreateGameSub
                         </MudListItem>
                     </MudList>
                 </MudCardContent>
-                <MudCardActions Class="d-flex justify-center">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="">@LanguageManager.CurrentLanguage.IndexPage.CreateGame</MudButton>
-                </MudCardActions>
+                <MudCardHeader Class="">
+                    <CardHeaderContent>
+                        <MudCardMedia Image="images/host.png" Height="150" Style="width:150px" Class="mx-auto" />
+                    </CardHeaderContent>
+                </MudCardHeader>
+                
             </MudCard>
+        </MudItem>
+        <MudItem xs="12" sm="8" md="8">
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">@LanguageManager.CurrentLanguage.IndexPage.Instruction</MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
 
 @code {
+    public string AvatarName { get;  set; }
+    public MudBlazor.Color AvatarColor { get; set; } = Color.Primary;
 
 }

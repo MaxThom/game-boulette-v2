@@ -28,6 +28,9 @@ namespace GameBoulette.Client.Constants
                 JoinGameSub = "24 joueurs en ligne !",
                 CreateGame = "Créer une partie",
                 CreateGameSub = "Facile et intuitif !",
+                AvatarTitle = "Votre avatar !",
+                AvatarInput = "Entrez votre nom",
+                Instruction = "Règles",
             }
         };
 
@@ -48,6 +51,9 @@ namespace GameBoulette.Client.Constants
                 JoinGameSub = "24 online players !",
                 CreateGame = "Create game",
                 CreateGameSub = "Easy & Simple !",
+                AvatarTitle = "Your avatar !",
+                AvatarInput = "Enter your name",
+                Instruction = "Rules",
             }
         };
     }
