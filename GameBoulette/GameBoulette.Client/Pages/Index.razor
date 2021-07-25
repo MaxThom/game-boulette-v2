@@ -1,6 +1,8 @@
 ﻿@inherits AppBaseComponent
 @page "/"
+@page "/index"
 @inject LanguageManagerService LanguageManager
+@inject NavigationManager NavigationManager
 @inject IJSRuntime js
 
 <MudContainer Class="mt-16">
@@ -36,7 +38,7 @@
         <MudItem xs="12" sm="5" md="4">
             <MudCard Elevation="25" Class="rounded-lg pb-4">
                 <MudCardActions Class="d-flex justify-center pt-5 mb-n5">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="" OnClick="() => NavigateToJoinGameComponent()" Disabled="@(AvatarName.Trim().Length < 3)">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
                 </MudCardActions>
                 <MudCardContent>
                     <MudList Class="mx-auto" Style="width:300px;">
@@ -56,7 +58,7 @@
         <MudItem xs="12" sm="4" md="4">
             <MudCard Elevation="25" Class="rounded-lg pb-4">                
                 <MudCardActions Class="d-flex justify-center pt-5 mb-n5">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="">@LanguageManager.CurrentLanguage.IndexPage.CreateGame</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="" OnClick="() => NavigateToCreateGameComponent()" Disabled="@(AvatarName.Trim().Length < 3)">@LanguageManager.CurrentLanguage.IndexPage.CreateGame</MudButton>
                 </MudCardActions>
                 <MudCardContent>
                     <MudList Class="mx-auto " Style="width:300px;">
@@ -79,8 +81,17 @@
     </MudGrid>
 </MudContainer>
 
-@code {
-    public string AvatarName { get;  set; }
+@code { public string AvatarName { get; set; } = "";
     public MudBlazor.Color AvatarColor { get; set; } = Color.Primary;
+
+    private void NavigateToCreateGameComponent()
+    {
+        NavigationManager.NavigateTo("create");
+    }
+
+    private void NavigateToJoinGameComponent()
+    {
+        NavigationManager.NavigateTo("join");
+    }
 
 }

@@ -31,10 +31,28 @@ namespace GameBoulette.Client.Constants
                 AvatarTitle = "Votre avatar !",
                 AvatarInput = "Entrez votre nom",
                 Instruction = "Règles",
+            },
+            CreateGamePage = new CreateGamePage()
+            {
+                Title = "Création d'une partie!",
+                Description = "Configurer les rèles de la partie selon vos désirs.",
+                GameName = "Nom de la partie",
+                GameTheme = "Thème de la partie",
+                NumberOfRound = "Nombre de manche",
+                Rounds = "manches",
+                TimePerTurn = "Temps par tour",
+                Seconds = "secondes",
+                NumberOfPaper = "Nombre de papier par personne",
+                Papers = "papiers",
+                VideoURL = "URL de l'appel vidéo",
+                Return = "Retour",
+                Restart = "Refaire",
+                Create = "Créer la partie!",
+                MissingField = "Ce champ est requis!"
             }
         };
 
-        public static Language English = new Language()
+public static Language English = new Language()
         {
             Name = "English",
             EnglishName = "English",
@@ -54,6 +72,24 @@ namespace GameBoulette.Client.Constants
                 AvatarTitle = "Your avatar !",
                 AvatarInput = "Enter your name",
                 Instruction = "Rules",
+            },
+            CreateGamePage = new CreateGamePage()
+            {
+                Title = "Game creation !",
+                Description = "Configure game rules at your liking.",
+                GameName = "Game name",
+                GameTheme = "Game theme",
+                NumberOfRound = "Number of round",
+                Rounds = "rounds",
+                TimePerTurn = "Time per turn",
+                Seconds = "seconds",
+                NumberOfPaper = "Number of papers per person",
+                Papers = "papers",
+                VideoURL = "Video call URL",
+                Return = "Return",
+                Restart = "Restart",
+                Create = "Create the game!",
+                MissingField = "This field is required!"
             }
         };
     }
