@@ -1,3 +1,5 @@
+using GameBoulette.Client.Services;
+
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +23,8 @@ namespace GameBoulette.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddSingleton<ThemeManagerService>();
+            builder.Services.AddSingleton<LanguageManagerService>();
             builder.Services.AddMudServices();
 
             await builder.Build().RunAsync();

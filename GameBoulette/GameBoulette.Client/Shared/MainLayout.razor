@@ -1,16 +1,19 @@
 ﻿@inherits LayoutComponentBase
+@inject IJSRuntime js
+@inject ThemeManagerService ThemeManager
+@inject LanguageManagerService LanguageManager
 
-<MudThemeProvider Theme="currentTheme" />
+<MudThemeProvider Theme="ThemeManager.CurrentTheme" />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
 <MudLayout>
     <MudAppBar>
-        <img class="d-flex " src="images/boulette-de-papier.png" width="120" style="padding-top:50px;"/>
-        <MudText Typo="Typo.h5" Class="ml-3">@currentLanguage.Index.Title</MudText>
+        <img class="" src="images/boulette-de-papier.png" width="120" style="padding-top:50px;"/>
+        <MudText Typo="Typo.h5" Class="ml-3">@LanguageManager.CurrentLanguage.AppBar.Title</MudText>
         <MudSpacer />
-        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Language" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => ToggleLanguage())">@currentLanguageText</MudButton>
-        <MudIconButton Icon="@currentThemeIcon" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => ToggleTheme())" />
+        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Language" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => LanguageManager.CycleToNextLanguage())">@LanguageManager.CurrentLanguageText</MudButton>
+        <MudIconButton Icon="@ThemeManager.CurrentThemeIcon" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => ThemeManager.CycleToNextTheme())" />
         <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
     </MudAppBar>    
     <MudMainContent>
@@ -21,44 +24,8 @@
 </MudLayout>
 
 @code {
-    string currentLanguageText = Constants.Languages.French.ShortName;
-    Language currentLanguage = Constants.Languages.French;
+    
 
-    string currentThemeIcon = Icons.Material.Filled.NightlightRound;
-    MudTheme currentTheme = Constants.Themes.DefaultTheme;
-
-    protected override void OnInitialized()
-    {
-    }
-
-    void ToggleTheme()
-    {
-        if (currentTheme == Constants.Themes.DefaultTheme)
-        {
-            currentTheme = Constants.Themes.DarkTheme;
-            currentThemeIcon = Icons.Material.Filled.WbSunny;
-        }
-        else
-        {
-            currentTheme = Constants.Themes.DefaultTheme;
-            currentThemeIcon = Icons.Material.Filled.NightlightRound;
-            
-        }
-    }
-
-    void ToggleLanguage()
-    {
-        if (currentLanguage == Constants.Languages.English)
-        {
-            currentLanguageText = Constants.Languages.French.ShortName;
-            currentLanguage = Constants.Languages.French;
-        }
-        else
-        {
-            currentLanguageText = Constants.Languages.English.ShortName;
-            currentLanguage = Constants.Languages.English;          
-        }
-    }
 }
 
     
