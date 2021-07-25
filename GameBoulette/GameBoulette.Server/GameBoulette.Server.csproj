@@ -10,8 +10,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Client\GameBoulette.Client.csproj" />
-    <ProjectReference Include="..\Shared\GameBoulette.Shared.csproj" />
+    <ProjectReference Include="..\GameBoulette.Client\GameBoulette.Client.csproj" />
+    <ProjectReference Include="..\GameBoulette.Shared\GameBoulette.Shared.csproj" />
   </ItemGroup>
 
 

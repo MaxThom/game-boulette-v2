@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\GameBoulette.Client.Model\GameBoulette.Client.Model.csproj" />
-    <ProjectReference Include="..\Shared\GameBoulette.Shared.csproj" />
+    <ProjectReference Include="..\GameBoulette.Client.Model\GameBoulette.Client.Model.csproj" />
+    <ProjectReference Include="..\GameBoulette.Shared\GameBoulette.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
