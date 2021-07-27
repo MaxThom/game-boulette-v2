@@ -1,10 +1,9 @@
 ﻿@inherits AppBaseComponent
 @page "/{gamecode?}"
-@inject LanguageManagerService LanguageManager
 @inject NavigationManager NavigationManager
 @inject IJSRuntime js
 
-<MudContainer Class="mt-16">
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@LanguageManager.CurrentLanguage.IndexPage.Title</strong></MudText>
     <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.IndexPage.Description</MudText>
     <MudGrid Class="mt-8" Justify="Justify.Center">        
@@ -102,7 +101,7 @@
 
     private void NavigateToJoinGameComponent()
     {
-        NavigationManager.NavigateTo($"join/{GameCode}");
+        NavigationManager.NavigateTo($"lobby/{GameCode}");
     }
 
     bool IsGameCodeValid()

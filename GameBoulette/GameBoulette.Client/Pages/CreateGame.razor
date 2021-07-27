@@ -1,13 +1,12 @@
 ﻿@inherits AppBaseComponent
 @page "/create"
-@inject LanguageManagerService LanguageManager
 @inject IJSRuntime js
 @inject NavigationManager NavigationManager
 @using System.Text.RegularExpressions
 @using System.ComponentModel.DataAnnotations
 
 
-<MudContainer Class="mt-16">
+<MudContainer MaxWidth="MaxWidth.Small" Class="mt-16">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@LanguageManager.CurrentLanguage.CreateGamePage.Title</strong></MudText>
     <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.CreateGamePage.Description</MudText>
     <MudGrid Class="mt-8" Justify="Justify.Center">        
@@ -36,7 +35,6 @@
 @code {
     bool success;
     string[] errors = { };
-    MudTextField<string> pwField1;
     MudForm form;
 
     GameConfig game = new GameConfig()
