@@ -14,7 +14,7 @@
     </MudGrid>
     <MudGrid Class="mt-8" Justify="Justify.Center">        
         <MudItem xs="12" sm="6" md="6" >
-            <MudPaper Elevation="25" Class="rounded-lg pb-4 mb-2 d-flex flex-column" Style="height:600px;">
+            <MudPaper Elevation="25" Class="rounded-lg pb-4 mb-2 d-flex flex-column" Style="min-height:600px;">
                 <MudItem Class="d-flex flex-row justify-start pt-5 pb-3 px-5">
                     <MudText Class="mt-1" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.ThemeLabel</MudText>
                     <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.body1"><strong>@game.GameTheme</strong></MudText>
@@ -63,18 +63,24 @@
             </MudPaper>            
         </MudItem>
         <MudItem xs="12" sm="6" md="6">
-            <MudItem Style="height:300px;">
+            <MudItem Style="min-height:300px;">
                 <MudItem Class="">
-                    <MudPaper Elevation="25" Class="rounded-lg d-flex flex-row justify-start py-2 px-2">
-                        @if (IsHost)
-                        {
-                            <MudTextField Class="my-auto" Style="width:250px;" @bind-Value="TeamNameOne" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameOne" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamOneEdit" />
-                        }
-                        else 
-                        {
-                            <MudText Class="my-auto" Style="width:250px;" Typo="Typo.h6">@(TeamNameOne.Length > 10 ? TeamNameOne.Substring(0, 12) + " ..." : TeamNameOne)</MudText>
-                        }
-                        <MudButton Class="ml-2 my-2" Variant="Variant.Filled" Color="Color.Default" FullWidth="true">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
+                    <MudPaper Elevation="25" Class="rounded-lg py-2 px-2">
+                        <MudGrid Class="" Justify="Justify.Center">        
+                            <MudItem xs="12" sm="12" md="6">
+                                @if (IsHost)
+                                {
+                                    <MudTextField Class="" Style="" @bind-Value="TeamNameOne" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameOne" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamOneEdit" />
+                                }
+                                else 
+                                {
+                                    <MudText Class="" Style="" Typo="Typo.h6">@(TeamNameOne.Length > 10 ? TeamNameOne.Substring(0, 15) + " ..." : TeamNameOne)</MudText>
+                                }
+                            </MudItem>
+                            <MudItem xs="12" sm="12" md="6">
+                                <MudButton Class="ml-n2 mt-4" Variant="Variant.Filled" Color="Color.Default" FullWidth="true">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
+                            </MudItem>
+                        </MudGrid>
                     </MudPaper>
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
@@ -88,18 +94,24 @@
                     <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Warning">MaxThom</MudButton>
                 </MudItem>
             </MudItem>
-            <MudItem Style="height:300px;">
+            <MudItem Style="min-height:300px;">
                 <MudItem Class="">
-                    <MudPaper Elevation="25" Class="rounded-lg d-flex flex-row justify-start py-2 px-2">
-                        @if (IsHost)
-                        {
-                            <MudTextField Class="my-auto" Style="width:250px;" @bind-Value="TeamNameTwo" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameTwo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamOneEdit" />
-                        }
-                        else 
-                        {
-                            <MudText Class="my-auto" Style="width:250px;" Typo="Typo.h6">@(TeamNameTwo.Length > 10 ? TeamNameTwo.Substring(0, 12) + " ..." : TeamNameTwo)</MudText>
-                        }
-                        <MudButton Class="ml-2 my-2" Variant="Variant.Filled" Color="Color.Default" FullWidth="true">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
+                    <MudPaper Elevation="25" Class="rounded-lg py-2 px-2">
+                        <MudGrid Class="" Justify="Justify.Center">        
+                            <MudItem xs="12" sm="12" md="6">
+                                @if (IsHost)
+                                {
+                                    <MudTextField Class="" Style="" @bind-Value="TeamNameTwo" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameTwo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamTwoEdit" />
+                                }
+                                else 
+                                {
+                                    <MudText Class="" Style="" Typo="Typo.h6">@(TeamNameTwo.Length > 10 ? TeamNameTwo.Substring(0, 15) + " ..." : TeamNameTwo)</MudText>
+                                }
+                            </MudItem>
+                            <MudItem xs="12" sm="12" md="6">
+                                <MudButton Class="ml-n2 mt-4" Variant="Variant.Filled" Color="Color.Default" FullWidth="true">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
+                            </MudItem>
+                        </MudGrid>
                     </MudPaper>
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
