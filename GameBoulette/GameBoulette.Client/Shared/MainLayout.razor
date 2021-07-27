@@ -2,6 +2,7 @@
 @inject IJSRuntime js
 @inject ThemeManagerService ThemeManager
 @inject LanguageManagerService LanguageManager
+@inject NavigationManager NavigationManager
 
 <MudThemeProvider Theme="ThemeManager.CurrentTheme" />
 <MudDialogProvider />
@@ -9,7 +10,7 @@
 
 <MudLayout>
     <MudAppBar>
-        <img class="" src="images/boulette-de-papier.png" width="120" style="padding-top:50px;"/>
+        <img class="" src="images/boulette-de-papier.png" width="120" style="padding-top:50px;" />
         <MudText Typo="Typo.h5" Class="ml-3">@LanguageManager.CurrentLanguage.AppBar.Title</MudText>
         <MudSpacer />
         <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Language" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => LanguageManager.CycleToNextLanguage())">@LanguageManager.CurrentLanguageText</MudButton>
@@ -22,7 +23,12 @@
 </MudLayout>
 
 @code {
-    
+
+    void NavigateToIndexComponent()
+    {
+        Console.WriteLine("TESF");
+        NavigationManager.NavigateTo("/");
+    }
 
 }
 
