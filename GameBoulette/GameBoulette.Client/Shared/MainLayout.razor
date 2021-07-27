@@ -10,12 +10,12 @@
 
 <MudLayout>
     <MudAppBar>
-        <img class="" src="images/boulette-de-papier.png" width="120" style="padding-top:50px;" />
-        <MudText Typo="Typo.h5" Class="ml-3">@LanguageManager.CurrentLanguage.AppBar.Title</MudText>
+        <a href="/"><img class="" src="images/boulette-de-papier.png" width="120" style="padding-top:50px;" /></a>
+        <a href="/"><MudText Typo="Typo.h5" Class="ml-3">@LanguageManager.CurrentLanguage.AppBar.Title</MudText></a>
         <MudSpacer />
         <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Language" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => LanguageManager.CycleToNextLanguage())">@LanguageManager.CurrentLanguageText</MudButton>
         <MudIconButton Icon="@ThemeManager.CurrentThemeIcon" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => ThemeManager.CycleToNextTheme())" />
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+        <a href="https://github.com/MaxThom/game-boulette-v2" target="_blank"><MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End" /></a>
     </MudAppBar>    
     <MudMainContent>
             @Body
