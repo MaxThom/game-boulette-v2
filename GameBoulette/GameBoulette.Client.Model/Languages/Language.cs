@@ -29,6 +29,7 @@ namespace GameBoulette.Client.Model.Languages
         public string AvatarInput { get; set; }
         public string JoinGame { get; set; }
         public string JoinGameSub { get; set; }
+        public string JoinGameCode { get; set; }
         public string CreateGame { get; set; }
         public string CreateGameSub { get; set; }
         public string Instruction { get; set; }

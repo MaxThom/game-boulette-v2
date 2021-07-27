@@ -30,8 +30,7 @@
                 <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="pa-2 mx-2">@LanguageManager.CurrentLanguage.CreateGamePage.Create</MudButton>
             </MudPaper>
         </MudItem>
-    </MudGrid>
-    
+    </MudGrid>    
 </MudContainer>
 
 @code {
@@ -51,6 +50,6 @@
 
     private void NavigateToIndexComponent()
     {
-        NavigationManager.NavigateTo("index");
+        NavigationManager.NavigateTo("/");
     }
 }

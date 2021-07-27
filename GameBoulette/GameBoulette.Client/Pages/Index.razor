@@ -1,6 +1,5 @@
 ﻿@inherits AppBaseComponent
-@page "/"
-@page "/index"
+@page "/{gamecode?}"
 @inject LanguageManagerService LanguageManager
 @inject NavigationManager NavigationManager
 @inject IJSRuntime js
@@ -37,8 +36,11 @@
     <MudGrid Class="" Justify="Justify.Center">   
         <MudItem xs="12" sm="5" md="4">
             <MudCard Elevation="25" Class="rounded-lg pb-4">
+                <MudCardActions Class="d-flex justify-center pt-5 mb-n5 mx-5">
+                    <MudTextField @bind-Value="GameCode" Label="@LanguageManager.CurrentLanguage.IndexPage.JoinGameCode" Variant="Variant.Outlined"></MudTextField>
+                </MudCardActions>
                 <MudCardActions Class="d-flex justify-center pt-5 mb-n5">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="" OnClick="() => NavigateToJoinGameComponent()" Disabled="@(AvatarName.Trim().Length < 3)">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="" OnClick="() => NavigateToJoinGameComponent()" Disabled="@(AvatarName.Trim().Length < 3 || !IsGameCodeValid())" Immediate="true">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
                 </MudCardActions>
                 <MudCardContent>
                     <MudList Class="mx-auto" Style="width:300px;">
@@ -55,11 +57,11 @@
                              
             </MudCard>
         </MudItem>
-        <MudItem xs="12" sm="4" md="4">
+        <MudItem xs="12" sm="5" md="4">
             <MudCard Elevation="25" Class="rounded-lg pb-4">                
-                <MudCardActions Class="d-flex justify-center pt-5 mb-n5">
+                <MudCardActions Class="d-flex justify-center pt-10 mb-7">
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="" OnClick="() => NavigateToCreateGameComponent()" Disabled="@(AvatarName.Trim().Length < 3)">@LanguageManager.CurrentLanguage.IndexPage.CreateGame</MudButton>
-                </MudCardActions>
+                </MudCardActions> 
                 <MudCardContent>
                     <MudList Class="mx-auto " Style="width:300px;">
                         <MudListItem Icon="@Icons.Material.Filled.Info">
@@ -75,14 +77,23 @@
                 
             </MudCard>
         </MudItem>
-        <MudItem xs="12" sm="8" md="8">
+        <MudItem xs="12" sm="10" md="8">
             <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">@LanguageManager.CurrentLanguage.IndexPage.Instruction</MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
 
-@code { public string AvatarName { get; set; } = "";
-    public MudBlazor.Color AvatarColor { get; set; } = Color.Primary;
+@code {
+    public string AvatarName { get; set; } = "";
+    public MudBlazor.Color AvatarColor { get; set; } = Color.Primary;    
+
+    [Parameter]
+    public string GameCode { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        GameCode = GameCode ?? "";
+    }
 
     private void NavigateToCreateGameComponent()
     {
@@ -91,7 +102,11 @@
 
     private void NavigateToJoinGameComponent()
     {
-        NavigationManager.NavigateTo("join");
+        NavigationManager.NavigateTo($"join/{GameCode}");
     }
 
+    bool IsGameCodeValid()
+    {
+        return GameCode.Length > 3;
+    }
 }

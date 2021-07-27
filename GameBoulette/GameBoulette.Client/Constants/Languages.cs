@@ -24,8 +24,9 @@ namespace GameBoulette.Client.Constants
             {
                 Title = "Le jeu de boulette en ligne !",
                 Description = "Verrat de saint-ciboire de purée de viande à chien de boswell de cochonnerie de baptême de sacristi de crucifix de torrieux de sainte-viarge de bout d'ciarge de sapristi de cibouleau de saint-ciarge de mautadine.",
-                JoinGame = "Rejoindre une partie",
+                JoinGame = "Rejoindre la partie",
                 JoinGameSub = "24 joueurs en ligne !",
+                JoinGameCode = "Code de la partie",
                 CreateGame = "Créer une partie",
                 CreateGameSub = "Facile et intuitif !",
                 AvatarTitle = "Votre avatar !",
@@ -52,7 +53,7 @@ namespace GameBoulette.Client.Constants
             }
         };
 
-public static Language English = new Language()
+        public static Language English = new Language()
         {
             Name = "English",
             EnglishName = "English",
@@ -67,6 +68,7 @@ public static Language English = new Language()
                 Description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ",
                 JoinGame = "Join game",
                 JoinGameSub = "24 online players !",
+                JoinGameCode = "Game code",
                 CreateGame = "Create game",
                 CreateGameSub = "Easy & Simple !",
                 AvatarTitle = "Your avatar !",
