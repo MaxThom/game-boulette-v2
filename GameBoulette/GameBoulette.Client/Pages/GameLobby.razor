@@ -4,62 +4,60 @@
 @inject NavigationManager NavigationManager
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
-    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@LanguageManager.CurrentLanguage.CreateGamePage.Title</strong></MudText>
-    <MudText Align="Align.Center">Hall d'entrée de '@GameCode'</MudText>
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@game.GameName</strong></MudText>
+    <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.GameLobbyPage.Description</MudText>
 
     <MudGrid Class="" Justify="Justify.Center">
         <MudItem xs="12" sm="12" md="12">
-            <!--<MudPaper Class="d-flex pa-4 my-2 mud-text-align-center">-->
-                <MudField Class="mx-4 mt-4 mb-n5" Label="Lien Url de la partie" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">localhost:5001/lobby/24f8bds34d=</MudField>
-            <!--</MudPaper>-->
+                <MudField Class="mx-4 mt-4 mb-n5" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.GameUrl" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">localhost:5001/lobby/24f8bds34d=</MudField>
         </MudItem>
     </MudGrid>
     <MudGrid Class="mt-8" Justify="Justify.Center">        
         <MudItem xs="12" sm="6" md="6" >
             <MudPaper Elevation="25" Class="rounded-lg pb-4 mb-2 d-flex flex-column" Style="height:600px;">
                 <MudItem Class="d-flex flex-row justify-start pt-5 pb-3 px-5">
-                    <MudText Class="mt-1" style="font-size: 1em;" Typo="Typo.overline">Thème de la partie:&nbsp;&nbsp;&nbsp;</MudText>
+                    <MudText Class="mt-1" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.ThemeLabel</MudText>
                     <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.body1"><strong>@game.GameTheme</strong></MudText>
                 </MudItem>                
-                <MudText Class="px-5" Typo="Typo.h6">Entrez vos mots</MudText>
+                <MudText Class="px-5" Typo="Typo.h6">@LanguageManager.CurrentLanguage.GameLobbyPage.EnterWords</MudText>
                 <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">Mot #1:&nbsp;&nbsp;&nbsp;</MudText>
+                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #1:&nbsp;&nbsp;&nbsp;</MudText>
                     <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">Mot #2:&nbsp;&nbsp;&nbsp;</MudText>
+                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #2:&nbsp;&nbsp;&nbsp;</MudText>
                     <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">Mot #3:&nbsp;&nbsp;&nbsp;</MudText>
+                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #3:&nbsp;&nbsp;&nbsp;</MudText>
                     <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">Mot #4:&nbsp;&nbsp;&nbsp;</MudText>
+                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #4:&nbsp;&nbsp;&nbsp;</MudText>
                     <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">Mot #5:&nbsp;&nbsp;&nbsp;</MudText>
+                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #5:&nbsp;&nbsp;&nbsp;</MudText>
                     <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">Mot #6:&nbsp;&nbsp;&nbsp;</MudText>
+                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #6:&nbsp;&nbsp;&nbsp;</MudText>
                     <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">Mot #7:&nbsp;&nbsp;&nbsp;</MudText>
+                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #7:&nbsp;&nbsp;&nbsp;</MudText>
                     <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">Mot #8:&nbsp;&nbsp;&nbsp;</MudText>
+                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #8:&nbsp;&nbsp;&nbsp;</MudText>
                     <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-end px-8 py-5 mt-auto">                     
-                    <MudButton Variant="Variant.Outlined" Color="Color.Warning" Disabled="true" Class="pa-2 mr-2">Pas prêt</MudButton>
-                    <MudButton Variant="Variant.Outlined" Color="Color.Success" Disabled="false" Class="pa-2 mr-2">Prêt</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Warning" Disabled="true" Class="pa-2 mr-2">@LanguageManager.CurrentLanguage.GameLobbyPage.NotReady</MudButton>
+                    <MudButton Variant="Variant.Outlined" Color="Color.Success" Disabled="false" Class="pa-2 mr-2">@LanguageManager.CurrentLanguage.GameLobbyPage.Ready</MudButton>
                     @if (IsHost)
                     {
-                        <MudButton Variant="Variant.Outlined" Color="Color.Tertiary" Disabled="false" Class="pa-2">Lancer la partie !</MudButton>         
+                        <MudButton Variant="Variant.Outlined" Color="Color.Tertiary" Disabled="false" Class="pa-2">@LanguageManager.CurrentLanguage.GameLobbyPage.StartGame</MudButton>         
                     }
                 </MudItem>
             </MudPaper>            
@@ -70,13 +68,13 @@
                     <MudPaper Elevation="25" Class="rounded-lg d-flex flex-row justify-start py-2 px-2">
                         @if (IsHost)
                         {
-                            <MudTextField Class="my-auto" Style="width:250px;" @bind-Value="TeamNameOne" Label="Nom de l'équipe 1" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamOneEdit" />
+                            <MudTextField Class="my-auto" Style="width:250px;" @bind-Value="TeamNameOne" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameOne" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamOneEdit" />
                         }
                         else 
                         {
                             <MudText Class="my-auto" Style="width:250px;" Typo="Typo.h6">@(TeamNameOne.Length > 10 ? TeamNameOne.Substring(0, 12) + " ..." : TeamNameOne)</MudText>
                         }
-                        <MudButton Class="ml-2 my-2" Variant="Variant.Filled" Color="Color.Default" FullWidth="true">Rejoindre</MudButton>
+                        <MudButton Class="ml-2 my-2" Variant="Variant.Filled" Color="Color.Default" FullWidth="true">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
                     </MudPaper>
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
@@ -95,13 +93,13 @@
                     <MudPaper Elevation="25" Class="rounded-lg d-flex flex-row justify-start py-2 px-2">
                         @if (IsHost)
                         {
-                            <MudTextField Class="my-auto" Style="width:250px;" @bind-Value="TeamNameTwo" Label="Nom de l'équipe 2" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamOneEdit" />
+                            <MudTextField Class="my-auto" Style="width:250px;" @bind-Value="TeamNameTwo" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameTwo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamOneEdit" />
                         }
                         else 
                         {
                             <MudText Class="my-auto" Style="width:250px;" Typo="Typo.h6">@(TeamNameTwo.Length > 10 ? TeamNameTwo.Substring(0, 12) + " ..." : TeamNameTwo)</MudText>
                         }
-                        <MudButton Class="ml-2 my-2" Variant="Variant.Filled" Color="Color.Default" FullWidth="true">Rejoindre</MudButton>
+                        <MudButton Class="ml-2 my-2" Variant="Variant.Filled" Color="Color.Default" FullWidth="true">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
                     </MudPaper>
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
@@ -133,7 +131,7 @@
     </MudGrid>
     <MudGrid Class="" Justify="Justify.Center">
         <MudItem xs="12" sm="12" md="12">
-            <MudButton Variant="Variant.Outlined" Color="Color.Tertiary"  Class="pa-2 ml-2 mr-auto">@LanguageManager.CurrentLanguage.CreateGamePage.Return</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Tertiary" OnClick="NavigateToIndexComponent" Class="pa-2 ml-2 mr-auto">@LanguageManager.CurrentLanguage.GameLobbyPage.Leave</MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
@@ -141,8 +139,8 @@
 @code {
     [Parameter]
     public string GameCode { get; set; }
-    public bool IsHost { get; set; } = false;
-    public string TeamNameOne { get; set; } = "Équipe #1wweqweqweqweqweqwe";
+    public bool IsHost { get; set; } = true;
+    public string TeamNameOne { get; set; } = "Équipe #1";
     public string TeamNameTwo { get; set; } = "Équipe #2";
     bool success;
     string[] errors = { };
@@ -174,5 +172,10 @@
     void OnCopyGameUrl() 
     {
         Console.WriteLine("Copy");
+    }
+
+     private void NavigateToIndexComponent()
+    {
+        NavigationManager.NavigateTo("/");
     }
 }

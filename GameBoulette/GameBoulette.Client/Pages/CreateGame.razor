@@ -26,7 +26,7 @@
             <MudPaper Class="d-flex pa-4 my-4 mud-text-align-center">
                 <MudButton Variant="Variant.Outlined" Color="Color.Tertiary" OnClick="@(()=>NavigateToIndexComponent())" Class="pa-2 ml-2 mr-auto">@LanguageManager.CurrentLanguage.CreateGamePage.Return</MudButton>
                 <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(()=>form.Reset())" Class="pa-2 mx-2">@LanguageManager.CurrentLanguage.CreateGamePage.Restart</MudButton>
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" Class="pa-2 mx-2">@LanguageManager.CurrentLanguage.CreateGamePage.Create</MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="NavigateToLobbyComponent" Class="pa-2 mx-2">@LanguageManager.CurrentLanguage.CreateGamePage.Create</MudButton>
             </MudPaper>
         </MudItem>
     </MudGrid>    
@@ -44,10 +44,16 @@
         NumberOfRound = 3,
         TimePerTurn = 60,
         NumberOfPaper = 5,
+        GameCode = "asw23c=2",
     };
 
     private void NavigateToIndexComponent()
     {
         NavigationManager.NavigateTo("/");
+    }
+
+     private void NavigateToLobbyComponent()
+    {
+        NavigationManager.NavigateTo($"/lobby/{game.GameCode}");
     }
 }

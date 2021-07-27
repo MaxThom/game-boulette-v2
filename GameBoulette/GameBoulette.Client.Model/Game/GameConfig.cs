@@ -14,5 +14,6 @@ namespace GameBoulette.Client.Model.Game
         public int TimePerTurn { get; set; }
         public int NumberOfPaper { get; set; }
         public string VideoUrl { get; set; } = "";
+        public string GameCode { get; set; } = "";
     }
 }

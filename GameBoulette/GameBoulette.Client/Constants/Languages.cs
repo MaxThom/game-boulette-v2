@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using static MudBlazor.Colors;
+
 namespace GameBoulette.Client.Constants
 {
     public static class Languages
@@ -50,7 +52,23 @@ namespace GameBoulette.Client.Constants
                 Restart = "Refaire",
                 Create = "Créer la partie!",
                 MissingField = "Ce champ est requis!"
-            }
+            },
+            GameLobbyPage = new GameLobbyPage()
+            {
+                Title = "",
+                Description = "Salle d'attente",
+                GameUrl = "Lien Url de la partie",
+                ThemeLabel = "Thème de la partie:   ",
+                EnterWords = "Entrez vos mots",
+                Word = "Mot",
+                NotReady = "Pas prêt",
+                Ready = "Prêt",
+                StartGame = "Lancer la partie !",
+                TeamNameOne = "Nom de l'équipe 1",
+                TeamNameTwo = "Nom de l'équipe 2",
+                JoinTeam = "Rejoindre",
+                Leave = "Quitter",
+            },
         };
 
         public static Language English = new Language()
@@ -92,7 +110,23 @@ namespace GameBoulette.Client.Constants
                 Restart = "Restart",
                 Create = "Create the game!",
                 MissingField = "This field is required!"
-            }
+            },
+            GameLobbyPage = new GameLobbyPage()
+            {
+                Title = "",
+                Description = "Waiting Room",
+                GameUrl = "Game Url",
+                ThemeLabel = "Game Theme:   ",
+                EnterWords = "Enter your words",
+                Word = "Word",
+                NotReady = "Not ready",
+                Ready = "Ready",
+                StartGame = "Start Game",
+                TeamNameOne = "Team name 1",
+                TeamNameTwo = "Team name 2",
+                JoinTeam = "Join",
+                Leave = "Leave",
+            },
         };
     }
 }
