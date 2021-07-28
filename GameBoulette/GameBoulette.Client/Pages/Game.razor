@@ -5,7 +5,7 @@
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
     <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true"><strong>BaseYo vs Drum</strong></MudText>
-    <MudText Align="Align.Center">Manche #1</MudText>
+    <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.GamePage.RoundLabel #1</MudText>
 
     
     <MudGrid Class="mt-4" Justify="Justify.Center">        
@@ -13,7 +13,7 @@
             <MudItem Class="d-flex flex-column align-start px-1">
                 <MudItem Class="d-flex flex-row justify-center">
                     <MudAvatar Class="my-auto mr-3" Color="Color.Inherit" Variant="Variant.Outlined">3</MudAvatar>
-                    <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.overline">points</MudText>
+                    <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GamePage.ScoreLabel</MudText>
                 </MudItem>
                 <MudButton Class="pa-2 mx-2 my-2" Variant="Variant.Outlined" Color="Color.Tertiary" >MaxThom</MudButton>
                 <MudButton Class="pa-2 mx-2 my-2" Variant="Variant.Outlined" Color="Color.Primary">qwdqwd</MudButton>
@@ -24,22 +24,21 @@
          <MudItem xs="12" sm="6" md="6" Class="ma-auto">
              <MudPaper Elevation="25" Class="rounded-lg d-flex flex-column justify-space-around align-center" Style="height:300px;">                
                 <MudText Class="mt-5" style="font-size: 1.5em;" Typo="Typo.overline">0:59</MudText>
-                <MudButton Class="px-5 mt-n5" Style="min-width:75%" Variant="Variant.Filled" Size="Size.Large" Color="Color.Info" >Bateau</MudButton>
+                <MudButton Class="px-5 mt-n5" Style="min-width:75%" Variant="Variant.Filled" Size="Size.Large" Color="Color.Info">Bateau</MudButton>
                 <MudItem Class="d-flex flex-row justify-center">
-                    <MudButton Class="mx-12" Variant="Variant.Text" Color="Color.Warning">Passé</MudButton>
-                    <MudButton Class="mx-12" Variant="Variant.Text" Color="Color.Success">Trouvé</MudButton>
+                    <MudButton Class="mx-12" Variant="Variant.Text" Color="Color.Warning">@LanguageManager.CurrentLanguage.GamePage.SkipWord</MudButton>
+                    <MudButton Class="mx-12" Variant="Variant.Text" Color="Color.Success">@LanguageManager.CurrentLanguage.GamePage.FoundWord</MudButton>
                 </MudItem>
             </MudPaper>
             <MudItem Class="d-flex flex-row justify-center">
-                <!--<MudAvatar Class="my-auto mr-3" Color="Color.Inherit" Variant="Variant.Outlined">32</MudAvatar>-->
-                <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.overline">32 mots restants</MudText>
+                <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.overline">32 @LanguageManager.CurrentLanguage.GamePage.RemaningWords</MudText>
             </MudItem>
         </MudItem>
          <MudItem xs="12" sm="3" md="3" Class="mx-auto">
             <MudItem Class="d-flex flex-column align-end flex-wrap py-2 px-1">
                 <MudItem Class="d-flex flex-row justify-center">
                     <MudAvatar Class="my-auto mr-3" Color="Color.Inherit" Variant="Variant.Outlined">4</MudAvatar>
-                    <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.overline">points</MudText>
+                    <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GamePage.ScoreLabel</MudText>
                 </MudItem>
                 <MudButton Class="pa-2 mx-2 my-2" Variant="Variant.Outlined" Color="Color.Tertiary">MaxThom</MudButton>
                 <MudButton Class="pa-2 mx-2 my-2" Variant="Variant.Outlined" Color="Color.Primary">qwdqwd</MudButton>
@@ -55,7 +54,7 @@
                     <TitleContent>
                         <MudItem class="d-flex">
                             <MudIcon Icon="@Icons.Material.Filled.Settings" class="mr-3"></MudIcon>
-                            <MudText>Configurations et lien url</MudText>
+                            <MudText>@LanguageManager.CurrentLanguage.GameLobbyPage.ConfigurationLabel</MudText>
                         </MudItem>
                     </TitleContent>
                     <ChildContent>
@@ -71,6 +70,17 @@
                     </ChildContent>                    
                 </MudExpansionPanel>
             </MudExpansionPanels>
+            <MudExpansionPanel>
+                <TitleContent>
+                    <MudItem class="d-flex">
+                        <MudIcon Icon="@Icons.Material.Filled.Accessibility" class="mr-3"></MudIcon>
+                        <MudText>@LanguageManager.CurrentLanguage.GameLobbyPage.RulesLabel</MudText>
+                    </MudItem>
+                </TitleContent>
+                <ChildContent>
+                    <MudText Typo="Typo.body1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </MudText>
+                </ChildContent>                    
+            </MudExpansionPanel>
         </MudItem>
     </MudGrid>
     <MudGrid Class="" Justify="Justify.Center">

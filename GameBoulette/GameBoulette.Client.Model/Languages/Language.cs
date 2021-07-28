@@ -15,6 +15,7 @@ namespace GameBoulette.Client.Model.Languages
         public IndexPage IndexPage { get; set; } = new IndexPage();
         public CreateGamePage CreateGamePage { get; set; } = new CreateGamePage();
         public GameLobbyPage GameLobbyPage { get; set; } = new GameLobbyPage();
+        public GamePage GamePage { get; set; } = new GamePage();
     }
 
     public class AppBar
@@ -70,5 +71,16 @@ namespace GameBoulette.Client.Model.Languages
         public string TeamNameTwo { get; set; } = "";
         public string JoinTeam { get; set; } = "";
         public string Leave { get; set; } = "";
+        public string ConfigurationLabel { get; set; } = "";
+        public string RulesLabel { get; set; } = "";
+    }
+
+    public class GamePage
+    {
+        public string RoundLabel { get; set; } = "";
+        public string ScoreLabel { get; set; } = "";
+        public string SkipWord { get; set; } = "";
+        public string FoundWord { get; set; } = "";
+        public string RemaningWords { get; set; } = "";
     }
 }

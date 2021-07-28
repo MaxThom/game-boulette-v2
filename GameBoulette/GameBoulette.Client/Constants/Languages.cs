@@ -20,7 +20,7 @@ namespace GameBoulette.Client.Constants
             ShortName = "FR",
             AppBar = new AppBar()
             {
-                Title = "Boulette virtuelle"
+                Title = "Jeu de Boulette virtuelle"
             },
             IndexPage = new IndexPage()
             {
@@ -68,6 +68,16 @@ namespace GameBoulette.Client.Constants
                 TeamNameTwo = "Nom de l'équipe 2",
                 JoinTeam = "Rejoindre",
                 Leave = "Quitter",
+                ConfigurationLabel = "Configurations et lien url",
+                RulesLabel = "Règles",
+            },
+            GamePage = new GamePage()
+            {
+                RoundLabel = "Manche",
+                ScoreLabel = "points",
+                SkipWord = "passé",
+                FoundWord = "trouvé",
+                RemaningWords = "mots restants",
             },
         };
 
@@ -78,7 +88,7 @@ namespace GameBoulette.Client.Constants
             ShortName = "EN",
             AppBar = new AppBar()
             {
-                Title = "Virtual Boulet"
+                Title = "Virtual Paperfold Game"
             },
             IndexPage = new IndexPage()
             {
@@ -126,7 +136,17 @@ namespace GameBoulette.Client.Constants
                 TeamNameTwo = "Team name 2",
                 JoinTeam = "Join",
                 Leave = "Leave",
+                ConfigurationLabel = "Configurations & Url Link",
+                RulesLabel = "Rules",
             },
+            GamePage = new GamePage()
+            {
+                RoundLabel = "Round",
+                ScoreLabel = "points",
+                SkipWord = "skip",
+                FoundWord = "found",
+                RemaningWords = "remaning words",
+            }
         };
     }
 }

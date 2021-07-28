@@ -130,11 +130,11 @@
     <MudGrid Class="" Justify="Justify.Center">
         <MudItem xs="12" sm="12" md="12">
             <MudExpansionPanels>
-                <MudExpansionPanel Text="" MaxHeight="150">
+                <MudExpansionPanel>
                     <TitleContent>
                         <MudItem class="d-flex">
                             <MudIcon Icon="@Icons.Material.Filled.Settings" class="mr-3"></MudIcon>
-                            <MudText>Configurations et lien url</MudText>
+                            <MudText>@LanguageManager.CurrentLanguage.GameLobbyPage.ConfigurationLabel</MudText>
                         </MudItem>
                     </TitleContent>
                     <ChildContent>
@@ -147,6 +147,17 @@
                             <MudTextField T="string" Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.VideoUrl" Label="@LanguageManager.CurrentLanguage.CreateGamePage.VideoURL" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyVideoUrl"/>                        
                             <MudField Class="pa-1 ma-1" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.GameUrl" Margin="Margin.Dense" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">localhost:5001/lobby/24f8bds34d=</MudField>
                         </MudForm>
+                    </ChildContent>                    
+                </MudExpansionPanel>
+                <MudExpansionPanel>
+                    <TitleContent>
+                        <MudItem class="d-flex">
+                            <MudIcon Icon="@Icons.Material.Filled.Accessibility" class="mr-3"></MudIcon>
+                            <MudText>@LanguageManager.CurrentLanguage.GameLobbyPage.RulesLabel</MudText>
+                        </MudItem>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudText Typo="Typo.body1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </MudText>
                     </ChildContent>                    
                 </MudExpansionPanel>
             </MudExpansionPanels>

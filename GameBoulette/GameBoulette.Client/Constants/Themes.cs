@@ -13,7 +13,8 @@ namespace GameBoulette.Client.Constants
         {
             Palette = new Palette()
             {
-                Black = "#272c34"
+                Black = "#272c34",
+                Surface = "#f0f0f0"
             }
         };
 

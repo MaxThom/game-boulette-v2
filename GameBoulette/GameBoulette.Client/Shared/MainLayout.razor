@@ -11,11 +11,11 @@
 <MudLayout>
     <MudAppBar>
         <a href="/"><img class="" src="images/boulette-de-papier.png" width="120" style="padding-top:50px;" /></a>
-        <a href="/"><MudText Typo="Typo.h5" Class="ml-3">@LanguageManager.CurrentLanguage.AppBar.Title</MudText></a>
+        <a href="/"><MudText Typo="Typo.h5" Class="ml-3" Style="color:#eaeaea">@LanguageManager.CurrentLanguage.AppBar.Title</MudText></a>
         <MudSpacer />
-        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Language" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => LanguageManager.CycleToNextLanguage())">@LanguageManager.CurrentLanguageText</MudButton>
-        <MudIconButton Icon="@ThemeManager.CurrentThemeIcon" Color="Color.Inherit" Edge="Edge.End" OnClick="@((e) => ThemeManager.CycleToNextTheme())" />
-        <a href="https://github.com/MaxThom/game-boulette-v2" target="_blank"><MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Edge="Edge.End" /></a>
+        <MudButton Variant="Variant.Text" StartIcon="@Icons.Material.Filled.Language" Style="color:#eaeaea" Edge="Edge.End" OnClick="@((e) => LanguageManager.CycleToNextLanguage())">@LanguageManager.CurrentLanguageText</MudButton>
+        <MudIconButton Class="mr-1" Icon="@ThemeManager.CurrentThemeIcon" Style="color:#eaeaea" Edge="Edge.End" OnClick="@((e) => ThemeManager.CycleToNextTheme())" />
+        <a href="https://github.com/MaxThom/game-boulette-v2" target="_blank"><MudIconButton Icon="@Icons.Custom.Brands.GitHub" Style="color:#eaeaea" Edge="Edge.End" /></a>
     </MudAppBar>    
     <MudMainContent>
             @Body
