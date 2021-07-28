@@ -9,7 +9,7 @@
 
     <MudGrid Class="" Justify="Justify.Center">
         <MudItem xs="12" sm="12" md="12">
-                <MudField Class="mx-4 mt-4 mb-n5" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.GameUrl" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">localhost:5001/lobby/24f8bds34d=</MudField>
+                <MudField Class="mx-4 mt-4 mb-n5" Margin="Margin.Dense" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.GameUrl" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">localhost:5001/lobby/24f8bds34d=</MudField>
         </MudItem>
     </MudGrid>
     <MudGrid Class="mt-8" Justify="Justify.Center">        
@@ -53,11 +53,11 @@
                     <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-end px-8 py-5 mt-auto">                     
-                    <MudButton Variant="Variant.Outlined" Color="Color.Warning" Disabled="true" Class="pa-2 mr-2">@LanguageManager.CurrentLanguage.GameLobbyPage.NotReady</MudButton>
-                    <MudButton Variant="Variant.Outlined" Color="Color.Success" Disabled="false" Class="pa-2 mr-2">@LanguageManager.CurrentLanguage.GameLobbyPage.Ready</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Warning" Disabled="true" Class="pa-2 mr-2">@LanguageManager.CurrentLanguage.GameLobbyPage.NotReady</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Success" Disabled="false" Class="pa-2 mr-2">@LanguageManager.CurrentLanguage.GameLobbyPage.Ready</MudButton>
                     @if (IsHost)
                     {
-                        <MudButton Variant="Variant.Outlined" Color="Color.Tertiary" Disabled="false" Class="pa-2">@LanguageManager.CurrentLanguage.GameLobbyPage.StartGame</MudButton>         
+                        <MudButton Variant="Variant.Text" Color="Color.Tertiary" Disabled="false" Class="pa-2" OnClick="NavigateToGameComponent">@LanguageManager.CurrentLanguage.GameLobbyPage.StartGame</MudButton>         
                     }
                 </MudItem>
             </MudPaper>            
@@ -84,14 +84,14 @@
                     </MudPaper>
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Tertiary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Primary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Tertiary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Primary">MaxThom</MudButton>
                     <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Secondary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Warning">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Tertiary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Primary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Secondary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Warning">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Warning">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Tertiary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Primary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Secondary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Warning">MaxThom</MudButton>
                 </MudItem>
             </MudItem>
             <MudItem Style="min-height:300px;">
@@ -115,30 +115,41 @@
                     </MudPaper>
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Tertiary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Primary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Secondary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Warning">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Tertiary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Primary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Secondary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Warning">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Tertiary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Primary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Secondary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Warning">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Tertiary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Primary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Secondary">MaxThom</MudButton>
+                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Warning">MaxThom</MudButton>
                 </MudItem>
             </MudItem>
         </MudItem>
     </MudGrid>
     <MudGrid Class="" Justify="Justify.Center">
         <MudItem xs="12" sm="12" md="12">
-            <MudPaper Class="d-flex pa-4 mud-text-align-center">
-                <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" Class="d-flex flex-row justify-center flex-wrap py-1 px-1">
-                    <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.GameName" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameName" Variant="Variant.Outlined" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField" />
-                    <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.GameTheme" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameTheme" Variant="Variant.Outlined" />            
-                    <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.NumberOfRound" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfRound" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Rounds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/> 
-                    <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.TimePerTurn" Label="@LanguageManager.CurrentLanguage.CreateGamePage.TimePerTurn" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Seconds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
-                    <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.NumberOfPaper" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfPaper" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Papers" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
-                    <MudTextField T="string" Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.VideoUrl" Label="@LanguageManager.CurrentLanguage.CreateGamePage.VideoURL" Variant="Variant.Outlined" />                        
-                 </MudForm>                
-            </MudPaper>
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="" MaxHeight="150">
+                    <TitleContent>
+                        <MudItem class="d-flex">
+                            <MudIcon Icon="@Icons.Material.Filled.Settings" class="mr-3"></MudIcon>
+                            <MudText>Configurations et lien url</MudText>
+                        </MudItem>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" Class="d-flex flex-row justify-center flex-wrap py-1 px-1">
+                            <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.GameName" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameName" Variant="Variant.Outlined" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField" />
+                            <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.GameTheme" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameTheme" Variant="Variant.Outlined" />            
+                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.NumberOfRound" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfRound" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Rounds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/> 
+                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.TimePerTurn" Label="@LanguageManager.CurrentLanguage.CreateGamePage.TimePerTurn" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Seconds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
+                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.NumberOfPaper" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfPaper" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Papers" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
+                            <MudTextField T="string" Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.VideoUrl" Label="@LanguageManager.CurrentLanguage.CreateGamePage.VideoURL" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyVideoUrl"/>                        
+                            <MudField Class="pa-1 ma-1" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.GameUrl" Margin="Margin.Dense" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">localhost:5001/lobby/24f8bds34d=</MudField>
+                        </MudForm>
+                    </ChildContent>                    
+                </MudExpansionPanel>
+            </MudExpansionPanels>
         </MudItem>
     </MudGrid>
     <MudGrid Class="" Justify="Justify.Center">
@@ -186,8 +197,18 @@
         Console.WriteLine("Copy");
     }
 
-     private void NavigateToIndexComponent()
+    void OnCopyVideoUrl() 
+    {
+        Console.WriteLine("Copy");
+    }
+
+    private void NavigateToIndexComponent()
     {
         NavigationManager.NavigateTo("/");
+    }
+
+    private void NavigateToGameComponent()
+    {
+        NavigationManager.NavigateTo($"/game/{GameCode}");
     }
 }
