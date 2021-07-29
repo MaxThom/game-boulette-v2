@@ -16,7 +16,9 @@ namespace GameBoulette.Server
         public GamesService(IHubContext<GameHub, IGameClient> hubContext)
         {
             _gameHub = hubContext;
+            Console.WriteLine("FFS");
         }
+
 
         public async Task SendMessage(string user, string message)
         {
