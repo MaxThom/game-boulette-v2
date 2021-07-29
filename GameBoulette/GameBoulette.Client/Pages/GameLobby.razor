@@ -2,6 +2,7 @@
 @inherits AppBaseComponent
 @inject IJSRuntime js
 @inject NavigationManager NavigationManager
+@inject GameHubService GameHub
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@game.GameName</strong></MudText>
@@ -54,7 +55,7 @@
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-end px-8 py-5 mt-auto">                     
                     <MudButton Variant="Variant.Text" Color="Color.Warning" Disabled="true" Class="pa-2 mr-2">@LanguageManager.CurrentLanguage.GameLobbyPage.NotReady</MudButton>
-                    <MudButton Variant="Variant.Text" Color="Color.Success" Disabled="false" Class="pa-2 mr-2">@LanguageManager.CurrentLanguage.GameLobbyPage.Ready</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Success" Disabled="false" Class="pa-2 mr-2" OnClick="OnReady">@LanguageManager.CurrentLanguage.GameLobbyPage.Ready</MudButton>
                     @if (IsHost)
                     {
                         <MudButton Variant="Variant.Text" Color="Color.Tertiary" Disabled="false" Class="pa-2" OnClick="NavigateToGameComponent">@LanguageManager.CurrentLanguage.GameLobbyPage.StartGame</MudButton>         
@@ -193,6 +194,18 @@
     protected override void OnParametersSet()
     {
         GameCode = GameCode ?? "";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await GameHub.ConnectToGameHub();
+        Console.WriteLine(GameHub.IsConnected);
+    }
+
+    async void OnReady()
+    {
+        await GameHub.Send("MaxThom", "Hello old friend !");
     }
 
     void OnTeamOneEdit()
