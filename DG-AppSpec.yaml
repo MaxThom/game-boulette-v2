@@ -1,0 +1,15 @@
+name: game-boulette
+region: sfo
+services:
+- dockerfile_path: /GameBoulette/GameBoulette.Server/Dockerfile
+  github:
+    branch: main
+    deploy_on_push: true
+    repo: MaxThom/game-boulette-v2
+  http_port: 443
+  instance_count: 1
+  instance_size_slug: professional-xs
+  name: game-boulette
+  routes:
+  - path: /
+  source_dir: /GameBoulette/
