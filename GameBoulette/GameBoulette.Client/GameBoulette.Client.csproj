@@ -3,6 +3,8 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
+    <UserSecretsId>c2e143f5-9090-47a5-af36-80046daed90b</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +12,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-preview.6.21355.2" PrivateAssets="all" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0-preview.6.21355.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0-preview.6.21352.12" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.14" />
     <PackageReference Include="MudBlazor" Version="5.1.0" />
   </ItemGroup>
 
