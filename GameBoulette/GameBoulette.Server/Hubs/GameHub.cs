@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using GameBoulette.Server.Services;
+
+using Microsoft.AspNetCore.SignalR;
 
 using System;
 using System.Collections.Generic;

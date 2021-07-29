@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 
 using System.Linq;
 using GameBoulette.Server.Hubs;
+using GameBoulette.Server.Services;
 
 namespace GameBoulette.Server
 {
