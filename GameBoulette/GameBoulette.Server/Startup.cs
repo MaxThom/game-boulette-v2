@@ -24,7 +24,10 @@ namespace GameBoulette.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSignalR();
+            services.AddSignalR(config =>
+            {
+                config.ClientTimeoutInterval = new System.TimeSpan(0, 10, 0);
+            });
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddResponseCompression(opts =>

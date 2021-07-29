@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,10 @@ namespace GameBoulette.Client.Services
         {
             hubConnection = new HubConnectionBuilder()
             .WithUrl(_navigationManager.ToAbsoluteUri("/gamehub"))
+            .ConfigureLogging(logging => {
+                logging.SetMinimumLevel(LogLevel.Debug);
+                //logging.AddConsole();
+            })
             .WithAutomaticReconnect()
             .Build();
 
