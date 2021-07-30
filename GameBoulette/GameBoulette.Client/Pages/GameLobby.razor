@@ -1,4 +1,4 @@
-﻿@page "/lobby/{gamecode}"
+﻿@page "/lobby"
 @inherits AppBaseComponent
 @inject IJSRuntime js
 @inject NavigationManager NavigationManager
@@ -172,7 +172,7 @@
 </MudContainer>
 
 @code {
-    [Parameter]
+    
     public string GameCode { get; set; }
     public bool IsHost { get; set; } = true;
     public string TeamNameOne { get; set; } = "Équipe #1";

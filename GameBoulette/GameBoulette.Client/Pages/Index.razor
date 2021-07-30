@@ -116,9 +116,17 @@
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
     }
 
-    private void OnCreateGameClick()
+    private async Task OnCreateGameClick()
     {
-        NavigationManager.NavigateTo("create");
+        (bool isConnected, string msg) = await GameHub.CreateGameConnection(player);
+        if (!isConnected)
+        {
+            // Not connected
+            Snackbar.Add(msg, Severity.Error);
+        }
+
+        Snackbar.Add(msg, Severity.Success);
+        NavigationManager.NavigateTo($"lobby");
     }
 
     private async Task OnJoinGameClick()
@@ -131,7 +139,7 @@
         }
 
         Snackbar.Add(msg, Severity.Success);
-        NavigationManager.NavigateTo($"lobby/{GameCode}");
+        NavigationManager.NavigateTo($"lobby");
     }
 
     

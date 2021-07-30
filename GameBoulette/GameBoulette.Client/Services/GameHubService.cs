@@ -1,4 +1,5 @@
 ﻿using GameBoulette.Shared;
+using GameBoulette.Shared.Utilities;
 
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -69,7 +70,25 @@ namespace GameBoulette.Client.Services
             await hubConnection.SendAsync("JoinLobby", GameCode, You);
         }
 
+        private async Task CreateLobby()
+        {
+            await hubConnection.SendAsync("JoinLobby", GameCode, You);
+        }
+
         #endregion HubCom
+
+        public async Task<Tuple<bool, string>> CreateGameConnection(Player you)
+        {
+            You = you;
+            GameCode = GameCodeUtility.GenerateGameCode();
+            await ConnectToGameHub();
+            if (!IsConnected)
+                return new Tuple<bool, string>(false, "Cannot connect to game server. Please try again later.");
+
+            await CreateLobby();
+
+            return new Tuple<bool, string>(IsConnected, "Connected to game lobby !");
+        }
 
         public async Task<Tuple<bool, string>> JoinGameConnection(string gameCode, Player you)
         {
