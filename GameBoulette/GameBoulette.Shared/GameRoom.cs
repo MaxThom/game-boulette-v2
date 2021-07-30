@@ -9,6 +9,7 @@ namespace GameBoulette.Shared
     public class GameRoom
     {
         public string Code { get; set; }
+        public Player Host {  get; set; }
         public Configuration Config { get; set; }
         public List<Word> Words { get; set; }
         public Team TeamOne { get; set; }

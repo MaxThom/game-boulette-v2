@@ -2,11 +2,12 @@
 @page "/{gamecode?}"
 @inject NavigationManager NavigationManager
 @inject IJSRuntime js
+@inject GameHubService GameHub
+@inject ISnackbar Snackbar
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@LanguageManager.CurrentLanguage.IndexPage.Title</strong></MudText>
-    <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.IndexPage.Description</MudText>
-    <MudGrid Class="mt-8" Justify="Justify.Center">        
+    <MudGrid Class="mt-4" Justify="Justify.Center">        
         <MudItem xs="12" sm="10" md="8">
             <MudCard Elevation="25" Class="rounded-lg pb-4 mb-2">
                 <MudCardHeader>
@@ -15,65 +16,62 @@
                     </CardHeaderContent>                   
                 </MudCardHeader>
                 <MudCardContent  Class="d-flex justify-center">                    
-                    <MudButton Variant="Variant.Filled" Color="@AvatarColor">@AvatarName</MudButton>
-                    <MudTextField Class="px-5" Label="@LanguageManager.CurrentLanguage.IndexPage.AvatarInput" Variant="Variant.Outlined" @bind-Value="AvatarName" Immediate="true"></MudTextField>                    
+                    <MudButton Variant="Variant.Filled" Style="@("background-color: "+player.Color+"; color: black;")">@player.Name</MudButton>
+                    <MudTextField Class="px-5" Label="@LanguageManager.CurrentLanguage.IndexPage.AvatarInput" Variant="Variant.Outlined" @bind-Value="player.Name" Immediate="true"></MudTextField>                    
                 </MudCardContent>
                 <MudCardContent  Class="d-flex justify-space-around py-2 px-1 "> 
-                    <MudFab Class="px-auto" Color="Color.Default" Size="Size.Small" OnClick="() => AvatarColor = Color.Default" />
-                    <MudFab Class="px-auto" Color="Color.Primary" Size="Size.Small" OnClick="() => AvatarColor = Color.Primary" />
-                    <MudFab Class="px-auto" Color="Color.Secondary" Size="Size.Small" OnClick="() => AvatarColor = Color.Secondary" />                    
-                    <MudFab Class="px-auto" Color="Color.Tertiary" Size="Size.Small" OnClick="() => AvatarColor = Color.Tertiary" />
-                    <MudFab Class="px-auto" Color="Color.Info" Size="Size.Small" OnClick="() => AvatarColor = Color.Info" />
-                    <MudFab Class="px-auto" Color="Color.Success" Size="Size.Small" OnClick="() => AvatarColor = Color.Success" />
-                    <MudFab Class="px-auto" Color="Color.Warning" Size="Size.Small" OnClick="() => AvatarColor = Color.Warning" />
-                    <MudFab Class="px-auto" Color="Color.Error" Size="Size.Small" OnClick="() => AvatarColor = Color.Error" />
-                    <MudFab Class="px-auto" Color="Color.Dark" Size="Size.Small" OnClick="() => AvatarColor = Color.Dark" />
+                    <MudFab Class="px-auto" Style="background-color: #f4ff00;" Size="Size.Small" OnClick="@(() => player.Color = "#f4ff00")" />
+                    <MudFab Class="px-auto" Style="background-color: #594ae2;" Size="Size.Small" OnClick="@(() => player.Color = "#594ae2")" />
+                    <MudFab Class="px-auto" Style="background-color: #ff4081;" Size="Size.Small" OnClick="@(() => player.Color = "#ff4081")" />                    
+                    <MudFab Class="px-auto" Style="background-color: #1ec8a5;" Size="Size.Small" OnClick="@(() => player.Color = "#1ec8a5")" />
+                    <MudFab Class="px-auto" Style="background-color: #2196f3;" Size="Size.Small" OnClick="@(() => player.Color = "#2196f3")" />
+                    <MudFab Class="px-auto" Style="background-color: #00c853;" Size="Size.Small" OnClick="@(() => player.Color = "#00c853")" />
+                    <MudFab Class="px-auto" Style="background-color: #ff9800;" Size="Size.Small" OnClick="@(() => player.Color = "#ff9800")" />
+                    <MudFab Class="px-auto" Style="background-color: #f44336;" Size="Size.Small" OnClick="@(() => player.Color = "#f44336")" />
+                    <MudFab Class="px-auto" Style="background-color: #ffffff;" Size="Size.Small" OnClick="@(() => player.Color = "#ffffff")" />
                 </MudCardContent>
             </MudCard>
         </MudItem>
     </MudGrid>
     <MudGrid Class="" Justify="Justify.Center">   
         <MudItem xs="12" sm="5" md="4">
-            <MudCard Elevation="25" Class="rounded-lg pb-4">
-                <MudCardActions Class="d-flex justify-center pt-5 mb-n5 mx-5">
-                    <MudTextField @bind-Value="GameCode" Label="@LanguageManager.CurrentLanguage.IndexPage.JoinGameCode" Variant="Variant.Outlined"></MudTextField>
+            <MudCard Elevation="25" Class="rounded-lg pb-4" Style="min-height:480px;">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText Typo="Typo.h6" Align="Align.Center">Rejoindre</MudText>
+                    </CardHeaderContent>                   
+                </MudCardHeader>
+                <MudCardActions Class="d-flex justify-center mt-2 mb-n2">
+                    <MudTextField @bind-Value="GameCode" Margin="Margin.Dense" Label="@LanguageManager.CurrentLanguage.IndexPage.JoinGameCode" Variant="Variant.Outlined" Immediate="true"></MudTextField>
                 </MudCardActions>
-                <MudCardActions Class="d-flex justify-center pt-5 mb-n5">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="" OnClick="() => NavigateToJoinGameComponent()" Disabled="@(AvatarName.Trim().Length < 3 || !IsGameCodeValid())" Immediate="true">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
-                </MudCardActions>
-                <MudCardContent>
-                    <MudList Class="mx-auto" Style="width:300px;">
-                        <MudListItem Icon="@Icons.Material.Filled.Info">
-                            @LanguageManager.CurrentLanguage.IndexPage.JoinGameSub
-                        </MudListItem>
-                    </MudList>
-                </MudCardContent>   
+                <MudCardActions Class="d-flex justify-center pt-5">
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="" FullWidth="true" OnClick="() => OnJoinGameClick()" Disabled="@(player.Name.Trim().Length < 3 || !IsGameCodeValid())">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
+                </MudCardActions>                
                 <MudCardHeader Class=""> 
                     <CardHeaderContent>
                         <MudCardMedia Image="images/join.png" Height="150" Style="width:150px" Class="mx-auto" />
                     </CardHeaderContent>
-                </MudCardHeader>
-                             
+                </MudCardHeader>                             
             </MudCard>
         </MudItem>
         <MudItem xs="12" sm="5" md="4">
-            <MudCard Elevation="25" Class="rounded-lg pb-4">                
-                <MudCardActions Class="d-flex justify-center pt-10 mb-7">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Style="" OnClick="() => NavigateToCreateGameComponent()" Disabled="@(AvatarName.Trim().Length < 3)">@LanguageManager.CurrentLanguage.IndexPage.CreateGame</MudButton>
-                </MudCardActions> 
-                <MudCardContent>
-                    <MudList Class="mx-auto " Style="width:300px;">
-                        <MudListItem Icon="@Icons.Material.Filled.Info">
-                            @LanguageManager.CurrentLanguage.IndexPage.CreateGameSub
-                        </MudListItem>
-                    </MudList>
-                </MudCardContent>
-                <MudCardHeader Class="">
+            <MudCard Elevation="25" Class="rounded-lg pb-4">
+                <MudCardHeader>
                     <CardHeaderContent>
-                        <MudCardMedia Image="images/host.png" Height="150" Style="width:150px" Class="mx-auto" />
-                    </CardHeaderContent>
+                        <MudText Typo="Typo.h6" Align="Align.Center">Créer</MudText>
+                    </CardHeaderContent>                   
                 </MudCardHeader>
-                
+                <MudCardContent>
+                    <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" Class="">
+                        <MudTextField Class="pb-3" Margin="Margin.Dense" T="string" @bind-Value="game.Name" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameName" Variant="Variant.Outlined" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField" />
+                        <MudTextField Class="pb-3" Margin="Margin.Dense" T="string" @bind-Value="game.Theme" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameTheme" Variant="Variant.Outlined" />            
+                        <MudNumericField Class="pb-3" Margin="Margin.Dense" @bind-Value="game.NumberOfRound" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfRound" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Rounds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/> 
+                        <MudNumericField Class="pb-3" Margin="Margin.Dense" @bind-Value="game.TimePerTurn" Label="@LanguageManager.CurrentLanguage.CreateGamePage.TimePerTurn" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Seconds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
+                        <MudNumericField Class="pb-3" Margin="Margin.Dense" @bind-Value="game.NumberOfPaperPerPerson" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfPaper" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Papers" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
+                        <MudTextField T="string" Margin="Margin.Dense" Label="@LanguageManager.CurrentLanguage.CreateGamePage.VideoURL" Variant="Variant.Outlined" />                        
+                    </MudForm>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="OnCreateGameClick" Class="mx-auto mt-3" FullWidth="true">@LanguageManager.CurrentLanguage.CreateGamePage.Create</MudButton>
+                </MudCardContent>
             </MudCard>
         </MudItem>
         <MudItem xs="12" sm="10" md="8">
@@ -83,26 +81,60 @@
 </MudContainer>
 
 @code {
-    public string AvatarName { get; set; } = "";
-    public MudBlazor.Color AvatarColor { get; set; } = Color.Primary;    
-
     [Parameter]
     public string GameCode { get; set; }
+
+    bool success;
+    string[] errors = { };
+    MudForm form;
+
+    Player player = new Player()
+    {
+        Name = "",
+        Color = "#ffffff",
+    };
+    
+    Configuration game = new Configuration()
+    {
+        Name = "",
+        Theme = "all",
+        NumberOfRound = 3,
+        TimePerTurn = 60,
+        NumberOfPaperPerPerson = 5,
+        VideoUrl = "",
+    };
 
     protected override void OnParametersSet()
     {
         GameCode = GameCode ?? "";
     }
 
-    private void NavigateToCreateGameComponent()
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Snackbar.Clear();
+        Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
+    }
+
+    private void OnCreateGameClick()
     {
         NavigationManager.NavigateTo("create");
     }
 
-    private void NavigateToJoinGameComponent()
+    private async Task OnJoinGameClick()
     {
+        (bool isConnected, string msg) = await GameHub.JoinGameConnection(GameCode, player);
+        if (!isConnected)
+        {
+            // Not connected
+            Snackbar.Add(msg, Severity.Error);
+        }
+
+        Snackbar.Add(msg, Severity.Success);
         NavigationManager.NavigateTo($"lobby/{GameCode}");
     }
+
+    
 
     bool IsGameCodeValid()
     {

@@ -11,8 +11,8 @@ namespace GameBoulette.Shared
         public string Name { get; set; }
         public string Theme { get; set; }
         public int NumberOfPaperPerPerson { get; set; }
-        public string NumberOfRound { get; set; }
-        public string TimePerTurn { get; set; }
+        public int NumberOfRound { get; set; }
+        public int TimePerTurn { get; set; }
         public string VideoUrl { get; set; }
     }
 }

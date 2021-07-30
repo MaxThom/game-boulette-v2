@@ -2,6 +2,7 @@
 @inherits AppBaseComponent
 @inject IJSRuntime js
 @inject NavigationManager NavigationManager
+@inject GameHubService GameHub
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
     <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true"><strong>BaseYo vs Drum</strong></MudText>
@@ -59,11 +60,11 @@
                     </TitleContent>
                     <ChildContent>
                         <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" Class="d-flex flex-row justify-center flex-wrap py-1 px-1">
-                            <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.GameName" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameName" Variant="Variant.Outlined" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField" />
-                            <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.GameTheme" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameTheme" Variant="Variant.Outlined" />            
+                            <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.Name" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameName" Variant="Variant.Outlined" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField" />
+                            <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.Theme" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameTheme" Variant="Variant.Outlined" />            
                             <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.NumberOfRound" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfRound" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Rounds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/> 
                             <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.TimePerTurn" Label="@LanguageManager.CurrentLanguage.CreateGamePage.TimePerTurn" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Seconds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
-                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.NumberOfPaper" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfPaper" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Papers" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
+                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.NumberOfPaperPerPerson" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfPaper" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Papers" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
                             <MudTextField T="string" Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.VideoUrl" Label="@LanguageManager.CurrentLanguage.CreateGamePage.VideoURL" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyVideoUrl"/>                        
                             <MudField Class="pa-1 ma-1" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.GameUrl" Margin="Margin.Dense" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">localhost:5001/lobby/24f8bds34d=</MudField>
                         </MudForm>
@@ -100,13 +101,14 @@
     string[] errors = { };
     MudForm form;
 
-    GameConfig game = new GameConfig()
+    string gameCode = "sd2mn2d=";
+    Configuration game = new Configuration()
     {
-        GameName = "Partie de Bob",
-        GameTheme = "Tout",
+        Name = "Partie de Bob",
+        Theme = "Tout",
         NumberOfRound = 3,
         TimePerTurn = 60,
-        NumberOfPaper = 5,      
+        NumberOfPaperPerPerson = 5,      
         VideoUrl = "zoom.com/312dsd2g="
     };
 
@@ -140,6 +142,6 @@
 
     private void NavigateToGameComponent()
     {
-        NavigationManager.NavigateTo($"/game/{GameCode}");
+        NavigationManager.NavigateTo($"/game/{gameCode}");
     }
 }

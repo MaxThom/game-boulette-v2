@@ -1,4 +1,5 @@
 ﻿using GameBoulette.Server.Hubs;
+using GameBoulette.Shared;
 
 using Microsoft.AspNetCore.SignalR;
 
@@ -12,6 +13,7 @@ namespace GameBoulette.Server.Services
     public class GamesService
     {
         private readonly IHubContext<GameHub, IGameClient> _gameHub;
+
 
         public GamesService(IHubContext<GameHub, IGameClient> hubContext)
         {
