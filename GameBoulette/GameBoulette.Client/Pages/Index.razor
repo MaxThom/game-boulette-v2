@@ -1,4 +1,5 @@
 ﻿@inherits AppBaseComponent
+@implements IDisposable
 @page "/{gamecode?}"
 @inject NavigationManager NavigationManager
 @inject IJSRuntime js
@@ -45,7 +46,7 @@
                     <MudTextField @bind-Value="GameCode" Margin="Margin.Dense" Label="@LanguageManager.CurrentLanguage.IndexPage.JoinGameCode" Variant="Variant.Outlined" Immediate="true"></MudTextField>
                 </MudCardActions>
                 <MudCardActions Class="d-flex justify-center pt-5">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="" FullWidth="true" OnClick="() => OnJoinGameClick()" Disabled="@(player.Name.Trim().Length < 3 || !IsGameCodeValid())">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="" FullWidth="true" OnClick="() => OnJoinGameClick()" Disabled="@(player.Name.Trim().Length < 3 || !GameCodeUtility.IsGameCodeValid(GameCode))">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
                 </MudCardActions>                
                 <MudCardHeader Class=""> 
                     <CardHeaderContent>
@@ -63,11 +64,11 @@
                 </MudCardHeader>
                 <MudCardContent>
                     <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" Class="">
-                        <MudTextField Class="pb-3" Margin="Margin.Dense" T="string" @bind-Value="game.Name" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameName" Variant="Variant.Outlined" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField" />
-                        <MudTextField Class="pb-3" Margin="Margin.Dense" T="string" @bind-Value="game.Theme" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameTheme" Variant="Variant.Outlined" />            
-                        <MudNumericField Class="pb-3" Margin="Margin.Dense" @bind-Value="game.NumberOfRound" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfRound" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Rounds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/> 
-                        <MudNumericField Class="pb-3" Margin="Margin.Dense" @bind-Value="game.TimePerTurn" Label="@LanguageManager.CurrentLanguage.CreateGamePage.TimePerTurn" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Seconds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
-                        <MudNumericField Class="pb-3" Margin="Margin.Dense" @bind-Value="game.NumberOfPaperPerPerson" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfPaper" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Papers" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
+                        <MudTextField Class="pb-3" Margin="Margin.Dense" T="string" @bind-Value="config.Name" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameName" Variant="Variant.Outlined" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField" />
+                        <MudTextField Class="pb-3" Margin="Margin.Dense" T="string" @bind-Value="config.Theme" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameTheme" Variant="Variant.Outlined" />            
+                        <MudNumericField Class="pb-3" Margin="Margin.Dense" @bind-Value="config.NumberOfRound" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfRound" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Rounds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/> 
+                        <MudNumericField Class="pb-3" Margin="Margin.Dense" @bind-Value="config.TimePerTurn" Label="@LanguageManager.CurrentLanguage.CreateGamePage.TimePerTurn" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Seconds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
+                        <MudNumericField Class="pb-3" Margin="Margin.Dense" @bind-Value="config.NumberOfPaperPerPerson" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfPaper" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Papers" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
                         <MudTextField T="string" Margin="Margin.Dense" Label="@LanguageManager.CurrentLanguage.CreateGamePage.VideoURL" Variant="Variant.Outlined" />                        
                     </MudForm>
                     <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="OnCreateGameClick" Class="mx-auto mt-3" FullWidth="true">@LanguageManager.CurrentLanguage.CreateGamePage.Create</MudButton>
@@ -90,13 +91,13 @@
 
     Player player = new Player()
     {
-        Name = "",
+        Name = "Max",
         Color = "#ffffff",
     };
     
-    Configuration game = new Configuration()
+    Configuration config = new Configuration()
     {
-        Name = "",
+        Name = "Test",
         Theme = "all",
         NumberOfRound = 3,
         TimePerTurn = 60,
@@ -114,19 +115,20 @@
         base.OnInitialized();
         Snackbar.Clear();
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
+
+        GameHub.OnGameRoomUpdate += GameHub_OnGameRoomUpdate;
     }
 
     private async Task OnCreateGameClick()
     {
-        (bool isConnected, string msg) = await GameHub.CreateGameConnection(player);
+        (bool isConnected, string msg) = await GameHub.CreateGameConnection(config, player);
         if (!isConnected)
         {
             // Not connected
             Snackbar.Add(msg, Severity.Error);
         }
 
-        Snackbar.Add(msg, Severity.Success);
-        NavigationManager.NavigateTo($"lobby");
+        Snackbar.Add(msg, Severity.Info);
     }
 
     private async Task OnJoinGameClick()
@@ -138,14 +140,22 @@
             Snackbar.Add(msg, Severity.Error);
         }
 
-        Snackbar.Add(msg, Severity.Success);
-        NavigationManager.NavigateTo($"lobby");
+        Snackbar.Add(msg, Severity.Info);
+    }    
+
+    private void GameHub_OnGameRoomUpdate(object sender, GameRoom gameRoom)
+    {
+        if (gameRoom == null)
+            Snackbar.Add("Can't connect to lobby !", Severity.Error);
+        else
+        {
+            Snackbar.Add("Connected to lobby !", Severity.Success);
+            NavigationManager.NavigateTo($"lobby");    
+        }        
     }
 
-    
-
-    bool IsGameCodeValid()
+    public new void Dispose()
     {
-        return GameCode.Length > 3;
+        GameHub.OnGameRoomUpdate -= GameHub_OnGameRoomUpdate;
     }
 }

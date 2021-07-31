@@ -1,16 +1,17 @@
 ﻿@page "/lobby"
 @inherits AppBaseComponent
+@implements IDisposable
 @inject IJSRuntime js
 @inject NavigationManager NavigationManager
 @inject GameHubService GameHub
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
-    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@game.Name</strong></MudText>
+    <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@GameHub.Game.Config.Name</strong></MudText>
     <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.GameLobbyPage.Description</MudText>
 
     <MudGrid Class="" Justify="Justify.Center">
         <MudItem xs="12" sm="12" md="12">
-                <MudField Class="mx-4 mt-4 mb-n5" Margin="Margin.Dense" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.GameUrl" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">localhost:5001/lobby/24f8bds34d=</MudField>
+                <MudField Class="mx-4 mt-4 mb-n5" Margin="Margin.Dense" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.GameUrl" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">@NavigationManager.BaseUri@GameHub.Game.Code</MudField>
         </MudItem>
     </MudGrid>
     <MudGrid Class="mt-8" Justify="Justify.Center">        
@@ -18,45 +19,20 @@
             <MudPaper Elevation="25" Class="rounded-lg pb-4 mb-2 d-flex flex-column" Style="min-height:600px;">
                 <MudItem Class="d-flex flex-row justify-start pt-5 pb-3 px-5">
                     <MudText Class="mt-1" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.ThemeLabel</MudText>
-                    <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.body1"><strong>@game.Theme</strong></MudText>
+                    <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.body1">&nbsp;&nbsp;&nbsp;<strong>@GameHub.Game.Config.Theme</strong></MudText>
                 </MudItem>                
                 <MudText Class="px-5" Typo="Typo.h6">@LanguageManager.CurrentLanguage.GameLobbyPage.EnterWords</MudText>
-                <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #1:&nbsp;&nbsp;&nbsp;</MudText>
-                    <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
-                </MudItem>
-                <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #2:&nbsp;&nbsp;&nbsp;</MudText>
-                    <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
-                </MudItem>
-                <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #3:&nbsp;&nbsp;&nbsp;</MudText>
-                    <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
-                </MudItem>
-                <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #4:&nbsp;&nbsp;&nbsp;</MudText>
-                    <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
-                </MudItem>
-                <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #5:&nbsp;&nbsp;&nbsp;</MudText>
-                    <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
-                </MudItem>
-                <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #6:&nbsp;&nbsp;&nbsp;</MudText>
-                    <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
-                </MudItem>
-                <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #7:&nbsp;&nbsp;&nbsp;</MudText>
-                    <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
-                </MudItem>
-                <MudItem Class="d-flex flex-row justify-start px-8"> 
-                    <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #8:&nbsp;&nbsp;&nbsp;</MudText>
-                    <MudTextField Class="my-auto" Style="" @bind-Value="TeamNameOne" Variant="Variant.Text" />                     
-                </MudItem>
+                @foreach (var (i, word) in GameHub.You.WrittenWords.Select((x, i) => (i, x)))
+                {
+                    <MudItem Class="d-flex flex-row justify-start px-8"> 
+                        <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #@(i+1):&nbsp;&nbsp;&nbsp;</MudText>
+                        <MudTextField Class="my-auto" Style="" @bind-Value="word.Label" Variant="Variant.Text" />                     
+                    </MudItem>
+                }
                 <MudItem Class="d-flex flex-row justify-end px-8 py-5 mt-auto">                     
                     <MudButton Variant="Variant.Text" Color="Color.Warning" Disabled="true" Class="pa-2 mr-2">@LanguageManager.CurrentLanguage.GameLobbyPage.NotReady</MudButton>
                     <MudButton Variant="Variant.Text" Color="Color.Success" Disabled="false" Class="pa-2 mr-2" OnClick="OnReady">@LanguageManager.CurrentLanguage.GameLobbyPage.Ready</MudButton>
-                    @if (IsHost)
+                    @if (GameHub.IsHost)
                     {
                         <MudButton Variant="Variant.Text" Color="Color.Tertiary" Disabled="false" Class="pa-2" OnClick="NavigateToGameComponent">@LanguageManager.CurrentLanguage.GameLobbyPage.StartGame</MudButton>         
                     }
@@ -69,13 +45,13 @@
                     <MudPaper Elevation="25" Class="rounded-lg py-2 px-2">
                         <MudGrid Class="" Justify="Justify.Center">        
                             <MudItem xs="12" sm="12" md="6">
-                                @if (IsHost)
+                                @if (GameHub.IsHost)
                                 {
-                                    <MudTextField Class="" Style="" @bind-Value="TeamNameOne" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameOne" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamOneEdit" />
+                                    <MudTextField Class="" Style="" @bind-Value="GameHub.Game.TeamOne.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameOne" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamOneEdit" />
                                 }
                                 else 
                                 {
-                                    <MudText Class="" Style="" Typo="Typo.h6">@(TeamNameOne.Length > 10 ? TeamNameOne.Substring(0, 15) + " ..." : TeamNameOne)</MudText>
+                                    <MudText Class="" Style="" Typo="Typo.h6">@(GameHub.Game.TeamOne.Name.Length > 10 ? GameHub.Game.TeamOne.Name.Substring(0, 15) + " ..." : GameHub.Game.TeamOne.Name)</MudText>
                                 }
                             </MudItem>
                             <MudItem xs="12" sm="12" md="6">
@@ -85,14 +61,10 @@
                     </MudPaper>
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Tertiary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Primary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Filled" Color="Color.Secondary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Warning">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Tertiary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Primary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Secondary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Warning">MaxThom</MudButton>
+                    @foreach (var player in GameHub.Game.TeamOne.Players)
+                    {
+                        <MudButton Class="pa-2 ma-2" Variant="@(player.Name.Equals(GameHub.You.Name) ? Variant.Filled : Variant.Outlined)" Style="@(player.Name.Equals(GameHub.You.Name) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+@player.Color+";")">@player.Name</MudButton>
+                    }
                 </MudItem>
             </MudItem>
             <MudItem Style="min-height:300px;">
@@ -100,13 +72,13 @@
                     <MudPaper Elevation="25" Class="rounded-lg py-2 px-2">
                         <MudGrid Class="" Justify="Justify.Center">        
                             <MudItem xs="12" sm="12" md="6">
-                                @if (IsHost)
+                                @if (GameHub.IsHost)
                                 {
-                                    <MudTextField Class="" Style="" @bind-Value="TeamNameTwo" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameTwo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamTwoEdit" />
+                                    <MudTextField Class="" Style="" @bind-Value="GameHub.Game.TeamTwo.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameTwo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.Edit" OnAdornmentClick="OnTeamTwoEdit" />
                                 }
                                 else 
                                 {
-                                    <MudText Class="" Style="" Typo="Typo.h6">@(TeamNameTwo.Length > 10 ? TeamNameTwo.Substring(0, 15) + " ..." : TeamNameTwo)</MudText>
+                                    <MudText Class="" Style="" Typo="Typo.h6">@(GameHub.Game.TeamTwo.Name.Length > 10 ? GameHub.Game.TeamTwo.Name.Substring(0, 15) + " ..." : GameHub.Game.TeamTwo.Name)</MudText>
                                 }
                             </MudItem>
                             <MudItem xs="12" sm="12" md="6">
@@ -116,14 +88,10 @@
                     </MudPaper>
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Tertiary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Primary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Secondary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Warning">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Tertiary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Primary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Secondary">MaxThom</MudButton>
-                    <MudButton Class="pa-2 ma-2" Variant="Variant.Outlined" Color="Color.Warning">MaxThom</MudButton>
+                    @foreach (var player in GameHub.Game.TeamTwo.Players)
+                    {
+                        <MudButton Class="pa-2 ma-2" Variant="@(player.Name.Equals(GameHub.You.Name) ? Variant.Filled : Variant.Outlined)" Style="@(player.Name.Equals(GameHub.You.Name) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+@player.Color+";")">@player.Name</MudButton>
+                    }
                 </MudItem>
             </MudItem>
         </MudItem>
@@ -140,13 +108,13 @@
                     </TitleContent>
                     <ChildContent>
                         <MudForm @ref="form" @bind-IsValid="@success" @bind-Errors="@errors" Class="d-flex flex-row justify-center flex-wrap py-1 px-1">
-                            <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.Name" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameName" Variant="Variant.Outlined" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField" />
-                            <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.Theme" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameTheme" Variant="Variant.Outlined" />            
-                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.NumberOfRound" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfRound" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Rounds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/> 
-                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.TimePerTurn" Label="@LanguageManager.CurrentLanguage.CreateGamePage.TimePerTurn" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Seconds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
-                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.NumberOfPaperPerPerson" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfPaper" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Papers" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
-                            <MudTextField T="string" Class="pa-1 ma-1" ReadOnly="@(!IsHost)" Margin="Margin.Dense" @bind-Value="game.VideoUrl" Label="@LanguageManager.CurrentLanguage.CreateGamePage.VideoURL" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyVideoUrl"/>                        
-                            <MudField Class="pa-1 ma-1" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.GameUrl" Margin="Margin.Dense" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">localhost:5001/lobby/24f8bds34d=</MudField>
+                            <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!GameHub.IsHost)" Margin="Margin.Dense" @bind-Value="GameHub.Game.Config.Name" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameName" Variant="Variant.Outlined" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField" />
+                            <MudTextField Class="pa-1 ma-1" T="string" ReadOnly="@(!GameHub.IsHost)" Margin="Margin.Dense" @bind-Value="GameHub.Game.Config.Theme" Label="@LanguageManager.CurrentLanguage.CreateGamePage.GameTheme" Variant="Variant.Outlined" />            
+                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!GameHub.IsHost)" Margin="Margin.Dense" @bind-Value="GameHub.Game.Config.NumberOfRound" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfRound" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Rounds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/> 
+                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!GameHub.IsHost)" Margin="Margin.Dense" @bind-Value="GameHub.Game.Config.TimePerTurn" Label="@LanguageManager.CurrentLanguage.CreateGamePage.TimePerTurn" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Seconds" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
+                            <MudNumericField Class="pa-1 ma-1" ReadOnly="@(!GameHub.IsHost)" Margin="Margin.Dense" @bind-Value="GameHub.Game.Config.NumberOfPaperPerPerson" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfPaper" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Papers" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
+                            <MudTextField T="string" Class="pa-1 ma-1" ReadOnly="@(!GameHub.IsHost)" Margin="Margin.Dense" @bind-Value="GameHub.Game.Config.VideoUrl" Label="@LanguageManager.CurrentLanguage.CreateGamePage.VideoURL" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyVideoUrl"/>                        
+                            <MudField Class="pa-1 ma-1" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.GameUrl" Margin="Margin.Dense" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@Icons.Material.Filled.ContentCopy" OnAdornmentClick="OnCopyGameUrl">@NavigationManager.BaseUri@GameHub.Game.Code</MudField>
                         </MudForm>
                     </ChildContent>                    
                 </MudExpansionPanel>
@@ -172,40 +140,29 @@
 </MudContainer>
 
 @code {
-    
-    public string GameCode { get; set; }
-    public bool IsHost { get; set; } = true;
-    public string TeamNameOne { get; set; } = "Équipe #1";
-    public string TeamNameTwo { get; set; } = "Équipe #2";
+
     bool success;
     string[] errors = { };
     MudForm form;
 
-    Configuration game = new Configuration()
-    {
-        Name = "Partie de Bob",
-        Theme = "Tout",
-        NumberOfRound = 3,
-        TimePerTurn = 60,
-        NumberOfPaperPerPerson = 5,      
-        VideoUrl = "zoom.com/312dsd2g="
-    };
-
     protected override void OnParametersSet()
     {
-        GameCode = GameCode ?? "";
     }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        await GameHub.ConnectToGameHub();
-        Console.WriteLine(GameHub.IsConnected);
+        GameHub.OnGameRoomUpdate += GameHub_OnGameRoomUpdate;
+    }
+
+    private void GameHub_OnGameRoomUpdate(object sender, GameRoom gameRoom)
+    {
+        StateHasChanged();     
     }
 
     async void OnReady()
     {
-        await GameHub.Send("MaxThom", "Hello old friend !");
+       
     }
 
     void OnTeamOneEdit()
@@ -233,6 +190,11 @@
 
     private void NavigateToGameComponent()
     {
-        NavigationManager.NavigateTo($"/game/{GameCode}");
+        NavigationManager.NavigateTo($"/game");
+    }
+
+    public new void Dispose()
+    {
+        GameHub.OnGameRoomUpdate -= GameHub_OnGameRoomUpdate;
     }
 }

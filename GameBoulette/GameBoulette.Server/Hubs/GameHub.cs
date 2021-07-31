@@ -1,6 +1,10 @@
-﻿using GameBoulette.Server.Services;
+﻿using GameBoulette.Client.Pages;
+using GameBoulette.Server.Services;
+using GameBoulette.Shared;
+using GameBoulette.Shared.Utilities;
 
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Hosting;
 
 using System;
 using System.Collections.Generic;
@@ -30,11 +34,29 @@ namespace GameBoulette.Server.Hubs
             await base.OnDisconnectedAsync(exception);
         }
 
-        public async Task SendMessage(string user, string message)
+        public async Task CreateLobbyRequest(Configuration config, Player host)
         {
-            Console.WriteLine($"user: {user}, message: {message}");
-            await _gamesService.SendMessage(user, message);
-            //await Clients.All.ReceiveMessage(user, message);
+            var game = _gamesService.CreateLobby(config, host);
+            Console.WriteLine(ObjectDumper.Dump(game));
+
+            await Groups.AddToGroupAsync(Context.ConnectionId, game.Code);
+            await Clients.Clients<IGameClient>(Context.ConnectionId).CreateGameConfirmation(game);
+
+            //  await _hub.Clients.Group(sensorUnit.Key).SendAsync("ReceiveSensorData", data);
+        }
+
+        public async Task JoinLobbyRequest(string gameCode, Player newPlayer)
+{
+            var game = _gamesService.JoinLobby(gameCode, newPlayer);
+            Console.WriteLine(ObjectDumper.Dump(game));
+
+            if (game != null)
+            {
+                await Groups.AddToGroupAsync(Context.ConnectionId, game.Code);
+                await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+            }
+
+            await Clients.Clients<IGameClient>(Context.ConnectionId).JoinGameConfirmation(game);            
         }
     }
 }

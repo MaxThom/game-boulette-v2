@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GameBoulette.Client.Shared
 {
-    public class AppBaseComponent : ComponentBase
+    public class AppBaseComponent : ComponentBase, IDisposable
     {
         [Inject]
         public LanguageManagerService LanguageManager { get; set; }
@@ -22,6 +22,11 @@ namespace GameBoulette.Client.Shared
         protected override void OnInitialized()
         {
             LanguageManager.PropertyChanged += LanguageManager_PropertyChanged;
+        }
+
+        public void Dispose()
+        {
+            LanguageManager.PropertyChanged -= LanguageManager_PropertyChanged;
         }
     }
 }

@@ -7,7 +7,9 @@ using Microsoft.Extensions.Logging;
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace GameBoulette.Client.Services
@@ -15,11 +17,14 @@ namespace GameBoulette.Client.Services
     public class GameHubService : IAsyncDisposable
     {
         public NavigationManager _navigationManager { get; set; }
-
         private HubConnection hubConnection;
 
-        private string GameCode;
-        private Player You;
+        public event EventHandler<GameRoom> OnGameRoomUpdate;
+
+
+        public Player You { get; set; }
+        public bool IsHost { get; set; }
+        public GameRoom Game { get; set; }
 
         public GameHubService(NavigationManager navigationManager)
         {
@@ -41,10 +46,36 @@ namespace GameBoulette.Client.Services
             .WithAutomaticReconnect()
             .Build();
 
-            hubConnection.On<string, string>("ReceiveMessage", (user, message) =>
+            hubConnection.On<GameRoom>("CreateGameConfirmation", (game) =>
             {
-                var encodedMsg = $"{user}: {message}";
-                Console.WriteLine(encodedMsg);
+                Console.WriteLine(ObjectDumper.Dump(game));
+
+                Game = game;
+                IsHost = true;
+                You.WrittenWords = new List<Word>();
+                for (int i = 0; i < Game.Config.NumberOfPaperPerPerson; i++)
+                    You.WrittenWords.Add(new Word());
+                OnGameRoomUpdate?.Invoke(this, Game);
+            });
+
+            hubConnection.On<GameRoom>("JoinGameConfirmation", (game) =>
+            {
+                Console.WriteLine(ObjectDumper.Dump(game));
+
+                Game = game;
+                IsHost = false;
+                You.WrittenWords = new List<Word>();
+                for (int i = 0; i < Game.Config.NumberOfPaperPerPerson; i++)
+                    You.WrittenWords.Add(new Word());
+                OnGameRoomUpdate?.Invoke(this, Game);
+            });
+
+            hubConnection.On<GameRoom>("UpdateGameRoom", (game) =>
+            {
+                Console.WriteLine(ObjectDumper.Dump(game));
+
+                Game = game;
+                OnGameRoomUpdate?.Invoke(this, Game);
             });
 
             await hubConnection.StartAsync();
@@ -60,47 +91,30 @@ namespace GameBoulette.Client.Services
 
         #endregion Hub
 
-        #region HubCom
+       
 
-        public async Task Send(string userInput, string messageInput) =>
-            await hubConnection.SendAsync("SendMessage", userInput, messageInput);
-
-        private async Task JoinLobby()
-        {
-            await hubConnection.SendAsync("JoinLobby", GameCode, You);
-        }
-
-        private async Task CreateLobby()
-        {
-            await hubConnection.SendAsync("JoinLobby", GameCode, You);
-        }
-
-        #endregion HubCom
-
-        public async Task<Tuple<bool, string>> CreateGameConnection(Player you)
+        public async Task<Tuple<bool, string>> CreateGameConnection(Configuration config, Player you)
         {
             You = you;
-            GameCode = GameCodeUtility.GenerateGameCode();
             await ConnectToGameHub();
             if (!IsConnected)
                 return new Tuple<bool, string>(false, "Cannot connect to game server. Please try again later.");
 
-            await CreateLobby();
+            await hubConnection.SendAsync("CreateLobbyRequest", config, You);
 
-            return new Tuple<bool, string>(IsConnected, "Connected to game lobby !");
+            return new Tuple<bool, string>(IsConnected, "Connected to game server. Waiting for lobby !");
         }
 
         public async Task<Tuple<bool, string>> JoinGameConnection(string gameCode, Player you)
         {
             You = you;
-            GameCode = gameCode;
             await ConnectToGameHub();
             if (!IsConnected)
                 return new Tuple<bool, string>(false, "Cannot connect to game server. Please try again later.");
 
-            await JoinLobby();
+            await hubConnection.SendAsync("JoinLobbyRequest", gameCode, You);
 
-            return new Tuple<bool, string>(IsConnected, "Connected to game lobby !");
+            return new Tuple<bool, string>(IsConnected, "Connected to game server. Waiting for lobby !");
         }
     }
 }

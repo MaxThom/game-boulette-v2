@@ -8,7 +8,7 @@ namespace GameBoulette.Shared
 {
     public class Word
     {
-        public string Label { get; set; }
+        public string Label { get; set; } = "";
         public int TimeSkipped { get; set; }
     }
 }
