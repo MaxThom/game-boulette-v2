@@ -23,7 +23,6 @@ namespace GameBoulette.Client.Services
 
 
         public Player You { get; set; }
-        public bool IsHost { get; set; }
         public GameRoom Game { get; set; }
 
         public GameHubService(NavigationManager navigationManager)
@@ -51,7 +50,8 @@ namespace GameBoulette.Client.Services
                 Console.WriteLine(ObjectDumper.Dump(game));
 
                 Game = game;
-                IsHost = true;
+                You = GameUtility.FindCorrespondingPlayer(You.Id, Game);
+
                 You.WrittenWords = new List<Word>();
                 for (int i = 0; i < Game.Config.NumberOfPaperPerPerson; i++)
                     You.WrittenWords.Add(new Word());
@@ -63,7 +63,8 @@ namespace GameBoulette.Client.Services
                 Console.WriteLine(ObjectDumper.Dump(game));
 
                 Game = game;
-                IsHost = false;
+                You = GameUtility.FindCorrespondingPlayer(You.Id, Game);
+
                 You.WrittenWords = new List<Word>();
                 for (int i = 0; i < Game.Config.NumberOfPaperPerPerson; i++)
                     You.WrittenWords.Add(new Word());

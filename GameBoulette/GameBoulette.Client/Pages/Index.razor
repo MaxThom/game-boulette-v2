@@ -5,6 +5,8 @@
 @inject IJSRuntime js
 @inject GameHubService GameHub
 @inject ISnackbar Snackbar
+@inject ILocalStorageService localStorage
+@inject IWebAssemblyHostEnvironment hostEnv
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@LanguageManager.CurrentLanguage.IndexPage.Title</strong></MudText>
@@ -46,7 +48,7 @@
                     <MudTextField @bind-Value="GameCode" Margin="Margin.Dense" Label="@LanguageManager.CurrentLanguage.IndexPage.JoinGameCode" Variant="Variant.Outlined" Immediate="true"></MudTextField>
                 </MudCardActions>
                 <MudCardActions Class="d-flex justify-center pt-5">
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="" FullWidth="true" OnClick="() => OnJoinGameClick()" Disabled="@(player.Name.Trim().Length < 3 || !GameCodeUtility.IsGameCodeValid(GameCode))">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="" FullWidth="true" OnClick="() => OnJoinGameClick()" Disabled="@(player.Name.Trim().Length < 3 || !GameUtility.IsGameCodeValid(GameCode))">@LanguageManager.CurrentLanguage.IndexPage.JoinGame</MudButton>
                 </MudCardActions>                
                 <MudCardHeader Class=""> 
                     <CardHeaderContent>
@@ -110,13 +112,28 @@
         GameCode = GameCode ?? "";
     }
 
-    protected override void OnInitialized()
+    protected override async void OnInitialized()
     {
         base.OnInitialized();
         Snackbar.Clear();
         Snackbar.Configuration.PositionClass = Defaults.Classes.Position.BottomCenter;
 
         GameHub.OnGameRoomUpdate += GameHub_OnGameRoomUpdate;
+
+        // Check for player guid in storage, else new guid
+        if (hostEnv.IsDevelopment())
+        {
+            player.Id = Guid.NewGuid();
+        }
+        else
+        {
+            player.Id = await localStorage.GetItemAsync<Guid>(Constants.Constant.LocalStorageKey);
+            if (player.Id == Guid.Empty)
+            {
+                player.Id = Guid.NewGuid();
+                await localStorage.SetItemAsync<Guid>(Constants.Constant.LocalStorageKey, player.Id);
+            }            
+        }
     }
 
     private async Task OnCreateGameClick()

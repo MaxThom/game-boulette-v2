@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using System.Linq;
 using GameBoulette.Server.Hubs;
 using GameBoulette.Server.Services;
+using System;
 
 namespace GameBoulette.Server
 {
@@ -38,6 +39,8 @@ namespace GameBoulette.Server
             });
 
             services.AddSingleton<GamesService>();
+
+            Console.WriteLine($"BouletteServer up & running ... ready to server player!");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

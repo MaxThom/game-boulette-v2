@@ -24,18 +24,19 @@ namespace GameBoulette.Server.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            await Groups.AddToGroupAsync(Context.ConnectionId, "SignalR Users");
+            Console.WriteLine($"New user connected: {Context.ConnectionId}-{Context.UserIdentifier}");
             await base.OnConnectedAsync();
         }
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "SignalR Users");
+            Console.WriteLine($"User disconnected: {Context.ConnectionId}-{Context.UserIdentifier}");           
             await base.OnDisconnectedAsync(exception);
         }
 
         public async Task CreateLobbyRequest(Configuration config, Player host)
         {
+            Console.WriteLine($"Create lobby request: {Context.ConnectionId}-{Context.UserIdentifier}");
             var game = _gamesService.CreateLobby(config, host);
             Console.WriteLine(ObjectDumper.Dump(game));
 
@@ -46,14 +47,15 @@ namespace GameBoulette.Server.Hubs
         }
 
         public async Task JoinLobbyRequest(string gameCode, Player newPlayer)
-{
+        {
+            Console.WriteLine($"Join lobby request: {Context.ConnectionId}-{Context.UserIdentifier}");
             var game = _gamesService.JoinLobby(gameCode, newPlayer);
             Console.WriteLine(ObjectDumper.Dump(game));
 
             if (game != null)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, game.Code);
-                await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+                await Clients.OthersInGroup(game.Code).UpdateGameRoom(game);
             }
 
             await Clients.Clients<IGameClient>(Context.ConnectionId).JoinGameConfirmation(game);            

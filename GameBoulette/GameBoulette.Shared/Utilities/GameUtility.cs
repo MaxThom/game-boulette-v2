@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace GameBoulette.Shared.Utilities
 {
-    public static class GameCodeUtility
+    public static class GameUtility
     {
         private static string availableCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ0123456789!=@$%&*";
-        private static Random random = new Random(new Guid().GetHashCode());
+        private static Random random = new Random(); //new Guid().GetHashCode()
         private const int GameCodeSize = 8;
 
         public static string GenerateGameCode()
@@ -37,6 +37,15 @@ namespace GameBoulette.Shared.Utilities
             }
 
             return true;
+        }
+
+        public static Player FindCorrespondingPlayer(Guid playerId, GameRoom game)
+        {
+            var player = game.TeamOne.Players.Where(x => x.Id == playerId).FirstOrDefault();
+            if (player == null)
+                player = game.TeamTwo.Players.Where(x => x.Id == playerId).FirstOrDefault();
+            
+            return player;
         }
     }
 }

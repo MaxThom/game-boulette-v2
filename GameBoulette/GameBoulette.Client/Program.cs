@@ -1,3 +1,5 @@
+using Blazored.LocalStorage;
+
 using GameBoulette.Client.Services;
 
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -27,6 +29,7 @@ namespace GameBoulette.Client
             builder.Services.AddSingleton<LanguageManagerService>();
             builder.Services.AddSingleton<GameHubService>();
             builder.Services.AddMudServices();
+            builder.Services.AddBlazoredLocalStorage();
 
             await builder.Build().RunAsync();
         }
