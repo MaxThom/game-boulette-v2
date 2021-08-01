@@ -39,6 +39,14 @@ namespace GameBoulette.Shared.Utilities
             return true;
         }
 
+        public static Guid GeneratePlayerId()
+        {            
+            var guid = new byte[16];
+            random.NextBytes(guid);
+
+            return new Guid(guid);
+        }
+
         public static (Player, bool?) FindCorrespondingPlayer(Guid playerId, GameRoom game)
         {
             bool? isTeamOne = null;
