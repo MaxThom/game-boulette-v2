@@ -126,14 +126,14 @@
         // Check for player guid in storage, else new guid
         if (hostEnv.IsDevelopment())
         {
-            player.Id = GameUtility.GeneratePlayerId();
+            player.Id = Guid.NewGuid();
         }
         else
         {
             player.Id = await localStorage.GetItemAsync<Guid>(Constants.Constant.LocalStorage.IdKey);
             if (player.Id == Guid.Empty)
             {
-                player.Id = GameUtility.GeneratePlayerId();
+                player.Id = Guid.NewGuid();
                 await localStorage.SetItemAsync<Guid>(Constants.Constant.LocalStorage.IdKey, player.Id);
             }            
         }
