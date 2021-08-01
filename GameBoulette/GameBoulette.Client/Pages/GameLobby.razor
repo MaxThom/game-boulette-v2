@@ -54,7 +54,7 @@
                     </MudPaper>
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
-                    @foreach (var player in GameHub.Game.TeamOne.Players)
+                    @foreach (var player in GameHub.Game.TeamOne.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)))
                     {
                         <MudButton Class="pa-2 ma-2" Variant="@(player.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(player.Id.Equals(GameHub.You.Id) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+@player.Color+";")">@player.Name</MudButton>
                     }
@@ -74,7 +74,7 @@
                     </MudPaper>
                 </MudItem>
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
-                    @foreach (var player in GameHub.Game.TeamTwo.Players)
+                    @foreach (var player in GameHub.Game.TeamTwo.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)))
                     {
                         <MudButton Class="pa-2 ma-2" Variant="@(player.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(player.Id.Equals(GameHub.You.Id) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+@player.Color+";")">@player.Name</MudButton>
                     }

@@ -30,13 +30,24 @@ namespace GameBoulette.Server.Hubs
 
         public override async Task OnDisconnectedAsync(Exception exception)
         {
-            Console.WriteLine($"User disconnected: {Context.ConnectionId}-{Context.UserIdentifier}");           
+            Console.WriteLine($"User disconnected: {Context.ConnectionId}-{Context.UserIdentifier}");
+            var (disconnectedPlayer, game, isTeamOne) = GameUtility.FindCorrespondingPlayerAndGame(Context.ConnectionId, _gamesService.Games);
+            if (disconnectedPlayer != null)
+            {
+                // Remove player                
+                disconnectedPlayer.ConnectionId = null;
+
+                // Update game
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, game.Code);
+                await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+            }
             await base.OnDisconnectedAsync(exception);
         }
 
         public async Task CreateLobbyRequest(Configuration config, Player host)
         {
             Console.WriteLine($"Create lobby request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            host.ConnectionId = Context.ConnectionId;
             var game = _gamesService.CreateLobby(config, host);
             Console.WriteLine(ObjectDumper.Dump(game));
 
@@ -49,6 +60,7 @@ namespace GameBoulette.Server.Hubs
         public async Task JoinLobbyRequest(string gameCode, Player newPlayer)
         {
             Console.WriteLine($"Join lobby request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            newPlayer.ConnectionId = Context.ConnectionId;
             var game = _gamesService.JoinLobby(gameCode, newPlayer);
             Console.WriteLine(ObjectDumper.Dump(game));
 

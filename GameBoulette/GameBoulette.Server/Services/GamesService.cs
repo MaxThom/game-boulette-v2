@@ -10,7 +10,7 @@ namespace GameBoulette.Server.Services
     public class GamesService
     {
         //private readonly IHubContext<GameHub, IGameClient> _gameHub;
-        private Dictionary<string, GameRoom> games = new Dictionary<string, GameRoom>();
+        public Dictionary<string, GameRoom> Games { get; set; } = new Dictionary<string, GameRoom>();
 
         public GamesService(IHubContext<GameHub, IGameClient> hubContext)
         {
@@ -23,6 +23,7 @@ namespace GameBoulette.Server.Services
             {
                 Code = GameUtility.GenerateGameCode(),
                 Config = config,
+                //Host = host,
                 TeamOne = new Team()
                 {
                     Name = "Team 1",
@@ -42,27 +43,30 @@ namespace GameBoulette.Server.Services
             host.IsHost = true;
             game.TeamOne.Players.Add(host);
 
-            games.Add(game.Code, game);
+            Games.Add(game.Code, game);
             return game;
         }
 
         public GameRoom JoinLobby(string gameCode, Player newPlayer)
         {
-            if (!GameUtility.IsGameCodeValid(gameCode) || !games.ContainsKey(gameCode))
+            if (!GameUtility.IsGameCodeValid(gameCode) || !Games.ContainsKey(gameCode))
                 return null;
 
             // Check if it was a disconnected player.
-            var disconnectedPlayer = GameUtility.FindCorrespondingPlayer(newPlayer.Id, games[gameCode]);
+            var disconnectedPlayer = GameUtility.FindCorrespondingPlayer(newPlayer.Id, Games[gameCode]);
             if (disconnectedPlayer != null)
-                return games[gameCode];
+            {
+                disconnectedPlayer.ConnectionId = newPlayer.ConnectionId;
+                return Games[gameCode];
+            }
 
             // Else add it to a team.
-            if (games[gameCode].TeamOne.Players.Count <= games[gameCode].TeamTwo.Players.Count)
-                games[gameCode].TeamOne.Players.Add(newPlayer);
+            if (Games[gameCode].TeamOne.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)).ToList().Count <= Games[gameCode].TeamTwo.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)).ToList().Count)
+                Games[gameCode].TeamOne.Players.Add(newPlayer);
             else
-                games[gameCode].TeamTwo.Players.Add(newPlayer);
+                Games[gameCode].TeamTwo.Players.Add(newPlayer);
             
-            return games[gameCode];
+            return Games[gameCode];
         }
     }
 }

@@ -47,5 +47,29 @@ namespace GameBoulette.Shared.Utilities
             
             return player;
         }
+
+        public static (Player, GameRoom, bool?) FindCorrespondingPlayerAndGame(string connectionId, Dictionary<string, GameRoom> games)
+        {
+            Player player = null;
+            GameRoom g = null;
+            bool? isTeamOne = null;
+            foreach (var game in games.Select(x => x.Value))
+            {
+                player = game.TeamOne.Players.Where(x => x.ConnectionId == connectionId).FirstOrDefault();
+                if (player == null)
+                {
+                    player = game.TeamTwo.Players.Where(x => x.ConnectionId == connectionId).FirstOrDefault();
+                    if (player != null)
+                        isTeamOne = false;
+                }
+                else
+                    isTeamOne = true;                    
+
+                if (player != null)
+                    return (player, game, isTeamOne);
+            }
+
+            return (player, g, isTeamOne);
+        }
     }
 }

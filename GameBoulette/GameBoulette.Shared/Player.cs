@@ -9,6 +9,7 @@ namespace GameBoulette.Shared
     public class Player
     {
         public Guid Id { get; set; }
+        public string ConnectionId { get; set; }
         public bool IsHost { get; set; }
         public string Name { get; set; } = "";
         public string Color { get; set; } = "";
