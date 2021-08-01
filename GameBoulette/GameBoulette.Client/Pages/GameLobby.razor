@@ -141,7 +141,7 @@
     protected override void OnParametersSet()
     {
         Console.WriteLine(ObjectDumper.Dump(GameHub.You));
-        if (GameHub.You == null)
+        if (GameHub.You == null || !GameHub.IsConnected)
         {
             NavigationManager.NavigateTo($"/{GameCode}");
         }

@@ -45,6 +45,8 @@ namespace GameBoulette.Client.Services
             .WithAutomaticReconnect()
             .Build();
 
+            hubConnection.Closed += HubConnection_Closed;
+
             hubConnection.On<GameRoom>("CreateGameConfirmation", (game) =>
             {
                 Console.WriteLine(ObjectDumper.Dump(game));
@@ -83,6 +85,16 @@ namespace GameBoulette.Client.Services
             });
 
             await hubConnection.StartAsync();
+        }
+
+        private Task HubConnection_Closed(Exception arg)
+        {
+            var gameCode = Game.Code;
+            You = null;
+            Game = null;
+            _navigationManager.NavigateTo($"/{gameCode}");
+
+            return Task.FromResult(0);
         }
 
         async ValueTask IAsyncDisposable.DisposeAsync()
