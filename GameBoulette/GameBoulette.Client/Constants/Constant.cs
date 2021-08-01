@@ -7,6 +7,12 @@ namespace GameBoulette.Client.Constants
 {
     public static class Constant
     {
-        public const string LocalStorageKey = "boulette_id";
+        public static class LocalStorage
+        {
+            public const string IdKey = "boulette_id";
+            public const string NameKey = "boulette_name";
+            public const string ColorKey = "boulette_color";
+        }
+        
     }
 }

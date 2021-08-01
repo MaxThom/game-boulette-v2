@@ -50,7 +50,7 @@ namespace GameBoulette.Client.Services
                 Console.WriteLine(ObjectDumper.Dump(game));
 
                 Game = game;
-                You = GameUtility.FindCorrespondingPlayer(You.Id, Game);
+                (You, _) = GameUtility.FindCorrespondingPlayer(You.Id, Game);
 
                 You.WrittenWords = new List<Word>();
                 for (int i = 0; i < Game.Config.NumberOfPaperPerPerson; i++)
@@ -63,11 +63,14 @@ namespace GameBoulette.Client.Services
                 Console.WriteLine(ObjectDumper.Dump(game));
 
                 Game = game;
-                You = GameUtility.FindCorrespondingPlayer(You.Id, Game);
+                if (game != null)
+                {
+                    (You, _) = GameUtility.FindCorrespondingPlayer(You.Id, Game);
 
-                You.WrittenWords = new List<Word>();
-                for (int i = 0; i < Game.Config.NumberOfPaperPerPerson; i++)
-                    You.WrittenWords.Add(new Word());
+                    You.WrittenWords = new List<Word>();
+                    for (int i = 0; i < Game.Config.NumberOfPaperPerPerson; i++)
+                        You.WrittenWords.Add(new Word());
+                }
                 OnGameRoomUpdate?.Invoke(this, Game);
             });
 
@@ -90,11 +93,21 @@ namespace GameBoulette.Client.Services
             }
         }
 
-        #endregion Hub
+        public async Task DisconnectFromGameHub()
+        {
+            if (hubConnection is not null && IsConnected)
+            {
+                You = null;
+                Game = null;
+                await hubConnection.DisposeAsync();
+            }
+        }
 
-       
+       #endregion Hub
 
-        public async Task<Tuple<bool, string>> CreateGameConnection(Configuration config, Player you)
+
+
+            public async Task<Tuple<bool, string>> CreateGameConnection(Configuration config, Player you)
         {
             You = you;
             await ConnectToGameHub();
@@ -116,6 +129,23 @@ namespace GameBoulette.Client.Services
             await hubConnection.SendAsync("JoinLobbyRequest", gameCode, You);
 
             return new Tuple<bool, string>(IsConnected, "Connected to game server. Waiting for lobby !");
+        }
+
+        public async Task ChangeTeamRequest()
+        {
+            await hubConnection.SendAsync("ChangeTeamRequest", Game.Code, You);
+        }
+
+        public async Task ReadyRequest()
+        {
+            You.IsReady = true;
+            await hubConnection.SendAsync("ReadyRequest", Game.Code, You);
+        }
+
+        public async Task NotReadyRequest()
+        {
+            You.IsReady = false;
+            await hubConnection.SendAsync("NotReadyRequest", Game.Code, You);
         }
     }
 }

@@ -25,6 +25,7 @@ namespace GameBoulette.Client
             builder.RootComponents.Add<App>("#app");
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddScoped<ClipboardService>();
             builder.Services.AddSingleton<ThemeManagerService>();
             builder.Services.AddSingleton<LanguageManagerService>();
             builder.Services.AddSingleton<GameHubService>();

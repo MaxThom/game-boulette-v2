@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace GameBoulette.Server.Hubs
 {
-    public class GameHub: Hub<IGameClient>
+    public class GameHub : Hub<IGameClient>
     {
         public GamesService _gamesService { get; set; }
 
@@ -53,8 +53,6 @@ namespace GameBoulette.Server.Hubs
 
             await Groups.AddToGroupAsync(Context.ConnectionId, game.Code);
             await Clients.Clients<IGameClient>(Context.ConnectionId).CreateGameConfirmation(game);
-
-            //  await _hub.Clients.Group(sensorUnit.Key).SendAsync("ReceiveSensorData", data);
         }
 
         public async Task JoinLobbyRequest(string gameCode, Player newPlayer)
@@ -70,7 +68,35 @@ namespace GameBoulette.Server.Hubs
                 await Clients.OthersInGroup(game.Code).UpdateGameRoom(game);
             }
 
-            await Clients.Clients<IGameClient>(Context.ConnectionId).JoinGameConfirmation(game);            
+            await Clients.Clients<IGameClient>(Context.ConnectionId).JoinGameConfirmation(game);
+        }
+
+        public async Task ChangeTeamRequest(string gameCode, Player player)
+        {
+            Console.WriteLine($"Change team request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            var game = _gamesService.ChangeTeam(gameCode, player);
+            Console.WriteLine(ObjectDumper.Dump(game));
+
+            await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+        }
+
+        public async Task ReadyRequest(string gameCode, Player player)
+        {
+
+            Console.WriteLine($"Ready request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            var game = _gamesService.Ready(gameCode, player);
+            Console.WriteLine(ObjectDumper.Dump(game));
+
+            await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+        }
+
+        public async Task NotReadyRequest(string gameCode, Player player)
+        {
+            Console.WriteLine($"Not ready request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            var game = _gamesService.NotReady(gameCode, player);
+            Console.WriteLine(ObjectDumper.Dump(game));
+
+            await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
         }
     }
 }

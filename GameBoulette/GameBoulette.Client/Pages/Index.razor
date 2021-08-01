@@ -93,7 +93,7 @@
 
     Player player = new Player()
     {
-        Name = "Max",
+        Name = "",
         Color = "#ffffff",
     };
     
@@ -109,7 +109,7 @@
 
     protected override void OnParametersSet()
     {
-        GameCode = GameCode ?? "";
+        GameCode = GameCode ?? "";        
     }
 
     protected override async void OnInitialized()
@@ -120,6 +120,9 @@
 
         GameHub.OnGameRoomUpdate += GameHub_OnGameRoomUpdate;
 
+        player.Name = await localStorage.GetItemAsync<string>(Constants.Constant.LocalStorage.NameKey) ?? "";
+        player.Color = await localStorage.GetItemAsync<string>(Constants.Constant.LocalStorage.ColorKey) ?? "#ffffff";
+
         // Check for player guid in storage, else new guid
         if (hostEnv.IsDevelopment())
         {
@@ -127,17 +130,20 @@
         }
         else
         {
-            player.Id = await localStorage.GetItemAsync<Guid>(Constants.Constant.LocalStorageKey);
+            player.Id = await localStorage.GetItemAsync<Guid>(Constants.Constant.LocalStorage.IdKey);
             if (player.Id == Guid.Empty)
             {
                 player.Id = Guid.NewGuid();
-                await localStorage.SetItemAsync<Guid>(Constants.Constant.LocalStorageKey, player.Id);
+                await localStorage.SetItemAsync<Guid>(Constants.Constant.LocalStorage.IdKey, player.Id);
             }            
         }
+        StateHasChanged();
     }
 
     private async Task OnCreateGameClick()
     {
+        await localStorage.SetItemAsync<string>(Constants.Constant.LocalStorage.NameKey, player.Name);
+        await localStorage.SetItemAsync<string>(Constants.Constant.LocalStorage.ColorKey, player.Color);
         (bool isConnected, string msg) = await GameHub.CreateGameConnection(config, player);
         if (!isConnected)
         {
@@ -150,6 +156,8 @@
 
     private async Task OnJoinGameClick()
     {
+        await localStorage.SetItemAsync<string>(Constants.Constant.LocalStorage.NameKey, player.Name);
+        await localStorage.SetItemAsync<string>(Constants.Constant.LocalStorage.ColorKey, player.Color);
         (bool isConnected, string msg) = await GameHub.JoinGameConnection(GameCode, player);
         if (!isConnected)
         {
@@ -162,12 +170,13 @@
 
     private void GameHub_OnGameRoomUpdate(object sender, GameRoom gameRoom)
     {
+        Snackbar.Clear();
         if (gameRoom == null)
             Snackbar.Add("Can't connect to lobby !", Severity.Error);
         else
         {
             Snackbar.Add("Connected to lobby !", Severity.Success);
-            NavigationManager.NavigateTo($"lobby");    
+            NavigationManager.NavigateTo($"lobby/{gameRoom.Code}");    
         }        
     }
 

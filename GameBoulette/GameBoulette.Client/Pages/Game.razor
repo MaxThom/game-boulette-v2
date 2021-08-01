@@ -3,12 +3,14 @@
 @inject IJSRuntime js
 @inject NavigationManager NavigationManager
 @inject GameHubService GameHub
+@inject ClipboardService ClipboardService
+@inject ISnackbar Snackbar
 
+@if (GameHub.You != null)
+{
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
     <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true"><strong>BaseYo vs Drum</strong></MudText>
-    <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.GamePage.RoundLabel #1</MudText>
-
-    
+    <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.GamePage.RoundLabel #1</MudText>    
     <MudGrid Class="mt-4" Justify="Justify.Center">        
         <MudItem xs="12" sm="3" md="3" Class="mx-auto">
             <MudItem Class="d-flex flex-column align-start px-1">
@@ -90,7 +92,7 @@
         </MudItem>
     </MudGrid>
 </MudContainer>
-
+}
 @code {
     [Parameter]
     public string GameCode { get; set; }
@@ -114,7 +116,11 @@
 
     protected override void OnParametersSet()
     {
-        GameCode = GameCode ?? "";
+        Console.WriteLine(ObjectDumper.Dump(GameHub.You));
+        if (GameHub.You == null)
+        {
+            NavigationManager.NavigateTo($"/{GameCode}");
+        }
     }
 
     void OnTeamOneEdit()
@@ -125,19 +131,22 @@
     {
     }
 
-    void OnCopyGameUrl() 
+    async void OnCopyGameUrl() 
     {
-        Console.WriteLine("Copy");
+        await ClipboardService.WriteTextAsync(NavigationManager.BaseUri+GameHub.Game.Code);
+        Snackbar.Add("Game Url copied !", Severity.Info);
     }
 
-    void OnCopyVideoUrl() 
+    async void OnCopyVideoUrl() 
     {
-        Console.WriteLine("Copy");
+        Snackbar.Add("Video Url copied !", Severity.Info);
+        await ClipboardService.WriteTextAsync(GameHub.Game.Config.VideoUrl);
     }
 
-    private void NavigateToIndexComponent()
+    private async void NavigateToIndexComponent()
     {
-        NavigationManager.NavigateTo("/");
+        await GameHub.DisconnectFromGameHub();
+        NavigationManager.NavigateTo($"/{GameCode}");
     }
 
     private void NavigateToGameComponent()

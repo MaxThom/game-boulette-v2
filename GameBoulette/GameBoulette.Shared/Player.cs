@@ -16,6 +16,7 @@ namespace GameBoulette.Shared
         public int WordFound { get; set; }
         public int WordSkipped { get; set; }
         public bool IsPlaying { get; set; }
+        public bool IsReady { get; set; }
         public List<Word> WrittenWords { get; set; } = new List<Word>();
     }
 }

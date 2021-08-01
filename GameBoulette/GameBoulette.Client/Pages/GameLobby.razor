@@ -1,10 +1,14 @@
-﻿@page "/lobby"
+﻿@page "/lobby/{gamecode}"
 @inherits AppBaseComponent
 @implements IDisposable
 @inject IJSRuntime js
 @inject NavigationManager NavigationManager
 @inject GameHubService GameHub
+@inject ClipboardService ClipboardService
+@inject ISnackbar Snackbar
 
+@if (GameHub.You != null)
+{
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
     <MudText Typo="Typo.h3" Align="Align.Center" GutterBottom="true"><strong>@GameHub.Game.Config.Name</strong></MudText>
     <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.GameLobbyPage.Description</MudText>
@@ -26,12 +30,12 @@
                 {
                     <MudItem Class="d-flex flex-row justify-start px-8"> 
                         <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #@(i+1):&nbsp;&nbsp;&nbsp;</MudText>
-                        <MudTextField Class="my-auto" Style="" @bind-Value="word.Label" Variant="Variant.Text" />                     
+                        <MudTextField Class="my-auto" Style="" @bind-Value="word.Label" Variant="Variant.Text" ReadOnly="GameHub.You.IsReady" />                     
                     </MudItem>
                 }
                 <MudItem Class="d-flex flex-row justify-end px-8 py-5 mt-auto">                     
-                    <MudButton Variant="Variant.Text" Color="Color.Warning" Disabled="true" Class="pa-2 mr-2">@LanguageManager.CurrentLanguage.GameLobbyPage.NotReady</MudButton>
-                    <MudButton Variant="Variant.Text" Color="Color.Success" Disabled="false" Class="pa-2 mr-2" OnClick="OnReady">@LanguageManager.CurrentLanguage.GameLobbyPage.Ready</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Warning" Disabled="!GameHub.You.IsReady" Class="pa-2 mr-2" OnClick="OnNotReady">@LanguageManager.CurrentLanguage.GameLobbyPage.NotReady</MudButton>
+                    <MudButton Variant="Variant.Text" Color="Color.Success" Disabled="GameHub.You.IsReady" Class="pa-2 mr-2" OnClick="OnReady">@LanguageManager.CurrentLanguage.GameLobbyPage.Ready</MudButton>
                     @if (GameHub.You.IsHost)
                     {
                         <MudButton Variant="Variant.Text" Color="Color.Tertiary" Disabled="false" Class="pa-2" OnClick="NavigateToGameComponent">@LanguageManager.CurrentLanguage.GameLobbyPage.StartGame</MudButton>         
@@ -48,7 +52,7 @@
                                 <MudTextField Class="" Style="" ReadOnly="@(!GameHub.You.IsHost)" @bind-Value="GameHub.Game.TeamOne.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameOne" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@(!GameHub.You.IsHost ? "" : @Icons.Material.Filled.Edit)" OnAdornmentClick="OnTeamOneEdit" />                                
                             </MudItem>
                             <MudItem xs="12" sm="12" md="6">
-                                <MudButton Class="ml-n2 mt-4" Variant="Variant.Filled" Color="Color.Default" FullWidth="true">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
+                                <MudButton Class="ml-n2 mt-4" Variant="Variant.Filled" Color="Color.Default" FullWidth="true" OnClick="OnChangeTeamClick">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
                             </MudItem>
                         </MudGrid>
                     </MudPaper>
@@ -56,7 +60,7 @@
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
                     @foreach (var player in GameHub.Game.TeamOne.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)))
                     {
-                        <MudButton Class="pa-2 ma-2" Variant="@(player.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(player.Id.Equals(GameHub.You.Id) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+@player.Color+";")">@player.Name</MudButton>
+                        <MudButton Class="pa-2 ma-2" Disabled="player.IsReady" Variant="@(player.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(player.Id.Equals(GameHub.You.Id) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+ (@player.IsReady ? "#67686f" : @player.Color)+";")">@player.Name</MudButton>
                     }
                 </MudItem>
             </MudItem>
@@ -68,7 +72,7 @@
                                 <MudTextField Class="" Style="" ReadOnly="@(!GameHub.You.IsHost)" @bind-Value="GameHub.Game.TeamTwo.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameTwo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@(!GameHub.You.IsHost ? "" : @Icons.Material.Filled.Edit)" OnAdornmentClick="OnTeamTwoEdit" />                                
                             </MudItem>
                             <MudItem xs="12" sm="12" md="6">
-                                <MudButton Class="ml-n2 mt-4" Variant="Variant.Filled" Color="Color.Default" FullWidth="true">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
+                                <MudButton Class="ml-n2 mt-4" Variant="Variant.Filled" Color="Color.Default" FullWidth="true" OnClick="OnChangeTeamClick">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
                             </MudItem>
                         </MudGrid>
                     </MudPaper>
@@ -76,7 +80,7 @@
                 <MudItem Class="d-flex flex-row justify-start flex-wrap py-2 px-1">
                     @foreach (var player in GameHub.Game.TeamTwo.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)))
                     {
-                        <MudButton Class="pa-2 ma-2" Variant="@(player.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(player.Id.Equals(GameHub.You.Id) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+@player.Color+";")">@player.Name</MudButton>
+                        <MudButton Class="pa-2 ma-2" Disabled="player.IsReady" Variant="@(player.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(player.Id.Equals(GameHub.You.Id) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+ (@player.IsReady ? "#67686f" : @player.Color)+";")">@player.Name</MudButton>
                     }
                 </MudItem>
             </MudItem>
@@ -124,8 +128,11 @@
         </MudItem>
     </MudGrid>
 </MudContainer>
+}
 
 @code {
+    [Parameter]
+    public string GameCode { get; set; }
 
     bool success;
     string[] errors = { };
@@ -133,6 +140,11 @@
 
     protected override void OnParametersSet()
     {
+        Console.WriteLine(ObjectDumper.Dump(GameHub.You));
+        if (GameHub.You == null)
+        {
+            NavigationManager.NavigateTo($"/{GameCode}");
+        }
     }
 
     protected override async Task OnInitializedAsync()
@@ -146,9 +158,19 @@
         StateHasChanged();     
     }
 
-    void OnReady()
+    async void OnChangeTeamClick()
     {
-       
+        await GameHub.ChangeTeamRequest();
+    }
+
+    async void OnReady()
+    {
+       await GameHub.ReadyRequest();
+    }
+
+    async void OnNotReady()
+    {
+       await GameHub.NotReadyRequest();
     }
 
     void OnTeamOneEdit()
@@ -159,19 +181,22 @@
     {
     }
 
-    void OnCopyGameUrl() 
+    async void OnCopyGameUrl() 
     {
-        Console.WriteLine("Copy");
+        await ClipboardService.WriteTextAsync(NavigationManager.BaseUri+GameHub.Game.Code);
+        Snackbar.Add("Game Url copied !", Severity.Info);
     }
 
-    void OnCopyVideoUrl() 
+    async void OnCopyVideoUrl() 
     {
-        Console.WriteLine("Copy");
+        Snackbar.Add("Video Url copied !", Severity.Info);
+        await ClipboardService.WriteTextAsync(GameHub.Game.Config.VideoUrl);
     }
 
-    private void NavigateToIndexComponent()
+    private async void NavigateToIndexComponent()
     {
-        NavigationManager.NavigateTo("/");
+        await GameHub.DisconnectFromGameHub();
+        NavigationManager.NavigateTo($"/{GameCode}");
     }
 
     private void NavigateToGameComponent()

@@ -53,7 +53,7 @@ namespace GameBoulette.Server.Services
                 return null;
 
             // Check if it was a disconnected player.
-            var disconnectedPlayer = GameUtility.FindCorrespondingPlayer(newPlayer.Id, Games[gameCode]);
+            var (disconnectedPlayer, isTeamOne) = GameUtility.FindCorrespondingPlayer(newPlayer.Id, Games[gameCode]);
             if (disconnectedPlayer != null)
             {
                 disconnectedPlayer.ConnectionId = newPlayer.ConnectionId;
@@ -65,7 +65,40 @@ namespace GameBoulette.Server.Services
                 Games[gameCode].TeamOne.Players.Add(newPlayer);
             else
                 Games[gameCode].TeamTwo.Players.Add(newPlayer);
-            
+
+            return Games[gameCode];
+        }
+
+        public GameRoom ChangeTeam(string gameCode, Player playerRequest)
+        {
+            var (player, isTeamOne) = GameUtility.FindCorrespondingPlayer(playerRequest.Id, Games[gameCode]);
+            if (isTeamOne == true)
+            {
+                Games[gameCode].TeamOne.Players.Remove(player);
+                Games[gameCode].TeamTwo.Players.Add(player);
+            }
+            else
+            {
+                Games[gameCode].TeamTwo.Players.Remove(player);
+                Games[gameCode].TeamOne.Players.Add(player);
+            }
+
+            return Games[gameCode];
+        }
+
+        public GameRoom Ready(string gameCode, Player playerRequest)
+        {
+            var (player, isTeamOne) = GameUtility.FindCorrespondingPlayer(playerRequest.Id, Games[gameCode]);
+            player.IsReady = true;
+
+            return Games[gameCode];
+        }
+
+        public GameRoom NotReady(string gameCode, Player playerRequest)
+        {
+            var (player, isTeamOne) = GameUtility.FindCorrespondingPlayer(playerRequest.Id, Games[gameCode]);
+            player.IsReady = false;
+
             return Games[gameCode];
         }
     }
