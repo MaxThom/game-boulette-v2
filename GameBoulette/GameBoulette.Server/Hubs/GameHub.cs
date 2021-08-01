@@ -98,5 +98,14 @@ namespace GameBoulette.Server.Hubs
 
             await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
         }
+
+        public async Task ChangeTeamNameRequest(string gameCode, string teamOneName, string teamTwoName)
+        {
+            Console.WriteLine($"Change team request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            var game = _gamesService.ChangeTeamName(gameCode, teamOneName, teamTwoName);
+            Console.WriteLine(ObjectDumper.Dump(game));
+
+            await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+        }
     }
 }

@@ -105,9 +105,7 @@ namespace GameBoulette.Client.Services
 
        #endregion Hub
 
-
-
-            public async Task<Tuple<bool, string>> CreateGameConnection(Configuration config, Player you)
+        public async Task<Tuple<bool, string>> CreateGameConnection(Configuration config, Player you)
         {
             You = you;
             await ConnectToGameHub();
@@ -146,6 +144,11 @@ namespace GameBoulette.Client.Services
         {
             You.IsReady = false;
             await hubConnection.SendAsync("NotReadyRequest", Game.Code, You);
+        }
+
+        public async Task ChangeTeamNameRequest()
+        {
+            await hubConnection.SendAsync("ChangeTeamNameRequest", Game.Code, Game.TeamOne.Name, Game.TeamTwo.Name);
         }
     }
 }

@@ -101,5 +101,13 @@ namespace GameBoulette.Server.Services
 
             return Games[gameCode];
         }
+
+        public GameRoom ChangeTeamName(string gameCode, string nameTeamOne, string nameTeamTwo)
+        {
+            Games[gameCode].TeamOne.Name = nameTeamOne;
+            Games[gameCode].TeamTwo.Name = nameTeamTwo;
+
+            return Games[gameCode];
+        }
     }
 }
