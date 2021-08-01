@@ -92,8 +92,8 @@ namespace GameBoulette.Client.Services
             var gameCode = Game.Code;
             You = null;
             Game = null;
-            _navigationManager.NavigateTo($"/{gameCode}");
-
+            
+            OnGameRoomUpdate?.Invoke(this, Game);
             return Task.FromResult(0);
         }
 
@@ -161,6 +161,11 @@ namespace GameBoulette.Client.Services
         public async Task ChangeTeamNameRequest()
         {
             await hubConnection.SendAsync("ChangeTeamNameRequest", Game.Code, Game.TeamOne.Name, Game.TeamTwo.Name);
+        }
+
+        public async Task StartGameRequest()
+        {
+            await hubConnection.SendAsync("StartGameRequest", Game.Code);
         }
     }
 }

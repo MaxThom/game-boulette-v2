@@ -37,8 +37,9 @@ namespace GameBoulette.Server.Services
                 Words = new List<Word>(),
                 CurrentGame = new Game()
                 {
-                    CurrentState = GameState.Lobby
-                }
+                    
+                },
+                CurrentState = GameState.Lobby
             };
             host.IsHost = true;
             game.TeamOne.Players.Add(host);
@@ -90,7 +91,7 @@ namespace GameBoulette.Server.Services
         {
             var (player, isTeamOne) = GameUtility.FindCorrespondingPlayer(playerRequest.Id, Games[gameCode]);
             player.IsReady = true;
-
+            player.WrittenWords = playerRequest.WrittenWords;
             return Games[gameCode];
         }
 
@@ -107,6 +108,25 @@ namespace GameBoulette.Server.Services
             Games[gameCode].TeamOne.Name = nameTeamOne;
             Games[gameCode].TeamTwo.Name = nameTeamTwo;
 
+            return Games[gameCode];
+        }
+
+        public GameRoom StartGame(string gameCode)
+        {
+            var teamOneWords = Games[gameCode].TeamOne.Players.SelectMany(player => player.WrittenWords).Where(x => !string.IsNullOrEmpty(x.Label)).ToList();
+            var teamTwoWords = Games[gameCode].TeamTwo.Players.SelectMany(player => player.WrittenWords).Where(x => !string.IsNullOrEmpty(x.Label)).ToList();
+            Games[gameCode].Words = new List<Word>();
+            Games[gameCode].Words.AddRange(teamOneWords);
+            Games[gameCode].Words.AddRange(teamTwoWords);
+
+            Games[gameCode].CurrentGame = new Game()
+            {
+                RemainingWords = Games[gameCode].Words,
+                CurrentPlayer = Games[gameCode].TeamOne.Players.FirstOrDefault(),
+                CurrentRound = 1,
+                CurrentTurn = 1,
+            };
+            Games[gameCode].CurrentState = GameState.Playing;
             return Games[gameCode];
         }
     }

@@ -11,7 +11,6 @@ namespace GameBoulette.Shared
         public Player CurrentPlayer { get; set; }
         public List<Word> RemainingWords { get; set; }
         public int CurrentRound { get; set; }
-        public int CurrentTurn { get; set; }
-        public GameState CurrentState { get; set; }
+        public int CurrentTurn { get; set; }        
     }
 }

@@ -9,7 +9,7 @@ namespace GameBoulette.Shared
     public enum GameState
     {
         Lobby,
-        Ongoing,
+        Playing,
         Completed,
     }
 }

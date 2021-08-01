@@ -38,7 +38,7 @@
                     <MudButton Variant="Variant.Text" Color="Color.Success" Disabled="GameHub.You.IsReady" Class="pa-2 mr-2" OnClick="OnReady">@LanguageManager.CurrentLanguage.GameLobbyPage.Ready</MudButton>
                     @if (GameHub.You.IsHost)
                     {
-                        <MudButton Variant="Variant.Text" Color="Color.Tertiary" Disabled="false" Class="pa-2" OnClick="NavigateToGameComponent">@LanguageManager.CurrentLanguage.GameLobbyPage.StartGame</MudButton>         
+                        <MudButton Variant="Variant.Text" Color="Color.Tertiary" Disabled="@(!GameUtility.AreAllPlayersReady(GameHub.Game))" Class="pa-2" OnClick="OnStartGameClick">@LanguageManager.CurrentLanguage.GameLobbyPage.StartGame</MudButton>         
                     }
                 </MudItem>
             </MudPaper>            
@@ -49,7 +49,7 @@
                     <MudPaper Elevation="25" Class="rounded-lg py-2 px-2">
                         <MudGrid Class="" Justify="Justify.Center">        
                             <MudItem xs="12" sm="12" md="6">
-                                <MudTextField Class="" Style="" ReadOnly="@(!GameHub.You.IsHost)" @bind-Value="GameHub.Game.TeamOne.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameOne" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@(!GameHub.You.IsHost ? "" : @Icons.Material.Filled.Edit)" OnAdornmentClick="OnTeamOneEdit" DebounceInterval="1000" OnDebounceIntervalElapsed="OnTeamNameIntervalElapsed"/>
+                                <MudTextField Class="" Style="" ReadOnly="@(!GameHub.You.IsHost)" @bind-Value="GameHub.Game.TeamOne.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameOne" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@(!GameHub.You.IsHost ? "" : @Icons.Material.Filled.Edit)" DebounceInterval="1000" OnDebounceIntervalElapsed="OnTeamNameIntervalElapsed"/>
                             </MudItem>
                             <MudItem xs="12" sm="12" md="6">
                                 <MudButton Class="ml-n2 mt-4" Variant="Variant.Filled" Color="Color.Default" FullWidth="true" OnClick="OnChangeTeamClick">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
@@ -69,7 +69,7 @@
                     <MudPaper Elevation="25" Class="rounded-lg py-2 px-2">
                         <MudGrid Class="" Justify="Justify.Center">        
                             <MudItem xs="12" sm="12" md="6" Style="pt-5 mt-5">
-                                <MudTextField Class="" Style="" ReadOnly="@(!GameHub.You.IsHost)" @bind-Value="GameHub.Game.TeamTwo.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameTwo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@(!GameHub.You.IsHost ? "" : @Icons.Material.Filled.Edit)" OnAdornmentClick="OnTeamTwoEdit" DebounceInterval="1000" OnDebounceIntervalElapsed="OnTeamNameIntervalElapsed"/>
+                                <MudTextField Class="" Style="" ReadOnly="@(!GameHub.You.IsHost)" @bind-Value="GameHub.Game.TeamTwo.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameTwo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@(!GameHub.You.IsHost ? "" : @Icons.Material.Filled.Edit)" DebounceInterval="1000" OnDebounceIntervalElapsed="OnTeamNameIntervalElapsed"/>
                             </MudItem>
                             <MudItem xs="12" sm="12" md="6">
                                 <MudButton Class="ml-n2 mt-4" Variant="Variant.Filled" Color="Color.Default" FullWidth="true" OnClick="OnChangeTeamClick">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
@@ -124,7 +124,7 @@
     </MudGrid>
     <MudGrid Class="" Justify="Justify.Center">
         <MudItem xs="12" sm="12" md="12">
-            <MudButton Variant="Variant.Outlined" Color="Color.Tertiary" OnClick="NavigateToIndexComponent" Class="pa-2 ml-2 mr-auto">@LanguageManager.CurrentLanguage.GameLobbyPage.Leave</MudButton>
+            <MudButton Variant="Variant.Outlined" Color="Color.Tertiary" OnClick="OnLeaveGameClick" Class="pa-2 ml-2 mr-auto">@LanguageManager.CurrentLanguage.GameLobbyPage.Leave</MudButton>
         </MudItem>
     </MudGrid>
 </MudContainer>
@@ -155,6 +155,14 @@
 
     private void GameHub_OnGameRoomUpdate(object sender, GameRoom gameRoom)
     {
+        if (gameRoom == null || !GameHub.IsConnected)
+            NavigationManager.NavigateTo($"/{GameCode}");
+
+        if (gameRoom.CurrentState == GameState.Playing)
+        {
+            Snackbar.Add("Game has started !", Severity.Info);
+            NavigationManager.NavigateTo($"/game/{GameCode}");
+        }
         StateHasChanged();     
     }
 
@@ -178,14 +186,6 @@
         await GameHub.ChangeTeamNameRequest();
     }
 
-    void OnTeamOneEdit()
-    {
-    }
-
-    void OnTeamTwoEdit()
-    {
-    }
-
     async void OnCopyGameUrl() 
     {
         await ClipboardService.WriteTextAsync(NavigationManager.BaseUri+GameHub.Game.Code);
@@ -198,15 +198,15 @@
         await ClipboardService.WriteTextAsync(GameHub.Game.Config.VideoUrl);
     }
 
-    private async void NavigateToIndexComponent()
+    async void OnLeaveGameClick()
     {
         await GameHub.DisconnectFromGameHub();
         NavigationManager.NavigateTo($"/{GameCode}");
     }
 
-    private void NavigateToGameComponent()
+    async void OnStartGameClick()
     {
-        NavigationManager.NavigateTo($"/game");
+        await GameHub.StartGameRequest();
     }
 
     public new void Dispose()

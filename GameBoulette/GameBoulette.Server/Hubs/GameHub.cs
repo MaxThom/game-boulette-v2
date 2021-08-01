@@ -107,5 +107,14 @@ namespace GameBoulette.Server.Hubs
 
             await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
         }
+
+        public async Task StartGameRequest(string gameCode)
+        {
+            Console.WriteLine($"Start game request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            var game = _gamesService.StartGame(gameCode);
+            Console.WriteLine(ObjectDumper.Dump(game));
+
+            await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+        }
     }
 }

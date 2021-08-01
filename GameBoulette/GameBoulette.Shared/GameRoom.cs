@@ -15,5 +15,6 @@ namespace GameBoulette.Shared
         public Team TeamOne { get; set; }
         public Team TeamTwo { get; set; }
         public Game CurrentGame { get; set; }
+        public GameState CurrentState { get; set; }
     }
 }

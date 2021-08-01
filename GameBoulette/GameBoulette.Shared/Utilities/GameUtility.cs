@@ -86,5 +86,13 @@ namespace GameBoulette.Shared.Utilities
 
             return (player, g, isTeamOne);
         }
+
+        public static bool AreAllPlayersReady(GameRoom game)
+        {
+            var teamOneReady = game.TeamOne.Players.All(x => x.IsReady);
+            var teamTwoReady = game.TeamTwo.Players.All(x => x.IsReady);
+
+            return teamOneReady && teamTwoReady;
+        }
     }
 }
