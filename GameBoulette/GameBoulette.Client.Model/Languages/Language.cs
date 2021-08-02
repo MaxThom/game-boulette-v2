@@ -82,5 +82,6 @@ namespace GameBoulette.Client.Model.Languages
         public string SkipWord { get; set; } = "";
         public string FoundWord { get; set; } = "";
         public string RemaningWords { get; set; } = "";
+        public string StartTurn { get; set; } = "";
     }
 }

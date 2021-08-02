@@ -14,5 +14,13 @@ namespace GameBoulette.Server.Hubs
         Task JoinGameConfirmation(GameRoom game);
 
         Task UpdateGameRoom(GameRoom game);
+
+        Task OnPlayerTurnWait(GameRoom game);
+
+        Task StartTimer();
+
+        Task StopTimer();
+
+        Task ResetTimer();
     }
 }

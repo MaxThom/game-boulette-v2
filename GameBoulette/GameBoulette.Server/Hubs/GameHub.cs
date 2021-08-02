@@ -115,6 +115,27 @@ namespace GameBoulette.Server.Hubs
             Console.WriteLine(ObjectDumper.Dump(game));
 
             await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+            await Clients.Groups<IGameClient>(game.Code).OnPlayerTurnWait(game);
+            await Clients.Groups<IGameClient>(game.Code).ResetTimer();
+        }
+
+        public async Task StartTurnRequest(string gameCode)
+        {
+            Console.WriteLine($"Start turn request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            var game = _gamesService.StartTurn(gameCode);
+            Console.WriteLine(ObjectDumper.Dump(game));
+
+            await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+            await Clients.Groups<IGameClient>(game.Code).StartTimer();
+        }
+
+        public async Task WordFoundRequest(string gameCode, List<Word> remainingWords, int scoreTeamOne, int scoreTeamTwo)
+        {
+            Console.WriteLine($"Word found request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            var game = _gamesService.WordFound(gameCode, remainingWords, scoreTeamOne, scoreTeamTwo);
+            Console.WriteLine(ObjectDumper.Dump(game));
+
+            await Clients.OthersInGroup(game.Code).UpdateGameRoom(game);
         }
     }
 }

@@ -20,7 +20,10 @@ namespace GameBoulette.Client.Services
         private HubConnection hubConnection;
 
         public event EventHandler<GameRoom> OnGameRoomUpdate;
-
+        public event EventHandler<GameRoom> OnPlayerTurnWait;
+        public event EventHandler OnStartTimerEvent;
+        public event EventHandler OnStopTimerEvent;
+        public event EventHandler OnResetTimerEvent;        
 
         public Player You { get; set; }
         public GameRoom Game { get; set; }
@@ -82,6 +85,32 @@ namespace GameBoulette.Client.Services
 
                 Game = game;
                 OnGameRoomUpdate?.Invoke(this, Game);
+            });
+
+            hubConnection.On<GameRoom>("OnPlayerTurnWait", (game) =>
+            {
+                Console.WriteLine(ObjectDumper.Dump(game));
+
+                Game = game;
+                OnPlayerTurnWait?.Invoke(this, Game);
+            });
+
+            hubConnection.On("StartTimer", () =>
+            {
+                Console.WriteLine("Timer start");
+                OnStartTimerEvent?.Invoke(this, null);
+            });
+
+            hubConnection.On("StopTimer", () =>
+            {
+                Console.WriteLine("Timer stop");
+                OnStopTimerEvent?.Invoke(this, null);
+            });
+
+            hubConnection.On("ResetTimer", () =>
+            {
+                Console.WriteLine("Timer reset");
+                OnResetTimerEvent?.Invoke(this, null);
             });
 
             await hubConnection.StartAsync();
@@ -166,6 +195,15 @@ namespace GameBoulette.Client.Services
         public async Task StartGameRequest()
         {
             await hubConnection.SendAsync("StartGameRequest", Game.Code);
+        }
+
+        public async Task StartTurn()
+        {
+            await hubConnection.SendAsync("StartTurnRequest", Game.Code);
+        }
+        public async Task WordFound(int scoreTeamOne, int scoreTeamTwo)
+        {
+            await hubConnection.SendAsync("WordFoundRequest", Game.Code, Game.CurrentGame.RemainingWords, scoreTeamOne, scoreTeamTwo);
         }
     }
 }

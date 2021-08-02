@@ -26,13 +26,13 @@
                     <MudText Class="my-auto" style="font-size: 1.5em;" Typo="Typo.body1">&nbsp;&nbsp;&nbsp;<strong>@GameHub.Game.Config.Theme</strong></MudText>
                 </MudItem>                
                 <MudText Class="px-5" Typo="Typo.h6">@LanguageManager.CurrentLanguage.GameLobbyPage.EnterWords</MudText>
-                @foreach (var (i, word) in GameHub.You.WrittenWords.Select((x, i) => (i, x)))
-                {
-                    <MudItem Class="d-flex flex-row justify-start px-8"> 
-                        <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #@(i+1):&nbsp;&nbsp;&nbsp;</MudText>
-                        <MudTextField Class="my-auto" Style="" @bind-Value="word.Label" Variant="Variant.Text" ReadOnly="GameHub.You.IsReady" />                     
-                    </MudItem>
-                }
+                    @foreach (var (i, word) in GameHub.You.WrittenWords.Select((x, i) => (i, x)))
+                    {
+                        <MudItem Class="d-flex flex-row justify-start px-8"> 
+                            <MudText Class="mt-3" style="font-size: 1em;" Typo="Typo.overline">@LanguageManager.CurrentLanguage.GameLobbyPage.Word #@(i+1):&nbsp;&nbsp;&nbsp;</MudText>
+                            <MudTextField Class="my-auto" Style="" @bind-Value="word.Label" Variant="Variant.Text" ReadOnly="GameHub.You.IsReady" />                     
+                        </MudItem>
+                    }
                 <MudItem Class="d-flex flex-row justify-end px-8 py-5 mt-auto">                     
                     <MudButton Variant="Variant.Text" Color="Color.Warning" Disabled="!GameHub.You.IsReady" Class="pa-2 mr-2" OnClick="OnNotReady">@LanguageManager.CurrentLanguage.GameLobbyPage.NotReady</MudButton>
                     <MudButton Variant="Variant.Text" Color="Color.Success" Disabled="GameHub.You.IsReady" Class="pa-2 mr-2" OnClick="OnReady">@LanguageManager.CurrentLanguage.GameLobbyPage.Ready</MudButton>

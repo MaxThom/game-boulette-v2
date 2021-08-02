@@ -78,6 +78,7 @@ namespace GameBoulette.Client.Constants
                 SkipWord = "passé",
                 FoundWord = "trouvé",
                 RemaningWords = "mots restants",
+                StartTurn = "Commencer !",
             },
         };
 
@@ -146,6 +147,7 @@ namespace GameBoulette.Client.Constants
                 SkipWord = "skip",
                 FoundWord = "found",
                 RemaningWords = "remaning words",
+                StartTurn = "Start turn !",
             }
         };
     }

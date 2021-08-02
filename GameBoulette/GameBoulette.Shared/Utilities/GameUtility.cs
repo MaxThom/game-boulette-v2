@@ -94,5 +94,10 @@ namespace GameBoulette.Shared.Utilities
 
             return teamOneReady && teamTwoReady;
         }
+
+        public static bool IsYouCurrentPlayerTurn(Player player, GameRoom game)
+        {
+            return player.Id == game.CurrentGame.CurrentPlayer.Id;
+        }
     }
 }

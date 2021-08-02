@@ -115,18 +115,38 @@ namespace GameBoulette.Server.Services
         {
             var teamOneWords = Games[gameCode].TeamOne.Players.SelectMany(player => player.WrittenWords).Where(x => !string.IsNullOrEmpty(x.Label)).ToList();
             var teamTwoWords = Games[gameCode].TeamTwo.Players.SelectMany(player => player.WrittenWords).Where(x => !string.IsNullOrEmpty(x.Label)).ToList();
-            Games[gameCode].Words = new List<Word>();
-            Games[gameCode].Words.AddRange(teamOneWords);
-            Games[gameCode].Words.AddRange(teamTwoWords);
+            var words = new List<Word>();
+            words.AddRange(teamOneWords);
+            words.AddRange(teamTwoWords);
+            Games[gameCode].Words = words.GroupBy(x => x.Label).Select(x => x.First()).ToList();
+            foreach (var word in Games[gameCode].Words)
+                word.Label = word.Label.Trim().ToLower();
 
             Games[gameCode].CurrentGame = new Game()
             {
                 RemainingWords = Games[gameCode].Words,
-                CurrentPlayer = Games[gameCode].TeamOne.Players.FirstOrDefault(),
+                CurrentPlayer = Games[gameCode].TeamOne.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)).FirstOrDefault(),
                 CurrentRound = 1,
-                CurrentTurn = 1,
+                CurrentTurn = 0,
+                TurnState = TurnState.Waiting,
             };
             Games[gameCode].CurrentState = GameState.Playing;
+            return Games[gameCode];
+        }
+        public GameRoom StartTurn(string gameCode)
+        {
+            Games[gameCode].CurrentGame.TurnState = TurnState.Playing;
+            Games[gameCode].CurrentGame.CurrentTurn += 1;
+
+            return Games[gameCode];
+        }
+
+        public GameRoom WordFound(string gameCode, List<Word> remainingWords, int scoreTeamOne, int scoreTeamTwo)
+        {
+            Games[gameCode].CurrentGame.RemainingWords = remainingWords;
+            Games[gameCode].TeamOne.Score = scoreTeamOne;
+            Games[gameCode].TeamTwo.Score = scoreTeamTwo;
+
             return Games[gameCode];
         }
     }

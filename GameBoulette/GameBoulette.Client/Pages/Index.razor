@@ -31,7 +31,7 @@
                     <MudFab Class="px-auto" Style="background-color: #00c853;" Size="Size.Small" OnClick="@(() => player.Color = "#00c853")" />
                     <MudFab Class="px-auto" Style="background-color: #ff9800;" Size="Size.Small" OnClick="@(() => player.Color = "#ff9800")" />
                     <MudFab Class="px-auto" Style="background-color: #f44336;" Size="Size.Small" OnClick="@(() => player.Color = "#f44336")" />
-                    <MudFab Class="px-auto" Style="background-color: #ffffff;" Size="Size.Small" OnClick="@(() => player.Color = "#ffffff")" />
+                    <MudFab Class="px-auto" Style="background-color: #ffffff;" Size="Size.Small" OnClick="@(() => player.Color = "#f0f0f0")" />
                 </MudCardContent>
             </MudCard>
         </MudItem>
@@ -94,7 +94,7 @@
     Player player = new Player()
     {
         Name = "",
-        Color = "#ffffff",
+        Color = "#f0f0f0",
     };
     
     Configuration config = new Configuration()
@@ -121,7 +121,7 @@
         GameHub.OnGameRoomUpdate += GameHub_OnGameRoomUpdate;
 
         player.Name = await localStorage.GetItemAsync<string>(Constants.Constant.LocalStorage.NameKey) ?? "";
-        player.Color = await localStorage.GetItemAsync<string>(Constants.Constant.LocalStorage.ColorKey) ?? "#ffffff";
+        player.Color = await localStorage.GetItemAsync<string>(Constants.Constant.LocalStorage.ColorKey) ?? "#f0f0f0";
 
         // Check for player guid in storage, else new guid
         if (hostEnv.IsDevelopment())
