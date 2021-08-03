@@ -11,21 +11,79 @@
 @if (GameHub.You != null)
 {
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
-    <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true"><strong>@GameHub.Game.TeamOne.Name vs @GameHub.Game.TeamTwo.Name</strong></MudText>
-    <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.GamePage.RoundLabel #@GameHub.Game.CurrentGame.CurrentRound</MudText>    
-    <MudGrid Class="mt-4" Justify="Justify.Center">        
+    <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true"><strong>@(GetWinningTitle())</strong></MudText>
+    <br />    
+    <MudItem Class="d-flex justify-center">
+        <MudItem Class="d-inline-flex justify-center">
+            <MudField Variant="Variant.Outlined" InnerPadding="true" FullWidth="false" Class="mx-auto">
+                <MudItem Class="d-flex justify-center">
+                    <MudButton Class="pa-2" Variant="@(mvp.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(mvp.Id.Equals(GameHub.You.Id) ? "background-color: "+@mvp.Color+"; color: black;" : "color: "+@mvp.Color+"; border: 1px solid "+ @mvp.Color +";")">@mvp.Name</MudButton>
+                    <MudText Class="pa-2" Align="Align.Center"><strong> is the Most Valuable Player 🚀🚀🚀</strong></MudText>
+                </MudItem>
+                <MudItem Class="d-flex justify-center">        
+                    <MudText Class="pa-2" Align="Align.Center">@mvp.WordFound mots trouvés</MudText>
+                    <MudText Class="pa-2" Align="Align.Center">@mvp.WordSkipped mots sautés</MudText>
+                </MudItem>
+            </MudField>
+        </MudItem>
+    </MudItem>
+    <br />
+    <br />
+    <MudGrid Class="mt-4" Justify="Justify.SpaceAround">        
         <MudItem xs="12" sm="6" md="6" Class="mx-auto">
-            
-            
+            <MudItem Class="d-flex flex-column justify-start">
+                <MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true"><strong>@GameHub.Game.TeamOne.Name</strong></MudText>
+                <MudItem Class="mx-auto">
+                    <MudItem Class="d-flex justify-center">
+                        <MudButton Class="pa-2" Variant="@(teamOneMvp.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(teamOneMvp.Id.Equals(GameHub.You.Id) ? "background-color: "+@teamOneMvp.Color+"; color: black;" : "color: "+@teamOneMvp.Color+"; border: 1px solid "+ @teamOneMvp.Color +";")">@teamOneMvp.Name</MudButton>
+                        <MudText Class="pa-2" Align="Align.Center"><strong> is Team Champion</strong></MudText>
+                    </MudItem>
+                    <MudItem Class="d-flex justify-center">        
+                        <MudText Class="pa-2" Align="Align.Center">@teamOneMvp.WordFound mots trouvés</MudText>
+                        <MudText Class="pa-2" Align="Align.Center">@teamOneMvp.WordSkipped mots sautés</MudText>
+                    </MudItem>
+                    <MudItem>
+                        <MudChart ChartType="ChartType.Bar" ChartOptions="chartOptions" ChartSeries="@SeriesTeamOne" XAxisLabels="@XAxisLabelsTeamOne" Width="90%" Height="350px"></MudChart>
+                    </MudItem>
+                </MudItem>
+            </MudItem>
         </MudItem>
-         <MudItem xs="12" sm="6" md="6" Class="ma-auto">
-             
-            
+        <MudItem xs="12" sm="6" md="6" Class="mx-auto">
+            <MudItem Class="d-flex flex-column justify-start">
+                <MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true"><strong>@GameHub.Game.TeamTwo.Name</strong></MudText>
+                <MudItem Class="mx-auto">
+                    <MudItem Class="d-flex justify-center">
+                        <MudButton Class="pa-2" Variant="@(teamTwoMvp.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(teamTwoMvp.Id.Equals(GameHub.You.Id) ? "background-color: "+@teamTwoMvp.Color+"; color: black;" : "color: "+@teamTwoMvp.Color+"; border: 1px solid "+ @teamTwoMvp.Color +";")">@teamTwoMvp.Name</MudButton>
+                        <MudText Class="pa-2" Align="Align.Center"><strong> is Team Champion</strong></MudText>
+                    </MudItem>
+                    <MudItem Class="d-flex justify-center">        
+                        <MudText Class="pa-2" Align="Align.Center">@teamTwoMvp.WordFound mots trouvés</MudText>
+                        <MudText Class="pa-2" Align="Align.Center">@teamTwoMvp.WordSkipped mots sautés</MudText>
+                    </MudItem>
+                    <MudItem>
+                        <MudChart ChartType="ChartType.Bar" ChartOptions="chartOptions" ChartSeries="@SeriesTeamTwo" XAxisLabels="@XAxisLabelsTeamTwo" Width="90%" Height="350px"></MudChart>
+                    </MudItem>
+                </MudItem>
+            </MudItem>
         </MudItem>
-    </MudGrid>    
+    </MudGrid>
+    <br />
+    <br />
     <MudGrid Class="" Justify="Justify.Center">
         <MudItem xs="12" sm="12" md="12">
-            
+            <MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true">Word details</MudText>
+            <MudTable Items="@Elements" Hover="true" SortLabel="Sort By">
+                <HeaderContent>
+                    <MudTh><MudTableSortLabel SortBy="new Func<ScoreTableRow, object>(x=>x.Label)">Word</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<ScoreTableRow, object>(x=>x.WrittenBy)">Written By</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<ScoreTableRow, object>(x=>x.TimesSkipped)">Times Skipped</MudTableSortLabel></MudTh>                    
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Nr">@context.Label</MudTd>
+                    <MudTd DataLabel="Sign">@context.WrittenBy</MudTd>
+                    <MudTd DataLabel="Name">@context.TimesSkipped</MudTd>
+                </RowTemplate>
+            </MudTable>
         </MudItem>
     </MudGrid>
     <MudGrid Class="" Justify="Justify.Center">
@@ -38,7 +96,19 @@
 @code {
     [Parameter]
     public string GameCode { get; set; }
-    
+
+    Player mvp = new Player();
+    Player teamOneMvp = new Player();
+    Player teamTwoMvp = new Player();
+
+    ChartOptions chartOptions = new ChartOptions();
+    List<ChartSeries> SeriesTeamOne = new List<ChartSeries>();
+    List<ChartSeries> SeriesTeamTwo = new List<ChartSeries>();
+    string[] XAxisLabelsTeamOne = { };
+    string[] XAxisLabelsTeamTwo = { };
+
+    List<ScoreTableRow> Elements = new List<ScoreTableRow>();
+
 
     protected override void OnParametersSet()
     {
@@ -56,7 +126,39 @@
         if (GameHub.Game == null || !GameHub.IsConnected)
             NavigationManager.NavigateTo($"/{GameCode}");
 
-        GameHub.OnGameRoomUpdate += GameHub_OnGameRoomUpdate;       
+        GameHub.OnGameRoomUpdate += GameHub_OnGameRoomUpdate;
+
+
+        chartOptions.YAxisTicks = 2;
+        teamOneMvp = GameHub.Game.TeamOne.Players.OrderByDescending(x => x.WordFound).ThenBy(x => x.WordSkipped).FirstOrDefault() ?? new Player();
+        teamTwoMvp = GameHub.Game.TeamTwo.Players.OrderByDescending(x => x.WordFound).ThenBy(x => x.WordSkipped).FirstOrDefault() ?? new Player();
+        teamOneMvp = GameHub.Game.TeamOne.Players.OrderByDescending(x => x.WordFound).ThenBy(x => x.WordSkipped).FirstOrDefault() ?? new Player();
+        
+        if (teamOneMvp.WordFound == teamTwoMvp.WordFound)
+        {
+            if (teamOneMvp.WordSkipped == teamTwoMvp.WordSkipped)
+                mvp = GameHub.Game.TeamOne.Score > GameHub.Game.TeamTwo.Score ? teamOneMvp : teamTwoMvp;
+            else
+                mvp = teamOneMvp.WordSkipped < teamTwoMvp.WordSkipped ? teamOneMvp : teamTwoMvp;
+        }
+        else
+            mvp = teamOneMvp.WordFound > teamTwoMvp.WordFound ? teamOneMvp : teamTwoMvp;
+
+        XAxisLabelsTeamOne = GameHub.Game.TeamOne.Players.Select(x => x.Name).ToArray();
+        XAxisLabelsTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => x.Name).ToArray();
+
+        var wordFoundTeamOne = GameHub.Game.TeamOne.Players.Select(x => (double) x.WordFound).ToArray();
+        var wordSkippedTeamOne = GameHub.Game.TeamOne.Players.Select(x => (double) x.WordSkipped).ToArray();
+        var wordFoundTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => (double) x.WordFound).ToArray();
+        var wordSkippedTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => (double) x.WordSkipped).ToArray();
+
+        SeriesTeamOne.Add(new ChartSeries() { Name = "Word Found", Data = wordFoundTeamOne });
+        SeriesTeamOne.Add(new ChartSeries() { Name = "Word Skipped", Data = wordSkippedTeamOne });
+        SeriesTeamTwo.Add(new ChartSeries() { Name = "Word Found", Data = wordFoundTeamTwo });
+        SeriesTeamTwo.Add(new ChartSeries() { Name = "Word Skipped", Data = wordSkippedTeamTwo });
+
+        Elements.AddRange(GameHub.Game.TeamOne.Players.SelectMany(x => x.WrittenWords.Select(y => new ScoreTableRow { WrittenBy = x.Name, Label = y.Label, TimesSkipped = y.TimeSkipped }).Where(x => !string.IsNullOrEmpty(x.Label))).ToList());
+        Elements.AddRange(GameHub.Game.TeamTwo.Players.SelectMany(x => x.WrittenWords.Select(y => new ScoreTableRow { WrittenBy = x.Name, Label = y.Label, TimesSkipped = y.TimeSkipped }).Where(x => !string.IsNullOrEmpty(x.Label))).ToList());
     }
 
     private void GameHub_OnGameRoomUpdate(object sender, GameRoom gameRoom)
@@ -67,11 +169,28 @@
         StateHasChanged();
     }
 
+    string GetWinningTitle()
+    {
+        if (GameHub.Game.TeamOne.Score > GameHub.Game.TeamTwo.Score)
+        {
+            return $"{GameHub.Game.TeamOne.Name} has won the game !";
+        }
+        else if (GameHub.Game.TeamOne.Score < GameHub.Game.TeamTwo.Score)
+        {
+            return $"{GameHub.Game.TeamTwo.Name} has won the game !";
+        }
+        else
+        {
+            return $"It's a tie !";
+        }
+    }
+
     private async void NavigateToIndexComponent()
     {
         await GameHub.DisconnectFromGameHub();
         NavigationManager.NavigateTo($"/{GameCode}");
     }
+
 
     public new void Dispose()
     {
