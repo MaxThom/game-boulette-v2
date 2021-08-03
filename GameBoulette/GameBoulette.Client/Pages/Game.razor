@@ -35,7 +35,7 @@
          <MudItem xs="12" sm="6" md="6" Class="ma-auto">
              <MudPaper Elevation="25" Class="rounded-lg d-flex flex-column justify-space-around align-center" Style="height:300px;">                
                 <MudText Class="mt-5" style="font-size: 1.5em;" Typo="Typo.overline">@timeLeft.ToString("mm\\:ss")</MudText>
-                <MudButton Class="px-5 mt-n5" Style="min-width:75%" Variant="@(GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game) ? Variant.Filled : Variant.Outlined)" Size="Size.Large" Color="Color.Info">@(GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game) ? currentWord : "';..;'")</MudButton>
+                <MudButton Class="px-5 mt-n5" Style="min-width:75%" Variant="@(GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game) ? Variant.Filled : Variant.Outlined)" Size="Size.Large" Color="Color.Info">@(GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game) && GameHub.Game.CurrentGame.TurnState == TurnState.Playing ? currentWord : "';..;'")</MudButton>
                 <MudItem Class="d-flex flex-row justify-center">
                     @if (GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game))
                     {
