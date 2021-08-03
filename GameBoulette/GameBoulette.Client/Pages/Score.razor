@@ -1,0 +1,80 @@
+﻿@page "/score/{gamecode}"
+@inherits AppBaseComponent
+@inject IJSRuntime js
+@implements IDisposable
+@inject NavigationManager NavigationManager
+@inject GameHubService GameHub
+@inject ClipboardService ClipboardService
+@inject ISnackbar Snackbar
+@inject IDialogService DialogService
+
+@if (GameHub.You != null)
+{
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
+    <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true"><strong>@GameHub.Game.TeamOne.Name vs @GameHub.Game.TeamTwo.Name</strong></MudText>
+    <MudText Align="Align.Center">@LanguageManager.CurrentLanguage.GamePage.RoundLabel #@GameHub.Game.CurrentGame.CurrentRound</MudText>    
+    <MudGrid Class="mt-4" Justify="Justify.Center">        
+        <MudItem xs="12" sm="6" md="6" Class="mx-auto">
+            
+            
+        </MudItem>
+         <MudItem xs="12" sm="6" md="6" Class="ma-auto">
+             
+            
+        </MudItem>
+    </MudGrid>    
+    <MudGrid Class="" Justify="Justify.Center">
+        <MudItem xs="12" sm="12" md="12">
+            
+        </MudItem>
+    </MudGrid>
+    <MudGrid Class="" Justify="Justify.Center">
+        <MudItem xs="12" sm="12" md="12">
+            <MudButton Variant="Variant.Outlined" Color="Color.Tertiary" OnClick="NavigateToIndexComponent" Class="pa-2 ml-2 mr-auto">@LanguageManager.CurrentLanguage.GameLobbyPage.Leave</MudButton>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+}
+@code {
+    [Parameter]
+    public string GameCode { get; set; }
+    
+
+    protected override void OnParametersSet()
+    {
+        Console.WriteLine(ObjectDumper.Dump(GameHub.You));
+        if (GameHub.You == null)
+        {
+            NavigationManager.NavigateTo($"/{GameCode}");
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (GameHub.Game == null || !GameHub.IsConnected)
+            NavigationManager.NavigateTo($"/{GameCode}");
+
+        GameHub.OnGameRoomUpdate += GameHub_OnGameRoomUpdate;       
+    }
+
+    private void GameHub_OnGameRoomUpdate(object sender, GameRoom gameRoom)
+    {
+        if (gameRoom == null || !GameHub.IsConnected)
+            NavigationManager.NavigateTo($"/{GameCode}");
+        
+        StateHasChanged();
+    }
+
+    private async void NavigateToIndexComponent()
+    {
+        await GameHub.DisconnectFromGameHub();
+        NavigationManager.NavigateTo($"/{GameCode}");
+    }
+
+    public new void Dispose()
+    {
+        GameHub.OnGameRoomUpdate -= GameHub_OnGameRoomUpdate;
+    }
+}

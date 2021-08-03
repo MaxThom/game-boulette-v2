@@ -146,11 +146,15 @@ namespace GameBoulette.Server.Hubs
             var game = _gamesService.WordFound(gameCode, scoreTeamOne, scoreTeamTwo, wordLabel);
             Console.WriteLine(ObjectDumper.Dump(game));
 
-            if (game.CurrentGame.TurnState == TurnState.WaitingNextRound)
+            if (game.CurrentState == GameState.Completed)
+            {
+                await Clients.Groups<IGameClient>(game.Code).OnGameCompleted(game);
+            }
+            else if (game.CurrentGame.TurnState == TurnState.WaitingNextRound)
             {
                 await Clients.Groups<IGameClient>(game.Code).StopTimer();
                 await Clients.Groups<IGameClient>(game.Code).OnPlayerTurnWait(game);
-            }
+            } 
             else
             {
                 await Clients.OthersInGroup(game.Code).UpdateGameRoom(game);

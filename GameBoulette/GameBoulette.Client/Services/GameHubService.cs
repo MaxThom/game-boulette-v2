@@ -20,10 +20,11 @@ namespace GameBoulette.Client.Services
         private HubConnection hubConnection;
 
         public event EventHandler<GameRoom> OnGameRoomUpdate;
-        public event EventHandler<GameRoom> OnPlayerTurnWait;
+        public event EventHandler<GameRoom> OnPlayerTurnWaitEvent;
+        public event EventHandler<GameRoom> OnGameCompletedEvent;
         public event EventHandler OnStartTimerEvent;
         public event EventHandler OnStopTimerEvent;
-        public event EventHandler OnResetTimerEvent;        
+        public event EventHandler OnResetTimerEvent;         
 
         public Player You { get; set; }
         public GameRoom Game { get; set; }
@@ -78,7 +79,7 @@ namespace GameBoulette.Client.Services
                 }
                 OnGameRoomUpdate?.Invoke(this, Game);
             });
-
+            
             hubConnection.On<GameRoom>("UpdateGameRoom", (game) =>
             {
                 Console.WriteLine(ObjectDumper.Dump(game));
@@ -87,12 +88,20 @@ namespace GameBoulette.Client.Services
                 OnGameRoomUpdate?.Invoke(this, Game);
             });
 
+            hubConnection.On<GameRoom>("OnGameCompleted", (game) =>
+            {
+                Console.WriteLine(ObjectDumper.Dump(game));
+
+                Game = game;
+                OnGameCompletedEvent?.Invoke(this, Game);
+            });
+
             hubConnection.On<GameRoom>("OnPlayerTurnWait", (game) =>
             {
                 Console.WriteLine(ObjectDumper.Dump(game));
 
                 Game = game;
-                OnPlayerTurnWait?.Invoke(this, Game);
+                OnPlayerTurnWaitEvent?.Invoke(this, Game);
             });
 
             hubConnection.On("StartTimer", () =>

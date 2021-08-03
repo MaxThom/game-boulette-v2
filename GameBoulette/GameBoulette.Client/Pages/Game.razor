@@ -154,7 +154,8 @@
         GameHub.OnStartTimerEvent += GameHub_OnStartTimerEvent;
         GameHub.OnStopTimerEvent += GameHub_OnStopTimerEvent;
         GameHub.OnResetTimerEvent += GameHub_OnResetTimerEvent;
-        GameHub.OnPlayerTurnWait += GameHub_OnPlayerTurnWait;        
+        GameHub.OnPlayerTurnWaitEvent += GameHub_OnPlayerTurnWait;
+        GameHub.OnGameCompletedEvent += GameHub_OnGameCompletedEvent;
     }
 
     private void GameHub_OnGameRoomUpdate(object sender, GameRoom gameRoom)
@@ -163,6 +164,13 @@
             NavigationManager.NavigateTo($"/{GameCode}");
         
         StateHasChanged();
+    }
+
+    private void GameHub_OnGameCompletedEvent(object sender, GameRoom gameRoom)
+    {
+        NavigationManager.NavigateTo($"/score/{GameCode}");
+        StateHasChanged();
+
     }
 
     private void GameHub_OnPlayerTurnWait(object sender, GameRoom gameRoom)
@@ -297,6 +305,8 @@
         GameHub.OnStartTimerEvent -= GameHub_OnStartTimerEvent;
         GameHub.OnStopTimerEvent -= GameHub_OnStopTimerEvent;
         GameHub.OnResetTimerEvent -= GameHub_OnResetTimerEvent;
-        GameHub.OnPlayerTurnWait -= GameHub_OnPlayerTurnWait;  
+        GameHub.OnPlayerTurnWaitEvent -= GameHub_OnPlayerTurnWait;  
+        GameHub.OnGameCompletedEvent -= GameHub_OnGameCompletedEvent;  
+          
     }
 }

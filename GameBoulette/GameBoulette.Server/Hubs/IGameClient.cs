@@ -17,6 +17,8 @@ namespace GameBoulette.Server.Hubs
 
         Task OnPlayerTurnWait(GameRoom game);
 
+        Task OnGameCompleted(GameRoom game);
+
         Task StartTimer();
 
         Task StopTimer();

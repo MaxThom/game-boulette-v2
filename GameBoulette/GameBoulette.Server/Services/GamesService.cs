@@ -177,6 +177,7 @@ namespace GameBoulette.Server.Services
                 if (Games[gameCode].CurrentGame.CurrentRound > Games[gameCode].Config.NumberOfRound)
                 {
                     // Mean game is over
+                    Games[gameCode].CurrentState = GameState.Completed;
                 }
             }
 

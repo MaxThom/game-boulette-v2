@@ -176,8 +176,13 @@
         else
         {
             Snackbar.Add("Connected to lobby !", Severity.Success);
-            NavigationManager.NavigateTo($"lobby/{gameRoom.Code}");    
-        }        
+            if (gameRoom.CurrentState == GameState.Lobby)
+                NavigationManager.NavigateTo($"lobby/{gameRoom.Code}");    
+            else if (gameRoom.CurrentState == GameState.Playing)
+                NavigationManager.NavigateTo($"game/{gameRoom.Code}");    
+            else if (gameRoom.CurrentState == GameState.Completed)
+                NavigationManager.NavigateTo($"score/{gameRoom.Code}");    
+        }
     }
 
     public new void Dispose()
