@@ -9,6 +9,7 @@ namespace GameBoulette.Shared
     public enum TurnState
     {
         Waiting,
+        WaitingNextRound,
         Playing,
         Completed,
     }

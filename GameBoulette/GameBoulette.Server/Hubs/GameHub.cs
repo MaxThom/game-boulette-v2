@@ -146,7 +146,15 @@ namespace GameBoulette.Server.Hubs
             var game = _gamesService.WordFound(gameCode, scoreTeamOne, scoreTeamTwo, wordLabel);
             Console.WriteLine(ObjectDumper.Dump(game));
 
-            await Clients.OthersInGroup(game.Code).UpdateGameRoom(game);
+            if (game.CurrentGame.TurnState == TurnState.WaitingNextRound)
+            {
+                await Clients.Groups<IGameClient>(game.Code).StopTimer();
+                await Clients.Groups<IGameClient>(game.Code).OnPlayerTurnWait(game);
+            }
+            else
+            {
+                await Clients.OthersInGroup(game.Code).UpdateGameRoom(game);
+            }            
         }
 
         public void WordSkippedRequest(string gameCode, string wordLabel)

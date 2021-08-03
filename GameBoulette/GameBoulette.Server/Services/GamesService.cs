@@ -167,6 +167,19 @@ namespace GameBoulette.Server.Services
             Games[gameCode].TeamOne.Score = scoreTeamOne;
             Games[gameCode].TeamTwo.Score = scoreTeamTwo;
 
+            if (!Games[gameCode].CurrentGame.RemainingWords.Any())
+            {
+                // Mean next round
+                Games[gameCode].CurrentGame.TurnState = TurnState.WaitingNextRound;
+                Games[gameCode].CurrentGame.RemainingWords = new List<Word>(Games[gameCode].Words);
+                Games[gameCode].CurrentGame.CurrentRound += 1;
+
+                if (Games[gameCode].CurrentGame.CurrentRound > Games[gameCode].Config.NumberOfRound)
+                {
+                    // Mean game is over
+                }
+            }
+
             return Games[gameCode];
         }
 

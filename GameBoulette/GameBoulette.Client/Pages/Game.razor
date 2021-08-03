@@ -44,7 +44,7 @@
                             <MudButton Class="mx-12" Variant="Variant.Text" Color="Color.Warning" OnClick="OnSkipWordClick">@LanguageManager.CurrentLanguage.GamePage.SkipWord</MudButton>
                             <MudButton Class="mx-12" Variant="Variant.Text" Color="Color.Success" OnClick="OnFoundWordClick">@LanguageManager.CurrentLanguage.GamePage.FoundWord</MudButton>
                         }
-                        else if (GameHub.Game.CurrentGame.TurnState == TurnState.Waiting)
+                        else if (GameHub.Game.CurrentGame.TurnState == TurnState.Waiting || GameHub.Game.CurrentGame.TurnState == TurnState.WaitingNextRound)
                         {                            
                             <MudButton Class="mx-12" Variant="Variant.Text" Color="Color.Warning" OnClick="OnStartTurnClick">@LanguageManager.CurrentLanguage.GamePage.StartTurn</MudButton>
                         }
@@ -172,6 +172,13 @@
             Task.Factory.StartNew(async () => await DialogService.ShowMessageBox(
                 "Info",
                 "C'est maintenant votre tour de jouer !",
+                yesText: "Ok!"));
+        }
+        else if (GameHub.Game.CurrentGame.TurnState == TurnState.WaitingNextRound && GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game))
+        {
+            Task.Factory.StartNew(async () => await DialogService.ShowMessageBox(
+                "Info",
+                "C'est maintenant la prochaine manche, vous jouez avec le temps restant !",
                 yesText: "Ok!"));
         }
         StateHasChanged();
