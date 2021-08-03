@@ -197,13 +197,23 @@ namespace GameBoulette.Client.Services
             await hubConnection.SendAsync("StartGameRequest", Game.Code);
         }
 
-        public async Task StartTurn()
+        public async Task StartTurnRequest()
         {
             await hubConnection.SendAsync("StartTurnRequest", Game.Code);
         }
-        public async Task WordFound(int scoreTeamOne, int scoreTeamTwo)
+        public async Task WordFoundRequest(int scoreTeamOne, int scoreTeamTwo, string wordLabel)
         {
-            await hubConnection.SendAsync("WordFoundRequest", Game.Code, Game.CurrentGame.RemainingWords, scoreTeamOne, scoreTeamTwo);
+            await hubConnection.SendAsync("WordFoundRequest", Game.Code, wordLabel, scoreTeamOne, scoreTeamTwo);
+        }
+
+        public async Task WordSkippedRequest(string wordLabel)
+        {
+            await hubConnection.SendAsync("WordSkippedRequest", Game.Code, wordLabel);
+        }
+
+        public async Task EndTurnRequest()
+        {
+            await hubConnection.SendAsync("EndTurnRequest", Game.Code, Game.CurrentGame);
         }
     }
 }

@@ -22,14 +22,20 @@
                 </MudItem>
                 @foreach (var player in GameHub.Game.TeamOne.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)))
                 {
-                    <MudButton Class="pa-2 ma-2" Variant="@(player.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(player.Id.Equals(GameHub.You.Id) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+ @player.Color +";")">@player.Name</MudButton>
+                    <MudItem Class="d-flex flex-row justify-center">
+                        <MudButton Class="pa-2 ma-2 mx-auto" Variant="@(player.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(player.Id.Equals(GameHub.You.Id) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+ @player.Color +";")">@player.Name</MudButton>
+                        @if (GameUtility.IsYouCurrentPlayerTurn(player, GameHub.Game))
+                        {
+                            <MudIcon Class="my-auto ml-3" Size="Size.Large" Icon="@Icons.Material.Filled.ArrowBack" Title="Your Turn" />
+                        }
+                    </MudItem>
                 }
             </MudItem>
         </MudItem>
          <MudItem xs="12" sm="6" md="6" Class="ma-auto">
              <MudPaper Elevation="25" Class="rounded-lg d-flex flex-column justify-space-around align-center" Style="height:300px;">                
                 <MudText Class="mt-5" style="font-size: 1.5em;" Typo="Typo.overline">@timeLeft.ToString("mm\\:ss")</MudText>
-                <MudButton Class="px-5 mt-n5" Style="min-width:75%" Variant="@(GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game) ? Variant.Filled : Variant.Outlined)" Size="Size.Large" Color="Color.Info">@(GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game) ? currentWord : "*****")</MudButton>
+                <MudButton Class="px-5 mt-n5" Style="min-width:75%" Variant="@(GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game) ? Variant.Filled : Variant.Outlined)" Size="Size.Large" Color="Color.Info">@(GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game) ? currentWord : "';..;'")</MudButton>
                 <MudItem Class="d-flex flex-row justify-center">
                     @if (GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game))
                     {
@@ -57,7 +63,13 @@
                 </MudItem>
                 @foreach (var player in GameHub.Game.TeamTwo.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)))
                 {
-                    <MudButton Class="pa-2 ma-2" Variant="@(player.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(player.Id.Equals(GameHub.You.Id) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+ @player.Color +";")">@player.Name</MudButton>
+                    <MudItem Class="d-flex flex-row align-end">
+                        @if (GameUtility.IsYouCurrentPlayerTurn(player, GameHub.Game))
+                        {
+                            <MudIcon Class="my-auto mr-3" Size="Size.Large" Icon="@Icons.Material.Filled.ArrowForward" Title="Your Turn" />
+                        }
+                        <MudButton Class="pa-2 ma-2 mx-auto" Variant="@(player.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(player.Id.Equals(GameHub.You.Id) ? "background-color: "+@player.Color+"; color: black;" : "color: "+@player.Color+"; border: 1px solid "+ @player.Color +";")">@player.Name</MudButton>                        
+                    </MudItem>
                 }
             </MudItem>
         </MudItem>
@@ -113,7 +125,7 @@
     MudForm form;
     TimeSpan timeLeft = new TimeSpan();
     bool isTimerEnabled = false;
-    string currentWord = "*****";
+    string currentWord = "';..;'";
     int currentWordIndex = -1;
     Dictionary<string, string> currentSkippedWords = new Dictionary<string, string>();
     Random random = new Random();
@@ -124,6 +136,10 @@
         if (GameHub.You == null)
         {
             NavigationManager.NavigateTo($"/{GameCode}");
+        }
+        else if (GameHub?.Game?.Config != null)
+        {
+            timeLeft = new TimeSpan(0, 0, GameHub.Game.Config.TimePerTurn);         
         }
     }
 
@@ -158,6 +174,7 @@
                 "C'est maintenant votre tour de jouer !",
                 yesText: "Ok!"));
         }
+        StateHasChanged();
     }
 
     private void GameHub_OnStartTimerEvent(object sender, EventArgs e)
@@ -173,8 +190,8 @@
 
     private void GameHub_OnResetTimerEvent(object sender, EventArgs e)
     {
-        timeLeft = new TimeSpan(0, 0, GameHub.Game.Config.TimePerTurn);        
-        StateHasChanged();
+        timeLeft = new TimeSpan(0, 0, GameHub.Game.Config.TimePerTurn);
+        isTimerEnabled = false;
     }
 
     async void OnTimerRunning()
@@ -183,24 +200,28 @@
         {
             timeLeft = timeLeft.Add(new TimeSpan(0, 0, -1));
             StateHasChanged();
-            await Task.Delay(1000);            
+            await Task.Delay(1000);
         }
+
+        // Timer end
+        if (GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game) && isTimerEnabled)
+            await GameHub.EndTurnRequest();
     }
 
     async void OnStartTurnClick()
     {
-        await GameHub.StartTurn();
+        await GameHub.StartTurnRequest();
         currentSkippedWords.Clear();
         GetNextWord();
         StateHasChanged();
     }
 
-    void OnSkipWordClick()
+    async void OnSkipWordClick()
     {
         if (GameHub.Game.CurrentGame.RemainingWords.Any())
         {
-            GameHub.Game.Words.Where(x => x.Label.Equals(GameHub.Game.CurrentGame.RemainingWords[currentWordIndex].Label)).First().TimeSkipped += 1;
             currentSkippedWords.Add(GameHub.Game.CurrentGame.RemainingWords[currentWordIndex].Label, "");
+            await GameHub.WordSkippedRequest(GameHub.Game.CurrentGame.RemainingWords[currentWordIndex].Label);
         }
 
         GetNextWord();
@@ -211,17 +232,19 @@
     {
         if (GameHub.Game.CurrentGame.RemainingWords.Any())
         {
+            var wordLabel = GameHub.Game.CurrentGame.RemainingWords[currentWordIndex].Label;
             GameHub.Game.CurrentGame.RemainingWords.RemoveAt(currentWordIndex);
-            var (player, isTeamOne) = GameUtility.FindCorrespondingPlayer(GameHub.You.Id, GameHub.Game);
+            var (player, isTeamOne) = GameUtility.FindCorrespondingPlayer(GameHub.You.Id, GameHub.Game);            
             if (isTeamOne == true)
                 GameHub.Game.TeamOne.Score += 1;
             else
                 GameHub.Game.TeamTwo.Score += 1;
-        }
+
+            GetNextWord();
+            await GameHub.WordFoundRequest(GameHub.Game.TeamOne.Score, GameHub.Game.TeamTwo.Score, wordLabel);
+        }       
         
-        GetNextWord();
-        StateHasChanged();
-        await GameHub.WordFound(GameHub.Game.TeamOne.Score, GameHub.Game.TeamTwo.Score);
+        StateHasChanged();        
     }
 
     void GetNextWord()

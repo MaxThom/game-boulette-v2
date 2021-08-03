@@ -1,5 +1,4 @@
-﻿using GameBoulette.Client.Pages;
-using GameBoulette.Server.Services;
+﻿using GameBoulette.Server.Services;
 using GameBoulette.Shared;
 using GameBoulette.Shared.Utilities;
 
@@ -114,9 +113,21 @@ namespace GameBoulette.Server.Hubs
             var game = _gamesService.StartGame(gameCode);
             Console.WriteLine(ObjectDumper.Dump(game));
 
-            await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
-            await Clients.Groups<IGameClient>(game.Code).OnPlayerTurnWait(game);
             await Clients.Groups<IGameClient>(game.Code).ResetTimer();
+            await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+            await Clients.Groups<IGameClient>(game.Code).OnPlayerTurnWait(game);            
+            
+        }
+
+        public async Task EndTurnRequest(string gameCode, Game gameToUpdate)
+        {
+            await Clients.Groups<IGameClient>(gameCode).StopTimer();
+            await Clients.Groups<IGameClient>(gameCode).ResetTimer();
+            Console.WriteLine($"End turn request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            var game = _gamesService.EndTurn(gameCode, gameToUpdate);
+            Console.WriteLine(ObjectDumper.Dump(game));            
+            
+            await Clients.Groups<IGameClient>(game.Code).OnPlayerTurnWait(game);            
         }
 
         public async Task StartTurnRequest(string gameCode)
@@ -129,13 +140,20 @@ namespace GameBoulette.Server.Hubs
             await Clients.Groups<IGameClient>(game.Code).StartTimer();
         }
 
-        public async Task WordFoundRequest(string gameCode, List<Word> remainingWords, int scoreTeamOne, int scoreTeamTwo)
+        public async Task WordFoundRequest(string gameCode, string wordLabel, int scoreTeamOne, int scoreTeamTwo)
         {
             Console.WriteLine($"Word found request: {Context.ConnectionId}-{Context.UserIdentifier}");
-            var game = _gamesService.WordFound(gameCode, remainingWords, scoreTeamOne, scoreTeamTwo);
+            var game = _gamesService.WordFound(gameCode, scoreTeamOne, scoreTeamTwo, wordLabel);
             Console.WriteLine(ObjectDumper.Dump(game));
 
             await Clients.OthersInGroup(game.Code).UpdateGameRoom(game);
+        }
+
+        public void WordSkippedRequest(string gameCode, string wordLabel)
+        {
+            Console.WriteLine($"Word skipped request: {Context.ConnectionId}-{Context.UserIdentifier}");
+            var game = _gamesService.WordSkipped(gameCode, wordLabel);
+            Console.WriteLine(ObjectDumper.Dump(game));
         }
     }
 }

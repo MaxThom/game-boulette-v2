@@ -124,7 +124,7 @@ namespace GameBoulette.Server.Services
 
             Games[gameCode].CurrentGame = new Game()
             {
-                RemainingWords = Games[gameCode].Words,
+                RemainingWords = new List<Word>(Games[gameCode].Words),
                 CurrentPlayer = Games[gameCode].TeamOne.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)).FirstOrDefault(),
                 CurrentRound = 1,
                 CurrentTurn = 0,
@@ -133,20 +133,47 @@ namespace GameBoulette.Server.Services
             Games[gameCode].CurrentState = GameState.Playing;
             return Games[gameCode];
         }
-        public GameRoom StartTurn(string gameCode)
+
+        public GameRoom EndTurn(string gameCode, Game gameToUpdate)
         {
-            Games[gameCode].CurrentGame.TurnState = TurnState.Playing;
             Games[gameCode].CurrentGame.CurrentTurn += 1;
+            Games[gameCode].CurrentGame.TurnState = TurnState.Waiting;
+            if (Games[gameCode].CurrentGame.CurrentTurn % 2 == 0)
+            {
+                // Team one
+                var playerIndex = (Games[gameCode].CurrentGame.CurrentTurn / 2) % Games[gameCode].TeamOne.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)).ToList().Count;
+                Games[gameCode].CurrentGame.CurrentPlayer = Games[gameCode].TeamOne.Players.Where(x  => !string.IsNullOrEmpty(x.ConnectionId)).ToList()[playerIndex];
+            }
+            else
+            {
+                // Team two
+                var playerIndex = (Games[gameCode].CurrentGame.CurrentTurn / 2) % Games[gameCode].TeamTwo.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)).ToList().Count;
+                Games[gameCode].CurrentGame.CurrentPlayer = Games[gameCode].TeamTwo.Players.Where(x => !string.IsNullOrEmpty(x.ConnectionId)).ToList()[playerIndex];
+            }
 
             return Games[gameCode];
         }
 
-        public GameRoom WordFound(string gameCode, List<Word> remainingWords, int scoreTeamOne, int scoreTeamTwo)
+        public GameRoom StartTurn(string gameCode)
         {
-            Games[gameCode].CurrentGame.RemainingWords = remainingWords;
+            Games[gameCode].CurrentGame.TurnState = TurnState.Playing;
+            return Games[gameCode];
+        }
+
+        public GameRoom WordFound(string gameCode, int scoreTeamOne, int scoreTeamTwo, string wordLabel)
+        {
+            Games[gameCode].CurrentGame.RemainingWords.RemoveAll(x => x.Label.Equals(wordLabel));
+            Games[gameCode].CurrentGame.CurrentPlayer.WordFound += 1;
             Games[gameCode].TeamOne.Score = scoreTeamOne;
             Games[gameCode].TeamTwo.Score = scoreTeamTwo;
 
+            return Games[gameCode];
+        }
+
+        public GameRoom WordSkipped(string gameCode, string wordLabel)
+        {            
+            Games[gameCode].CurrentGame.CurrentPlayer.WordSkipped += 1;
+            Games[gameCode].Words.Where(x => x.Label.Equals(wordLabel)).First().TimeSkipped += 1;
             return Games[gameCode];
         }
     }
