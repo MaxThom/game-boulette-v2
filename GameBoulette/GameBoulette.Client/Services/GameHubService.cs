@@ -28,6 +28,7 @@ namespace GameBoulette.Client.Services
         public event EventHandler OnResetTimerEvent;         
 
         public Player You { get; set; }
+        public bool? IsTeamOne { get; set; }
         public GameRoom Game { get; set; }
 
         public GameHubService(NavigationManager navigationManager, LanguageManagerService languageManager)
@@ -58,7 +59,7 @@ namespace GameBoulette.Client.Services
                 Console.WriteLine(ObjectDumper.Dump(game));
 
                 Game = game;
-                (You, _) = GameUtility.FindCorrespondingPlayer(You.Id, Game);
+                (You, IsTeamOne) = GameUtility.FindCorrespondingPlayer(You.Id, Game);
 
                 You.WrittenWords = new List<Word>();
                 for (int i = 0; i < Game.Config.NumberOfPaperPerPerson; i++)
@@ -73,7 +74,7 @@ namespace GameBoulette.Client.Services
                 Game = game;
                 if (game != null)
                 {
-                    (You, _) = GameUtility.FindCorrespondingPlayer(You.Id, Game);
+                    (You, IsTeamOne) = GameUtility.FindCorrespondingPlayer(You.Id, Game);
 
                     You.WrittenWords = new List<Word>();
                     for (int i = 0; i < Game.Config.NumberOfPaperPerPerson; i++)
