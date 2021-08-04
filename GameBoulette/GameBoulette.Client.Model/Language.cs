@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameBoulette.Client.Model.Languages
+namespace GameBoulette.Client.Model
 {
     public class Language
     {
@@ -16,11 +16,13 @@ namespace GameBoulette.Client.Model.Languages
         public CreateGamePage CreateGamePage { get; set; } = new CreateGamePage();
         public GameLobbyPage GameLobbyPage { get; set; } = new GameLobbyPage();
         public GamePage GamePage { get; set; } = new GamePage();
+        public ScorePage ScorePage { get; set; } = new ScorePage();
     }
 
     public class AppBar
     {
         public string Title { get; set; } = "";
+        public string Footer { get; set; } = "";
     }
 
     public class IndexPage
@@ -35,6 +37,10 @@ namespace GameBoulette.Client.Model.Languages
         public string CreateGame { get; set; } = "";
         public string CreateGameSub { get; set; } = "";
         public string Instruction { get; set; } = "";
+        public string SnackConnected { get; set; } = "";
+        public string SnackConnectedLong { get; set; } = "";
+        public string SnackNotConnected { get; set; } = "";
+        public string SnackNotConnectedLong { get; set; } = "";
     }
 
     public class CreateGamePage
@@ -54,6 +60,8 @@ namespace GameBoulette.Client.Model.Languages
         public string Restart { get; set; } = "";
         public string Create { get; set; } = "";
         public string MissingField { get; set; } = "";
+        public string GameUrlCopied { get; set; } = "";
+        public string VideoUrlCopied { get; set; } = "";
     }
 
     public class GameLobbyPage
@@ -73,6 +81,7 @@ namespace GameBoulette.Client.Model.Languages
         public string Leave { get; set; } = "";
         public string ConfigurationLabel { get; set; } = "";
         public string RulesLabel { get; set; } = "";
+        public string SnackGameStarted { get; set; } = "";
     }
 
     public class GamePage
@@ -83,5 +92,26 @@ namespace GameBoulette.Client.Model.Languages
         public string FoundWord { get; set; } = "";
         public string RemaningWords { get; set; } = "";
         public string StartTurn { get; set; } = "";
+        public string MsgYourTurn { get; set; } = "";
+        public string MsgNextRound { get; set; } = "";
+    }
+
+    public class ScorePage
+    {
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Tie { get; set; }
+        public string Mvp { get; set; } = "";
+        public string WordFound { get; set; } = "";
+        public string WordSkip { get; set; } = "";
+        public string TeamChampion { get; set; } = "";
+        public string StartTurn { get; set; } = "";
+        public string WordFoundLegend { get; set; } = "";
+        public string WordSkipLegend { get; set; } = "";
+        public string TableTitle { get; set; } = "";
+        public string TableWord { get; set; } = "";
+        public string TableWrittenBy { get; set; } = "";
+        public string TableTimesSkipped { get; set; } = "";
+
     }
 }

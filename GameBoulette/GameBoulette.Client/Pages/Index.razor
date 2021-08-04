@@ -172,10 +172,10 @@
     {
         Snackbar.Clear();
         if (gameRoom == null)
-            Snackbar.Add("Can't connect to lobby !", Severity.Error);
+            Snackbar.Add($"{LanguageManager.CurrentLanguage.IndexPage.SnackNotConnected}", Severity.Error);
         else
         {
-            Snackbar.Add("Connected to lobby !", Severity.Success);
+            Snackbar.Add($"{LanguageManager.CurrentLanguage.IndexPage.SnackConnected}", Severity.Success);
             if (gameRoom.CurrentState == GameState.Lobby)
                 NavigationManager.NavigateTo($"lobby/{gameRoom.Code}");    
             else if (gameRoom.CurrentState == GameState.Playing)

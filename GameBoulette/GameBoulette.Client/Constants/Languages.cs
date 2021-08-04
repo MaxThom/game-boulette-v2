@@ -1,4 +1,4 @@
-﻿using GameBoulette.Client.Model.Languages;
+﻿using GameBoulette.Client.Model;
 
 using MudBlazor;
 
@@ -20,7 +20,8 @@ namespace GameBoulette.Client.Constants
             ShortName = "FR",
             AppBar = new AppBar()
             {
-                Title = "Jeu de Boulette virtuelle"
+                Title = "Jeu de Boulette virtuelle",
+                Footer = "fait avec ❤️ pour mtrl de la nouvelle-zélande 🚀",
             },
             IndexPage = new IndexPage()
             {
@@ -34,6 +35,10 @@ namespace GameBoulette.Client.Constants
                 AvatarTitle = "Votre avatar !",
                 AvatarInput = "Entrez votre nom",
                 Instruction = "Règles",
+                SnackConnected = "Connecté à la salle d'attente !",
+                SnackNotConnected = "Ne peut se connecter à la salle d'attente !",
+                SnackConnectedLong = "Connecté au serveur. En attente de la salle d'attente.",
+                SnackNotConnectedLong = "Ne peut se connecter. Veuillez essayer plus tard !",
             },
             CreateGamePage = new CreateGamePage()
             {
@@ -51,7 +56,9 @@ namespace GameBoulette.Client.Constants
                 Return = "Retour",
                 Restart = "Refaire",
                 Create = "Créer la partie!",
-                MissingField = "Ce champ est requis!"
+                MissingField = "Ce champ est requis!",
+                GameUrlCopied = "Lien de la partie copié !",
+                VideoUrlCopied = "Lien de l'appel vidéo copié !",
             },
             GameLobbyPage = new GameLobbyPage()
             {
@@ -70,6 +77,7 @@ namespace GameBoulette.Client.Constants
                 Leave = "Quitter",
                 ConfigurationLabel = "Configurations et lien url",
                 RulesLabel = "Règles",
+                SnackGameStarted = "La partie commence !",
             },
             GamePage = new GamePage()
             {
@@ -79,7 +87,25 @@ namespace GameBoulette.Client.Constants
                 FoundWord = "trouvé",
                 RemaningWords = "mots restants",
                 StartTurn = "Commencer !",
+                MsgYourTurn = "C'est maintenant votre tour de jouer !",
+                MsgNextRound = "C'est maintenant la prochaine manche, vous jouez avec le temps restant !",
             },
+            ScorePage = new ScorePage()
+            {
+                Title = " a remporté la partie !",
+                Tie = "C'est égalité !",
+                Description = " - ",
+                Mvp = " est le ou/et la meilleur.e joueu.r.se !",
+                WordFound = " mots trouvés",
+                WordSkip = " mots sautés",
+                TeamChampion = " est l.e.a champion.ne d'équipe !",
+                WordFoundLegend = "Mot trouvé",
+                WordSkipLegend = "Mot sauté",
+                TableTitle = "Détails des mots",
+                TableWord = "Mot",
+                TableWrittenBy = "Écrit par",
+                TableTimesSkipped = "Nombre de fois sauté",
+            }
         };
 
         public static Language English = new Language()
@@ -89,7 +115,8 @@ namespace GameBoulette.Client.Constants
             ShortName = "EN",
             AppBar = new AppBar()
             {
-                Title = "Virtual Paperfold Game"
+                Title = "Virtual Paperfold Game",
+                Footer = "made with ❤️ for mtl from new zealand 🚀",
             },
             IndexPage = new IndexPage()
             {
@@ -103,6 +130,10 @@ namespace GameBoulette.Client.Constants
                 AvatarTitle = "Your avatar !",
                 AvatarInput = "Enter your name",
                 Instruction = "Rules",
+                SnackConnected = "Connected to lobby !",
+                SnackNotConnected = "Can't connect to lobby !",
+                SnackConnectedLong = "Connected to game server. Waiting for lobby !",
+                SnackNotConnectedLong = "Cannot connect to game server. Please try again later.",
             },
             CreateGamePage = new CreateGamePage()
             {
@@ -120,7 +151,9 @@ namespace GameBoulette.Client.Constants
                 Return = "Return",
                 Restart = "Restart",
                 Create = "Create the game!",
-                MissingField = "This field is required!"
+                MissingField = "This field is required!",
+                GameUrlCopied = "Game Url copied !",
+                VideoUrlCopied = "Video Url copied !",
             },
             GameLobbyPage = new GameLobbyPage()
             {
@@ -139,6 +172,7 @@ namespace GameBoulette.Client.Constants
                 Leave = "Leave",
                 ConfigurationLabel = "Configurations & Url Link",
                 RulesLabel = "Rules",
+                SnackGameStarted = "Game has started !",
             },
             GamePage = new GamePage()
             {
@@ -148,6 +182,24 @@ namespace GameBoulette.Client.Constants
                 FoundWord = "found",
                 RemaningWords = "remaning words",
                 StartTurn = "Start turn !",
+                MsgYourTurn = "It is now your turn !",
+                MsgNextRound = "It is the next round, you will play with the remaining time !",
+            },
+            ScorePage = new ScorePage()
+            {
+                Title = " has won the game !",
+                Tie = "It's a tie !",
+                Description = " - ",
+                Mvp = " is the Most Valuable Player !",
+                WordFound = " words found",
+                WordSkip = " words skipped",
+                TeamChampion = " is Team Champion !",
+                WordFoundLegend = "Word Found",
+                WordSkipLegend = "Word Skipped",
+                TableTitle = "Words details",
+                TableWord = "Word",
+                TableWrittenBy = "Written By",
+                TableTimesSkipped = "Times Skipped",
             }
         };
     }

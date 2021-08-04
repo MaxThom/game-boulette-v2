@@ -17,6 +17,7 @@ namespace GameBoulette.Client.Services
     public class GameHubService : IAsyncDisposable
     {
         public NavigationManager _navigationManager { get; set; }
+        public LanguageManagerService _languageManager { get; set; }
         private HubConnection hubConnection;
 
         public event EventHandler<GameRoom> OnGameRoomUpdate;
@@ -29,9 +30,10 @@ namespace GameBoulette.Client.Services
         public Player You { get; set; }
         public GameRoom Game { get; set; }
 
-        public GameHubService(NavigationManager navigationManager)
+        public GameHubService(NavigationManager navigationManager, LanguageManagerService languageManager)
         {
             _navigationManager = navigationManager;
+            _languageManager = languageManager;
         }
 
         #region Hub
@@ -160,11 +162,11 @@ namespace GameBoulette.Client.Services
             You = you;
             await ConnectToGameHub();
             if (!IsConnected)
-                return new Tuple<bool, string>(false, "Cannot connect to game server. Please try again later.");
+                return new Tuple<bool, string>(false, $"{_languageManager.CurrentLanguage.IndexPage.SnackNotConnectedLong}");
 
             await hubConnection.SendAsync("CreateLobbyRequest", config, You);
 
-            return new Tuple<bool, string>(IsConnected, "Connected to game server. Waiting for lobby !");
+            return new Tuple<bool, string>(IsConnected, $"{_languageManager.CurrentLanguage.IndexPage.SnackConnectedLong}");
         }
 
         public async Task<Tuple<bool, string>> JoinGameConnection(string gameCode, Player you)
@@ -172,11 +174,11 @@ namespace GameBoulette.Client.Services
             You = you;
             await ConnectToGameHub();
             if (!IsConnected)
-                return new Tuple<bool, string>(false, "Cannot connect to game server. Please try again later.");
+                return new Tuple<bool, string>(false, $"{_languageManager.CurrentLanguage.IndexPage.SnackNotConnectedLong}");
 
             await hubConnection.SendAsync("JoinLobbyRequest", gameCode, You);
 
-            return new Tuple<bool, string>(IsConnected, "Connected to game server. Waiting for lobby !");
+            return new Tuple<bool, string>(IsConnected, $"{_languageManager.CurrentLanguage.IndexPage.SnackConnectedLong}");
         }
 
         public async Task ChangeTeamRequest()

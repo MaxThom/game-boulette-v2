@@ -170,7 +170,6 @@
     {
         NavigationManager.NavigateTo($"/score/{GameCode}");
         StateHasChanged();
-
     }
 
     private void GameHub_OnPlayerTurnWait(object sender, GameRoom gameRoom)
@@ -179,14 +178,14 @@
         {
             Task.Factory.StartNew(async () => await DialogService.ShowMessageBox(
                 "Info",
-                "C'est maintenant votre tour de jouer !",
+                $"{LanguageManager.CurrentLanguage.GamePage.MsgYourTurn}",
                 yesText: "Ok!"));
         }
         else if (GameHub.Game.CurrentGame.TurnState == TurnState.WaitingNextRound && GameUtility.IsYouCurrentPlayerTurn(GameHub.You, GameHub.Game))
         {
             Task.Factory.StartNew(async () => await DialogService.ShowMessageBox(
                 "Info",
-                "C'est maintenant la prochaine manche, vous jouez avec le temps restant !",
+                $"{LanguageManager.CurrentLanguage.GamePage.MsgNextRound}",
                 yesText: "Ok!"));
         }
         StateHasChanged();
@@ -279,12 +278,12 @@
     async void OnCopyGameUrl() 
     {
         await ClipboardService.WriteTextAsync(NavigationManager.BaseUri+GameHub.Game.Code);
-        Snackbar.Add("Game Url copied !", Severity.Info);
+        Snackbar.Add($"{LanguageManager.CurrentLanguage.CreateGamePage.GameUrlCopied}", Severity.Info);
     }
 
     async void OnCopyVideoUrl() 
     {
-        Snackbar.Add("Video Url copied !", Severity.Info);
+        Snackbar.Add($"{LanguageManager.CurrentLanguage.CreateGamePage.VideoUrlCopied}", Severity.Info);
         await ClipboardService.WriteTextAsync(GameHub.Game.Config.VideoUrl);
     }
 

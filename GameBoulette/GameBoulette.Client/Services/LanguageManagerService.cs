@@ -1,4 +1,4 @@
-﻿using GameBoulette.Client.Model.Languages;
+﻿using GameBoulette.Client.Model;
 
 using System.ComponentModel;
 

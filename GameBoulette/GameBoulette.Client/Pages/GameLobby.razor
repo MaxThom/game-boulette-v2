@@ -160,7 +160,7 @@
 
         if (gameRoom.CurrentState == GameState.Playing)
         {
-            Snackbar.Add("Game has started !", Severity.Info);
+            Snackbar.Add($"{LanguageManager.CurrentLanguage.GameLobbyPage.SnackGameStarted}", Severity.Info);
             NavigationManager.NavigateTo($"/game/{GameCode}");
         }
         StateHasChanged();     
@@ -189,12 +189,12 @@
     async void OnCopyGameUrl() 
     {
         await ClipboardService.WriteTextAsync(NavigationManager.BaseUri+GameHub.Game.Code);
-        Snackbar.Add("Game Url copied !", Severity.Info);
+        Snackbar.Add($"{LanguageManager.CurrentLanguage.CreateGamePage.GameUrlCopied}", Severity.Info);
     }
 
     async void OnCopyVideoUrl() 
     {
-        Snackbar.Add("Video Url copied !", Severity.Info);
+        Snackbar.Add($"{LanguageManager.CurrentLanguage.CreateGamePage.VideoUrlCopied}", Severity.Info);
         await ClipboardService.WriteTextAsync(GameHub.Game.Config.VideoUrl);
     }
 

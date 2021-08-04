@@ -12,17 +12,18 @@
 {
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-16">
     <MudText Typo="Typo.h4" Align="Align.Center" GutterBottom="true"><strong>@(GetWinningTitle())</strong></MudText>
+    <MudText Align="Align.Center">@GameHub.Game.TeamOne.Score@LanguageManager.CurrentLanguage.ScorePage.Description@GameHub.Game.TeamTwo.Score</MudText>
     <br />    
     <MudItem Class="d-flex justify-center">
         <MudItem Class="d-inline-flex justify-center">
             <MudField Variant="Variant.Outlined" InnerPadding="true" FullWidth="false" Class="mx-auto">
                 <MudItem Class="d-flex justify-center">
                     <MudButton Class="pa-2" Variant="@(mvp.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(mvp.Id.Equals(GameHub.You.Id) ? "background-color: "+@mvp.Color+"; color: black;" : "color: "+@mvp.Color+"; border: 1px solid "+ @mvp.Color +";")">@mvp.Name</MudButton>
-                    <MudText Class="pa-2" Align="Align.Center"><strong> is the Most Valuable Player 🚀🚀🚀</strong></MudText>
+                    <MudText Class="pa-2" Align="Align.Center"><strong> @LanguageManager.CurrentLanguage.ScorePage.Mvp 🚀🚀🚀</strong></MudText>
                 </MudItem>
                 <MudItem Class="d-flex justify-center">        
-                    <MudText Class="pa-2" Align="Align.Center">@mvp.WordFound mots trouvés</MudText>
-                    <MudText Class="pa-2" Align="Align.Center">@mvp.WordSkipped mots sautés</MudText>
+                    <MudText Class="pa-2" Align="Align.Center">@mvp.WordFound@LanguageManager.CurrentLanguage.ScorePage.WordFound</MudText>
+                    <MudText Class="pa-2" Align="Align.Center">@mvp.WordSkipped@LanguageManager.CurrentLanguage.ScorePage.WordSkip</MudText>
                 </MudItem>
             </MudField>
         </MudItem>
@@ -36,11 +37,11 @@
                 <MudItem Class="mx-auto">
                     <MudItem Class="d-flex justify-center">
                         <MudButton Class="pa-2" Variant="@(teamOneMvp.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(teamOneMvp.Id.Equals(GameHub.You.Id) ? "background-color: "+@teamOneMvp.Color+"; color: black;" : "color: "+@teamOneMvp.Color+"; border: 1px solid "+ @teamOneMvp.Color +";")">@teamOneMvp.Name</MudButton>
-                        <MudText Class="pa-2" Align="Align.Center"><strong> is Team Champion</strong></MudText>
+                        <MudText Class="pa-2" Align="Align.Center"><strong>@LanguageManager.CurrentLanguage.ScorePage.TeamChampion</strong></MudText>
                     </MudItem>
                     <MudItem Class="d-flex justify-center">        
-                        <MudText Class="pa-2" Align="Align.Center">@teamOneMvp.WordFound mots trouvés</MudText>
-                        <MudText Class="pa-2" Align="Align.Center">@teamOneMvp.WordSkipped mots sautés</MudText>
+                        <MudText Class="pa-2" Align="Align.Center">@teamOneMvp.WordFound@LanguageManager.CurrentLanguage.ScorePage.WordFound</MudText>
+                        <MudText Class="pa-2" Align="Align.Center">@teamOneMvp.WordSkipped@LanguageManager.CurrentLanguage.ScorePage.WordSkip</MudText>
                     </MudItem>
                     <MudItem>
                         <MudChart ChartType="ChartType.Bar" ChartOptions="chartOptions" ChartSeries="@SeriesTeamOne" XAxisLabels="@XAxisLabelsTeamOne" Width="90%" Height="350px"></MudChart>
@@ -54,11 +55,11 @@
                 <MudItem Class="mx-auto">
                     <MudItem Class="d-flex justify-center">
                         <MudButton Class="pa-2" Variant="@(teamTwoMvp.Id.Equals(GameHub.You.Id) ? Variant.Filled : Variant.Outlined)" Style="@(teamTwoMvp.Id.Equals(GameHub.You.Id) ? "background-color: "+@teamTwoMvp.Color+"; color: black;" : "color: "+@teamTwoMvp.Color+"; border: 1px solid "+ @teamTwoMvp.Color +";")">@teamTwoMvp.Name</MudButton>
-                        <MudText Class="pa-2" Align="Align.Center"><strong> is Team Champion</strong></MudText>
+                        <MudText Class="pa-2" Align="Align.Center"><strong>@LanguageManager.CurrentLanguage.ScorePage.TeamChampion</strong></MudText>
                     </MudItem>
                     <MudItem Class="d-flex justify-center">        
-                        <MudText Class="pa-2" Align="Align.Center">@teamTwoMvp.WordFound mots trouvés</MudText>
-                        <MudText Class="pa-2" Align="Align.Center">@teamTwoMvp.WordSkipped mots sautés</MudText>
+                        <MudText Class="pa-2" Align="Align.Center">@teamTwoMvp.WordFound@LanguageManager.CurrentLanguage.ScorePage.WordFound</MudText>
+                        <MudText Class="pa-2" Align="Align.Center">@teamTwoMvp.WordSkipped@LanguageManager.CurrentLanguage.ScorePage.WordSkip</MudText>
                     </MudItem>
                     <MudItem>
                         <MudChart ChartType="ChartType.Bar" ChartOptions="chartOptions" ChartSeries="@SeriesTeamTwo" XAxisLabels="@XAxisLabelsTeamTwo" Width="90%" Height="350px"></MudChart>
@@ -71,12 +72,12 @@
     <br />
     <MudGrid Class="" Justify="Justify.Center">
         <MudItem xs="12" sm="12" md="12">
-            <MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true">Word details</MudText>
+            <MudText Typo="Typo.h5" Align="Align.Center" GutterBottom="true">@LanguageManager.CurrentLanguage.ScorePage.TableTitle</MudText>
             <MudTable Items="@Elements" Hover="true" SortLabel="Sort By">
                 <HeaderContent>
-                    <MudTh><MudTableSortLabel SortBy="new Func<ScoreTableRow, object>(x=>x.Label)">Word</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel SortBy="new Func<ScoreTableRow, object>(x=>x.WrittenBy)">Written By</MudTableSortLabel></MudTh>
-                    <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<ScoreTableRow, object>(x=>x.TimesSkipped)">Times Skipped</MudTableSortLabel></MudTh>                    
+                    <MudTh><MudTableSortLabel SortBy="new Func<ScoreTableRow, object>(x=>x.Label)">@LanguageManager.CurrentLanguage.ScorePage.TableWord</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel SortBy="new Func<ScoreTableRow, object>(x=>x.WrittenBy)">@LanguageManager.CurrentLanguage.ScorePage.TableWrittenBy</MudTableSortLabel></MudTh>
+                    <MudTh><MudTableSortLabel InitialDirection="SortDirection.Descending" SortBy="new Func<ScoreTableRow, object>(x=>x.TimesSkipped)">@LanguageManager.CurrentLanguage.ScorePage.TableTimesSkipped</MudTableSortLabel></MudTh>                    
                 </HeaderContent>
                 <RowTemplate>
                     <MudTd DataLabel="Nr">@context.Label</MudTd>
@@ -125,40 +126,41 @@
 
         if (GameHub.Game == null || !GameHub.IsConnected)
             NavigationManager.NavigateTo($"/{GameCode}");
-
-        GameHub.OnGameRoomUpdate += GameHub_OnGameRoomUpdate;
-
-
-        chartOptions.YAxisTicks = 2;
-        teamOneMvp = GameHub.Game.TeamOne.Players.OrderByDescending(x => x.WordFound).ThenBy(x => x.WordSkipped).FirstOrDefault() ?? new Player();
-        teamTwoMvp = GameHub.Game.TeamTwo.Players.OrderByDescending(x => x.WordFound).ThenBy(x => x.WordSkipped).FirstOrDefault() ?? new Player();
-        teamOneMvp = GameHub.Game.TeamOne.Players.OrderByDescending(x => x.WordFound).ThenBy(x => x.WordSkipped).FirstOrDefault() ?? new Player();
-        
-        if (teamOneMvp.WordFound == teamTwoMvp.WordFound)
-        {
-            if (teamOneMvp.WordSkipped == teamTwoMvp.WordSkipped)
-                mvp = GameHub.Game.TeamOne.Score > GameHub.Game.TeamTwo.Score ? teamOneMvp : teamTwoMvp;
-            else
-                mvp = teamOneMvp.WordSkipped < teamTwoMvp.WordSkipped ? teamOneMvp : teamTwoMvp;
-        }
         else
-            mvp = teamOneMvp.WordFound > teamTwoMvp.WordFound ? teamOneMvp : teamTwoMvp;
+        {
+            GameHub.OnGameRoomUpdate += GameHub_OnGameRoomUpdate;
 
-        XAxisLabelsTeamOne = GameHub.Game.TeamOne.Players.Select(x => x.Name).ToArray();
-        XAxisLabelsTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => x.Name).ToArray();
+            chartOptions.YAxisTicks = 2;
+            teamOneMvp = GameHub.Game.TeamOne.Players.OrderByDescending(x => x.WordFound).ThenBy(x => x.WordSkipped).FirstOrDefault() ?? new Player();
+            teamTwoMvp = GameHub.Game.TeamTwo.Players.OrderByDescending(x => x.WordFound).ThenBy(x => x.WordSkipped).FirstOrDefault() ?? new Player();
+            teamOneMvp = GameHub.Game.TeamOne.Players.OrderByDescending(x => x.WordFound).ThenBy(x => x.WordSkipped).FirstOrDefault() ?? new Player();
 
-        var wordFoundTeamOne = GameHub.Game.TeamOne.Players.Select(x => (double) x.WordFound).ToArray();
-        var wordSkippedTeamOne = GameHub.Game.TeamOne.Players.Select(x => (double) x.WordSkipped).ToArray();
-        var wordFoundTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => (double) x.WordFound).ToArray();
-        var wordSkippedTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => (double) x.WordSkipped).ToArray();
+            if (teamOneMvp.WordFound == teamTwoMvp.WordFound)
+            {
+                if (teamOneMvp.WordSkipped == teamTwoMvp.WordSkipped)
+                    mvp = GameHub.Game.TeamOne.Score > GameHub.Game.TeamTwo.Score ? teamOneMvp : teamTwoMvp;
+                else
+                    mvp = teamOneMvp.WordSkipped < teamTwoMvp.WordSkipped ? teamOneMvp : teamTwoMvp;
+            }
+            else
+                mvp = teamOneMvp.WordFound > teamTwoMvp.WordFound ? teamOneMvp : teamTwoMvp;
 
-        SeriesTeamOne.Add(new ChartSeries() { Name = "Word Found", Data = wordFoundTeamOne });
-        SeriesTeamOne.Add(new ChartSeries() { Name = "Word Skipped", Data = wordSkippedTeamOne });
-        SeriesTeamTwo.Add(new ChartSeries() { Name = "Word Found", Data = wordFoundTeamTwo });
-        SeriesTeamTwo.Add(new ChartSeries() { Name = "Word Skipped", Data = wordSkippedTeamTwo });
+            XAxisLabelsTeamOne = GameHub.Game.TeamOne.Players.Select(x => x.Name).ToArray();
+            XAxisLabelsTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => x.Name).ToArray();
 
-        Elements.AddRange(GameHub.Game.TeamOne.Players.SelectMany(x => x.WrittenWords.Select(y => new ScoreTableRow { WrittenBy = x.Name, Label = y.Label, TimesSkipped = y.TimeSkipped }).Where(x => !string.IsNullOrEmpty(x.Label))).ToList());
-        Elements.AddRange(GameHub.Game.TeamTwo.Players.SelectMany(x => x.WrittenWords.Select(y => new ScoreTableRow { WrittenBy = x.Name, Label = y.Label, TimesSkipped = y.TimeSkipped }).Where(x => !string.IsNullOrEmpty(x.Label))).ToList());
+            var wordFoundTeamOne = GameHub.Game.TeamOne.Players.Select(x => (double)x.WordFound).ToArray();
+            var wordSkippedTeamOne = GameHub.Game.TeamOne.Players.Select(x => (double)x.WordSkipped).ToArray();
+            var wordFoundTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => (double)x.WordFound).ToArray();
+            var wordSkippedTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => (double)x.WordSkipped).ToArray();
+
+            SeriesTeamOne.Add(new ChartSeries() { Name = "Word Found", Data = wordFoundTeamOne });
+            SeriesTeamOne.Add(new ChartSeries() { Name = "Word Skipped", Data = wordSkippedTeamOne });
+            SeriesTeamTwo.Add(new ChartSeries() { Name = "Word Found", Data = wordFoundTeamTwo });
+            SeriesTeamTwo.Add(new ChartSeries() { Name = "Word Skipped", Data = wordSkippedTeamTwo });
+
+            Elements.AddRange(GameHub.Game.TeamOne.Players.SelectMany(x => x.WrittenWords.Select(y => new ScoreTableRow { WrittenBy = x.Name, Label = y.Label, TimesSkipped = y.TimeSkipped }).Where(x => !string.IsNullOrEmpty(x.Label))).ToList());
+            Elements.AddRange(GameHub.Game.TeamTwo.Players.SelectMany(x => x.WrittenWords.Select(y => new ScoreTableRow { WrittenBy = x.Name, Label = y.Label, TimesSkipped = y.TimeSkipped }).Where(x => !string.IsNullOrEmpty(x.Label))).ToList());
+        }
     }
 
     private void GameHub_OnGameRoomUpdate(object sender, GameRoom gameRoom)
@@ -173,15 +175,15 @@
     {
         if (GameHub.Game.TeamOne.Score > GameHub.Game.TeamTwo.Score)
         {
-            return $"{GameHub.Game.TeamOne.Name} has won the game !";
+            return $"{GameHub.Game.TeamOne.Name}{@LanguageManager.CurrentLanguage.ScorePage.Title}";
         }
         else if (GameHub.Game.TeamOne.Score < GameHub.Game.TeamTwo.Score)
         {
-            return $"{GameHub.Game.TeamTwo.Name} has won the game !";
+            return $"{GameHub.Game.TeamTwo.Name}{@LanguageManager.CurrentLanguage.ScorePage.Title}";
         }
         else
         {
-            return $"It's a tie !";
+            return $"{@LanguageManager.CurrentLanguage.ScorePage.Tie}";
         }
     }
 
