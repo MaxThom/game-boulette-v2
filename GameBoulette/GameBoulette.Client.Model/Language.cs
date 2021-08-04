@@ -100,7 +100,7 @@ namespace GameBoulette.Client.Model
     {
         public string Title { get; set; } = "";
         public string Description { get; set; } = "";
-        public string Tie { get; set; }
+        public string Tie { get; set; } = "";
         public string Mvp { get; set; } = "";
         public string WordFound { get; set; } = "";
         public string WordSkip { get; set; } = "";

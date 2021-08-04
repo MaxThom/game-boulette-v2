@@ -44,12 +44,13 @@
             </MudPaper>            
         </MudItem>
         <MudItem xs="12" sm="6" md="6">
+           
             <MudItem Style="min-height:300px;">
                 <MudItem Class="">
                     <MudPaper Elevation="25" Class="rounded-lg py-2 px-2">
                         <MudGrid Class="" Justify="Justify.Center">        
                             <MudItem xs="12" sm="12" md="6">
-                                <MudTextField Class="" Style="" ReadOnly="@(!GameHub.You.IsHost)" @bind-Value="GameHub.Game.TeamOne.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameOne" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@(!GameHub.You.IsHost ? "" : @Icons.Material.Filled.Edit)" DebounceInterval="1000" OnDebounceIntervalElapsed="OnTeamNameIntervalElapsed"/>
+                                <MudTextField ReadOnly="@(!GameHub.You.IsHost)" @bind-Value="GameHub.Game.TeamOne.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameOne" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@(!GameHub.You.IsHost ? "" : Icons.Material.Filled.Edit)" DebounceInterval="1000" OnDebounceIntervalElapsed="OnTeamNameIntervalElapsed" TextChanged="OnTeamNameIntervalElapsed"/>                                
                             </MudItem>
                             <MudItem xs="12" sm="12" md="6">
                                 <MudButton Class="ml-n2 mt-4" Variant="Variant.Filled" Color="Color.Default" FullWidth="true" OnClick="OnChangeTeamClick" Disabled="@((bool)GameUtility.FindCorrespondingPlayer(GameHub.You.Id, GameHub.Game).Item2 == true)">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
@@ -69,7 +70,7 @@
                     <MudPaper Elevation="25" Class="rounded-lg py-2 px-2">
                         <MudGrid Class="" Justify="Justify.Center">        
                             <MudItem xs="12" sm="12" md="6" Style="pt-5 mt-5">
-                                <MudTextField Class="" Style="" ReadOnly="@(!GameHub.You.IsHost)" @bind-Value="GameHub.Game.TeamTwo.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameTwo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@(!GameHub.You.IsHost ? "" : @Icons.Material.Filled.Edit)" DebounceInterval="1000" OnDebounceIntervalElapsed="OnTeamNameIntervalElapsed"/>
+                                <MudTextField ReadOnly="@(!GameHub.You.IsHost)" @bind-Value="GameHub.Game.TeamTwo.Name" Label="@LanguageManager.CurrentLanguage.GameLobbyPage.TeamNameTwo" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentIcon="@(!GameHub.You.IsHost ? "" : @Icons.Material.Filled.Edit)" DebounceInterval="1000" OnDebounceIntervalElapsed="OnTeamNameIntervalElapsed"  TextChanged="OnTeamNameIntervalElapsed"/>
                             </MudItem>
                             <MudItem xs="12" sm="12" md="6">
                                 <MudButton Class="ml-n2 mt-4" Variant="Variant.Filled" Color="Color.Default" FullWidth="true" OnClick="OnChangeTeamClick" Disabled="@((bool)GameUtility.FindCorrespondingPlayer(GameHub.You.Id, GameHub.Game).Item2 == false)">@LanguageManager.CurrentLanguage.GameLobbyPage.JoinTeam</MudButton>
@@ -133,7 +134,7 @@
 @code {
     [Parameter]
     public string GameCode { get; set; }
-
+    string _debouncedText;
     bool success;
     string[] errors = { };
     MudForm form;
@@ -181,9 +182,9 @@
        await GameHub.NotReadyRequest();
     }
 
-    async void OnTeamNameIntervalElapsed()
-    {
-        await GameHub.ChangeTeamNameRequest();
+    void OnTeamNameIntervalElapsed()
+    {    
+        _ = GameHub.ChangeTeamNameRequest();
     }
 
     async void OnCopyGameUrl() 
