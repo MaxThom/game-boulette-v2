@@ -46,14 +46,14 @@ namespace GameBoulette.Client.Constants
             CreateGamePage = new CreateGamePage()
             {
                 Title = "Création d'une partie!",
-                Description = "Configurer les rèles de la partie selon vos désirs.",
+                Description = "Configurer les règles de la partie selon vos désirs.",
                 GameName = "Nom de la partie",
                 GameTheme = "Thème de la partie",
-                NumberOfRound = "Nombre de manche",
+                NumberOfRound = "Nombre de manches",
                 Rounds = "manches",
                 TimePerTurn = "Temps par tour",
                 Seconds = "secondes",
-                NumberOfPaper = "Nombre de papier par personne",
+                NumberOfPaper = "Nombre de papiers par personne",
                 Papers = "papiers",
                 VideoURL = "URL de l'appel vidéo",
                 Return = "Retour",
@@ -71,8 +71,8 @@ namespace GameBoulette.Client.Constants
                 ThemeLabel = "Thème de la partie:   ",
                 EnterWords = "Entrez vos mots",
                 Word = "Mot",
-                NotReady = "Pas prêt",
-                Ready = "Prêt",
+                NotReady = "Pas prêt.e",
+                Ready = "Prêt.e",
                 StartGame = "Lancer la partie !",
                 TeamNameOne = "Nom de l'équipe 1",
                 TeamNameTwo = "Nom de l'équipe 2",
@@ -98,10 +98,10 @@ namespace GameBoulette.Client.Constants
                 Title = " a remporté la partie !",
                 Tie = "C'est égalité !",
                 Description = " - ",
-                Mvp = " est le ou/et la meilleur.e joueu.r.se !",
+                Mvp = " est le ou la meilleur.e joueu.r.se !",
                 WordFound = " mots trouvés",
                 WordSkip = " mots sautés",
-                TeamChampion = " est l.e.a champion.ne d'équipe !",
+                TeamChampion = " est le ou la champion.ne d'équipe !",
                 WordFoundLegend = "Mot trouvé",
                 WordSkipLegend = "Mot sauté",
                 TableTitle = "Détails des mots",
@@ -201,7 +201,7 @@ namespace GameBoulette.Client.Constants
                 ScoreLabel = "points",
                 SkipWord = "skip",
                 FoundWord = "found",
-                RemaningWords = "remaning words",
+                RemaningWords = "remaining words",
                 StartTurn = "Start turn !",
                 MsgYourTurn = "It is now your turn !",
                 MsgNextRound = "It is the next round, you will play with the remaining time !",
@@ -232,9 +232,9 @@ namespace GameBoulette.Client.Constants
                 UnfoldingHeader = "Unfolding",
                 Unfolding = "At every turn, the current turn player has to make his teammates guess as many words as possible.<br>" +
                             "A game unfolds in x numbers of rounds (3 per default). At each end of round, we restart with all the words. " +
-                            "For each round, there are diffent rules to make guess words.",
+                            "For each round, there are different rules to make guess words.",
                 RoundsHeader = "Rounds",
-                Rounds = "1st round: Players cannot say the word on the paper or a word in the same familly.<br>" +
+                Rounds = "1st round: Players cannot say the word on the paper or a word in the same family.<br>" +
                          "2nd round: Players can only say one word to make guess the word. Obviously, it can't be a word of the same family.<br>" +
                          "3rd round: Players have to mimic the word without saying one word.<br>" +
                          "It is possible to add or remove rounds at your linking. Free to your imagination!<br>Good luck 😉 !",
