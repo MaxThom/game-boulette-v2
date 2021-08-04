@@ -5,6 +5,8 @@ using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
 
 using static MudBlazor.Colors;
@@ -21,7 +23,7 @@ namespace GameBoulette.Client.Constants
             AppBar = new AppBar()
             {
                 Title = "Jeu de Boulette virtuelle",
-                Footer = "fait avec ❤️ pour mtrl de la nouvelle-zélande 🚀",
+                Footer = "fait avec ❤️ pour mtl de la nouvelle-zélande 🚀",
             },
             IndexPage = new IndexPage()
             {
@@ -35,6 +37,7 @@ namespace GameBoulette.Client.Constants
                 AvatarTitle = "Votre avatar !",
                 AvatarInput = "Entrez votre nom",
                 Instruction = "Règles",
+                GameTheme = "Tout",
                 SnackConnected = "Connecté à la salle d'attente !",
                 SnackNotConnected = "Ne peut se connecter à la salle d'attente !",
                 SnackConnectedLong = "Connecté au serveur. En attente de la salle d'attente.",
@@ -105,6 +108,23 @@ namespace GameBoulette.Client.Constants
                 TableWord = "Mot",
                 TableWrittenBy = "Écrit par",
                 TableTimesSkipped = "Nombre de fois sauté",
+            },
+            RulesComponent = new RulesComponent()
+            {
+                SetupHeader = "Mise en place",
+                Setup = "Il faut faire deux équipes de deux personnes et plus (idéalement trois par équipes).<br>" +
+                        "Chaque personne écrit cinq mots (selon la configuration de la partie). Les mots peuvent être des noms propres ou des noms communs et" +
+                        " ils doivent respecter le thème défini (le thème pour être tout).<br>" +
+                        "Le but de la partie est de deviner le plus de mots possible. L'équipe qui en a deviné le plus remporte !",
+                UnfoldingHeader = "Déroulement",
+                Unfolding = "À tour de rôle, les joueurs ont x minutes pour faire deviner le plus de mots possible aux autres joueurs de son équipe.<br>" +
+                            "Une partie se déroule en x nombres de manches (3 par défaut). À chaque fin de manche, on repart avec tous les mots. Pour chaque manche, " +
+                            "il y a des règles différentes pour faire deviner les mots.",
+                RoundsHeader = "Manches",
+                Rounds = "1re manche: Les joueurs ne peuvent pas dire le mot ou un mot de même famille.<br>" +
+                         "2re manche: Les joueurs peuvent dire qu'un seul mot pour faire deviner le mot. Bien entendu, pas de mot de la même famille.<br>" +
+                         "3re manche: Les joueurs doivent mimer le mot sans dire un mot.<br>" +
+                         "Il est possible d'ajouter ou d'enlever des manches avec ses propres règles. Libre à votre imagination!<br>Bonne chance 😉 !",
             }
         };
 
@@ -130,6 +150,7 @@ namespace GameBoulette.Client.Constants
                 AvatarTitle = "Your avatar !",
                 AvatarInput = "Enter your name",
                 Instruction = "Rules",
+                GameTheme = "Everything",
                 SnackConnected = "Connected to lobby !",
                 SnackNotConnected = "Can't connect to lobby !",
                 SnackConnectedLong = "Connected to game server. Waiting for lobby !",
@@ -200,6 +221,23 @@ namespace GameBoulette.Client.Constants
                 TableWord = "Word",
                 TableWrittenBy = "Written By",
                 TableTimesSkipped = "Times Skipped",
+            },
+            RulesComponent = new RulesComponent()
+            {
+                SetupHeader = "Setup",
+                Setup = "Two teams of 2 people and more has to be made (ideally 3 per team).<br>" +
+                        "Each person has to write 5 words (depending on the game's configuration). Words can be common or proper " +
+                        "nouns and have to respect the defined theme (the theme can be everything).<br>" +
+                        "The goal of the game is to guess as many words as possible. The team that has the most, win the game !",
+                UnfoldingHeader = "Unfolding",
+                Unfolding = "At every turn, the current turn player has to make his teammates guess as many words as possible.<br>" +
+                            "A game unfolds in x numbers of rounds (3 per default). At each end of round, we restart with all the words. " +
+                            "For each round, there are diffent rules to make guess words.",
+                RoundsHeader = "Rounds",
+                Rounds = "1st round: Players cannot say the word on the paper or a word in the same familly.<br>" +
+                         "2nd round: Players can only say one word to make guess the word. Obviously, it can't be a word of the same family.<br>" +
+                         "3rd round: Players have to mimic the word without saying one word.<br>" +
+                         "It is possible to add or remove rounds at your linking. Free to your imagination!<br>Good luck 😉 !",
             }
         };
     }

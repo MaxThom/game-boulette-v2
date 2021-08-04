@@ -17,6 +17,7 @@ namespace GameBoulette.Client.Model
         public GameLobbyPage GameLobbyPage { get; set; } = new GameLobbyPage();
         public GamePage GamePage { get; set; } = new GamePage();
         public ScorePage ScorePage { get; set; } = new ScorePage();
+        public RulesComponent RulesComponent { get; set; } = new RulesComponent();
     }
 
     public class AppBar
@@ -37,6 +38,7 @@ namespace GameBoulette.Client.Model
         public string CreateGame { get; set; } = "";
         public string CreateGameSub { get; set; } = "";
         public string Instruction { get; set; } = "";
+        public string GameTheme { get; set; } = "";
         public string SnackConnected { get; set; } = "";
         public string SnackConnectedLong { get; set; } = "";
         public string SnackNotConnected { get; set; } = "";
@@ -113,5 +115,15 @@ namespace GameBoulette.Client.Model
         public string TableWrittenBy { get; set; } = "";
         public string TableTimesSkipped { get; set; } = "";
 
+    }
+
+    public class RulesComponent
+    {
+        public string SetupHeader { get; set; } = "";
+        public string Setup { get; set; } = "";
+        public string UnfoldingHeader { get; set; } = "";
+        public string Unfolding { get; set; } = "";
+        public string RoundsHeader { get; set; } = "";
+        public string Rounds { get; set; } = "";
     }
 }

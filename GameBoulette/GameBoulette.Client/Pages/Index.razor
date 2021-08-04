@@ -78,7 +78,44 @@
             </MudCard>
         </MudItem>
         <MudItem xs="12" sm="10" md="8">
-            <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true">@LanguageManager.CurrentLanguage.IndexPage.Instruction</MudButton>
+            <MudExpansionPanels>                
+                <MudExpansionPanel>
+                    <TitleContent>
+                        <MudItem class="d-flex">
+                            <MudIcon Icon="@Icons.Material.Filled.Accessibility" class="mr-3"></MudIcon>
+                            <MudText>@LanguageManager.CurrentLanguage.GameLobbyPage.RulesLabel</MudText>
+                        </MudItem>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudText Typo="Typo.body1">
+                            <strong>
+                                @LanguageManager.CurrentLanguage.RulesComponent.SetupHeader
+                            </strong>
+                        </MudText>
+                        <MudText Typo="Typo.body1">
+                            @((MarkupString)LanguageManager.CurrentLanguage.RulesComponent.Setup)
+                        </MudText>
+                        <br />
+                        <MudText Typo="Typo.body1">
+                            <strong>
+                                @LanguageManager.CurrentLanguage.RulesComponent.UnfoldingHeader
+                            </strong>
+                        </MudText>
+                        <MudText Typo="Typo.body1">                            
+                           @((MarkupString)LanguageManager.CurrentLanguage.RulesComponent.Unfolding)
+                        </MudText>
+                        <br />
+                        <MudText Typo="Typo.body1">
+                            <strong>
+                                @LanguageManager.CurrentLanguage.RulesComponent.RoundsHeader
+                            </strong>
+                        </MudText>
+                        <MudText Typo="Typo.body1">
+                            @((MarkupString)LanguageManager.CurrentLanguage.RulesComponent.Rounds)
+                        </MudText>                        
+                    </ChildContent>                    
+                </MudExpansionPanel>
+            </MudExpansionPanels>
         </MudItem>
     </MudGrid>
 </MudContainer>
@@ -99,8 +136,8 @@
     
     Configuration config = new Configuration()
     {
-        Name = "Test",
-        Theme = "all",
+        Name = "",
+        Theme = "",
         NumberOfRound = 3,
         TimePerTurn = 60,
         NumberOfPaperPerPerson = 5,
@@ -109,7 +146,7 @@
 
     protected override void OnParametersSet()
     {
-        GameCode = GameCode ?? "";        
+        GameCode = GameCode ?? "";
     }
 
     protected override async void OnInitialized()
@@ -122,6 +159,7 @@
 
         player.Name = await localStorage.GetItemAsync<string>(Constants.Constant.LocalStorage.NameKey) ?? "";
         player.Color = await localStorage.GetItemAsync<string>(Constants.Constant.LocalStorage.ColorKey) ?? "#f0f0f0";
+        config.Theme = LanguageManager.CurrentLanguage.IndexPage.GameTheme;
 
         // Check for player guid in storage, else new guid
         if (hostEnv.IsDevelopment())

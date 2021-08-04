@@ -42,7 +42,7 @@
                         @if (GameHub.Game.CurrentGame.TurnState == TurnState.Playing)
                         {
                             <MudButton Class="mx-12" Variant="Variant.Text" Color="Color.Warning" OnClick="OnSkipWordClick">@LanguageManager.CurrentLanguage.GamePage.SkipWord</MudButton>
-                            <MudButton Class="mx-12" Variant="Variant.Text" Color="Color.Success" OnClick="OnFoundWordClick">@LanguageManager.CurrentLanguage.GamePage.FoundWord</MudButton>
+                            <MudButton Class="mx-12" Variant="Variant.Text" Color="Color.Success" OnClick="OnFoundWordClick" Disabled="isWordFoundButtonDisabled">@LanguageManager.CurrentLanguage.GamePage.FoundWord</MudButton>
                         }
                         else if (GameHub.Game.CurrentGame.TurnState == TurnState.Waiting || GameHub.Game.CurrentGame.TurnState == TurnState.WaitingNextRound)
                         {                            
@@ -105,8 +105,33 @@
                     </MudItem>
                 </TitleContent>
                 <ChildContent>
-                    <MudText Typo="Typo.body1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </MudText>
-                </ChildContent>                    
+                        <MudText Typo="Typo.body1">
+                            <strong>
+                                @LanguageManager.CurrentLanguage.RulesComponent.SetupHeader
+                            </strong>
+                        </MudText>
+                        <MudText Typo="Typo.body1">
+                            @((MarkupString)LanguageManager.CurrentLanguage.RulesComponent.Setup)
+                        </MudText>
+                        <br />
+                        <MudText Typo="Typo.body1">
+                            <strong>
+                                @LanguageManager.CurrentLanguage.RulesComponent.UnfoldingHeader
+                            </strong>
+                        </MudText>
+                        <MudText Typo="Typo.body1">                            
+                           @((MarkupString)LanguageManager.CurrentLanguage.RulesComponent.Unfolding)
+                        </MudText>
+                        <br />
+                        <MudText Typo="Typo.body1">
+                            <strong>
+                                @LanguageManager.CurrentLanguage.RulesComponent.RoundsHeader
+                            </strong>
+                        </MudText>
+                        <MudText Typo="Typo.body1">
+                            @((MarkupString)LanguageManager.CurrentLanguage.RulesComponent.Rounds)
+                        </MudText>                        
+                    </ChildContent>                    
             </MudExpansionPanel>
         </MudItem>
     </MudGrid>
@@ -129,6 +154,7 @@
     int currentWordIndex = -1;
     Dictionary<string, string> currentSkippedWords = new Dictionary<string, string>();
     Random random = new Random();
+    bool isWordFoundButtonDisabled = false;
 
     protected override void OnParametersSet()
     {
@@ -244,6 +270,15 @@
 
     async void OnFoundWordClick()
     {
+        _ = Task.Factory.StartNew(async () =>
+        {
+            isWordFoundButtonDisabled = true;
+            StateHasChanged();
+            await Task.Delay(2000);
+            isWordFoundButtonDisabled = false;
+            StateHasChanged();
+        });
+
         if (GameHub.Game.CurrentGame.RemainingWords.Any())
         {
             var wordLabel = GameHub.Game.CurrentGame.RemainingWords[currentWordIndex].Label;

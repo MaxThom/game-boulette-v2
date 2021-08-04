@@ -117,8 +117,33 @@
                         </MudItem>
                     </TitleContent>
                     <ChildContent>
-                        <MudText Typo="Typo.body1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </MudText>
-                    </ChildContent>                    
+                        <MudText Typo="Typo.body1">
+                            <strong>
+                                @LanguageManager.CurrentLanguage.RulesComponent.SetupHeader
+                            </strong>
+                        </MudText>
+                        <MudText Typo="Typo.body1">
+                            @((MarkupString)LanguageManager.CurrentLanguage.RulesComponent.Setup)
+                        </MudText>
+                        <br />
+                        <MudText Typo="Typo.body1">
+                            <strong>
+                                @LanguageManager.CurrentLanguage.RulesComponent.UnfoldingHeader
+                            </strong>
+                        </MudText>
+                        <MudText Typo="Typo.body1">                            
+                           @((MarkupString)LanguageManager.CurrentLanguage.RulesComponent.Unfolding)
+                        </MudText>
+                        <br />
+                        <MudText Typo="Typo.body1">
+                            <strong>
+                                @LanguageManager.CurrentLanguage.RulesComponent.RoundsHeader
+                            </strong>
+                        </MudText>
+                        <MudText Typo="Typo.body1">
+                            @((MarkupString)LanguageManager.CurrentLanguage.RulesComponent.Rounds)
+                        </MudText>                        
+                    </ChildContent>                  
                 </MudExpansionPanel>
             </MudExpansionPanels>
         </MudItem>
@@ -134,7 +159,6 @@
 @code {
     [Parameter]
     public string GameCode { get; set; }
-    string _debouncedText;
     bool success;
     string[] errors = { };
     MudForm form;
