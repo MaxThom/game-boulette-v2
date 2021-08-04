@@ -2,6 +2,7 @@
 using GameBoulette.Shared.Utilities;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 
@@ -18,6 +19,7 @@ namespace GameBoulette.Client.Services
     {
         public NavigationManager _navigationManager { get; set; }
         public LanguageManagerService _languageManager { get; set; }
+        public IWebAssemblyHostEnvironment _hostEnv { get; set;  }
         private HubConnection hubConnection;
 
         public event EventHandler<GameRoom> OnGameRoomUpdate;
@@ -31,10 +33,11 @@ namespace GameBoulette.Client.Services
         public bool? IsTeamOne { get; set; }
         public GameRoom Game { get; set; }
 
-        public GameHubService(NavigationManager navigationManager, LanguageManagerService languageManager)
+        public GameHubService(NavigationManager navigationManager, LanguageManagerService languageManager, IWebAssemblyHostEnvironment hostEnv)
         {
             _navigationManager = navigationManager;
             _languageManager = languageManager;
+            _hostEnv = hostEnv;
         }
 
         #region Hub
@@ -56,7 +59,8 @@ namespace GameBoulette.Client.Services
 
             hubConnection.On<GameRoom>("CreateGameConfirmation", (game) =>
             {
-                Console.WriteLine(ObjectDumper.Dump(game));
+                Log("CreateGameConfirmation");
+                Log(ObjectDumper.Dump(game));
 
                 Game = game;
                 (You, IsTeamOne) = GameUtility.FindCorrespondingPlayer(You.Id, Game);
@@ -69,7 +73,8 @@ namespace GameBoulette.Client.Services
 
             hubConnection.On<GameRoom>("JoinGameConfirmation", (game) =>
             {
-                Console.WriteLine(ObjectDumper.Dump(game));
+                Log("JoinGameConfirmation");
+                Log(ObjectDumper.Dump(game));
 
                 Game = game;
                 if (game != null)
@@ -85,7 +90,7 @@ namespace GameBoulette.Client.Services
             
             hubConnection.On<GameRoom>("UpdateGameRoom", (game) =>
             {
-                Console.WriteLine(ObjectDumper.Dump(game));
+                Log("UpdateGameRoom");
 
                 Game = game;
                 OnGameRoomUpdate?.Invoke(this, Game);
@@ -93,7 +98,7 @@ namespace GameBoulette.Client.Services
 
             hubConnection.On<GameRoom>("OnGameCompleted", (game) =>
             {
-                Console.WriteLine(ObjectDumper.Dump(game));
+                Log("OnGameCompleted");
 
                 Game = game;
                 OnGameCompletedEvent?.Invoke(this, Game);
@@ -101,7 +106,7 @@ namespace GameBoulette.Client.Services
 
             hubConnection.On<GameRoom>("OnPlayerTurnWait", (game) =>
             {
-                Console.WriteLine(ObjectDumper.Dump(game));
+                Log("OnPlayerTurnWait");
 
                 Game = game;
                 OnPlayerTurnWaitEvent?.Invoke(this, Game);
@@ -109,19 +114,19 @@ namespace GameBoulette.Client.Services
 
             hubConnection.On("StartTimer", () =>
             {
-                Console.WriteLine("Timer start");
+                Log("Timer start");
                 OnStartTimerEvent?.Invoke(this, null);
             });
 
             hubConnection.On("StopTimer", () =>
             {
-                Console.WriteLine("Timer stop");
+                Log("Timer stop");
                 OnStopTimerEvent?.Invoke(this, null);
             });
 
             hubConnection.On("ResetTimer", () =>
             {
-                Console.WriteLine("Timer reset");
+                Log("Timer reset");
                 OnResetTimerEvent?.Invoke(this, null);
             });
 
@@ -226,6 +231,12 @@ namespace GameBoulette.Client.Services
         public async Task EndTurnRequest()
         {
             await hubConnection.SendAsync("EndTurnRequest", Game.Code, Game.CurrentGame);
+        }
+
+        private void Log(string msg)
+        {
+            if (_hostEnv.IsDevelopment())
+                Console.WriteLine(msg);
         }
     }
 }

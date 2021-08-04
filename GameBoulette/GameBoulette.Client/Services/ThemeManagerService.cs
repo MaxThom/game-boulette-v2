@@ -31,18 +31,6 @@ namespace GameBoulette.Client.Services
             }
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Theme"));
-        }
-
-        //[Inject] private ThemeManagerService ThemeManager { get; set; }
-        //
-        //private async void ThemeManager_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        //{
-        //    await InvokeAsync(() => StateHasChanged());
-        //}
-        //
-        //protected override void OnInitialized()
-        //{
-        //    ThemeManager.PropertyChanged += ThemeManager_PropertyChanged;
-        //}
+        }        
     }
 }

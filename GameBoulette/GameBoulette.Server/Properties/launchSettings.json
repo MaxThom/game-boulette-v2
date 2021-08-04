@@ -23,7 +23,8 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "LOGGING__LOGLEVEL__DEFAULT": "Debug"
       },
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
     },
@@ -33,6 +34,7 @@
       "launchUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "LOGGING__LOGLEVEL__DEFAULT": "Debug",
         "ASPNETCORE_URLS": "https://localhost:5001;http://localhost:5000"
       },
       "distributionName": "",

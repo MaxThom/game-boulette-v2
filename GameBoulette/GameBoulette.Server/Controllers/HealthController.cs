@@ -25,6 +25,7 @@ namespace GameBoulette.Server.Controllers
         [HttpGet]
         public string Get()
         {
+            _logger.LogInformation("All system operational Commander !");
             return "All system operational Commander !";
         }
     }
