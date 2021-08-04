@@ -14,7 +14,9 @@ namespace GameBoulette.Client.Constants
             Palette = new Palette()
             {
                 Black = "#272c34",
-                Surface = "#f0f0f0"
+                Surface = "#e0e0e0",
+                Background = "#f0f0f0",
+                AppbarBackground = "#2196f3",
             }
         };
 
