@@ -68,4 +68,4 @@ MIT
 ![Index](Screen_Index.png)
 ![Lobby](Screen_Lobby.png)
 ![Game](Screen_Game.png)
-![Score](Screen_Score.png)Lobby
+![Score](Screen_Score.png)
