@@ -14,6 +14,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\LICENSE = ..\LICENSE
 		..\MockUp.bmpr = ..\MockUp.bmpr
 		..\README.md = ..\README.md
+		..\Screen_Final.png = ..\Screen_Final.png
+		..\Screen_Game.png = ..\Screen_Game.png
+		..\Screen_Index.png = ..\Screen_Index.png
+		..\Screen_Lobby.png = ..\Screen_Lobby.png
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameBoulette.Client", "GameBoulette.Client\GameBoulette.Client.csproj", "{A748DADF-8F2C-4988-A72E-2ED1D89E43DF}"

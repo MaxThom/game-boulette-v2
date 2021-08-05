@@ -65,3 +65,7 @@ MIT
 - [x] Add a statistics page at the end of a game
 
 # Pictures
+![Index](Screen_Index.png)
+![Lobby](Screen_Lobby.png)
+![Game](Screen_Game.png)
+![Score](Screen_Score.png)Lobby
