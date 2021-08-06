@@ -12,7 +12,8 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "VERSION_COMMIT": "12af2e0258b054fbef0a7f5d1407202eb7e347ac"
       },
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
@@ -24,7 +25,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "LOGGING__LOGLEVEL__DEFAULT": "Debug"
+        "VERSION_COMMIT": "12af2e0258b054fbef0a7f5d1407202eb7e347ac",
       },
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}"
     },
@@ -34,7 +35,7 @@
       "launchUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "LOGGING__LOGLEVEL__DEFAULT": "Debug",
+        "VERSION_COMMIT": "12af2e0258b054fbef0a7f5d1407202eb7e347ac",
         "ASPNETCORE_URLS": "https://localhost:5001;http://localhost:5000"
       },
       "distributionName": "",

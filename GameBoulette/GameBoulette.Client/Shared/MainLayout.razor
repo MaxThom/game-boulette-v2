@@ -3,6 +3,7 @@
 @inject ThemeManagerService ThemeManager
 @inject LanguageManagerService LanguageManager
 @inject NavigationManager NavigationManager
+@inject HttpClient Http
 
 <MudThemeProvider Theme="ThemeManager.CurrentTheme" />
 <MudDialogProvider />
@@ -23,11 +24,26 @@
     <br />
     <br />
     <br />
-    <MudText Align="Align.Center" Typo="Typo.subtitle2">@LanguageManager.CurrentLanguage.AppBar.Footer</MudText>    
+    <MudText Align="Align.Center" Typo="Typo.subtitle2">@LanguageManager.CurrentLanguage.AppBar.Footer</MudText>
+    <MudText Align="Align.Center" Typo="Typo.subtitle2" Style="opacity:0.5;">@(version_commit.Length > 7 ? version_commit.Substring(0,7): version_commit)</MudText>
 </MudLayout> 
 
 @code {
+    string version_commit = "";
 
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine($"Old: {version_commit}");
+        var new_version_commit = await Http.GetStringAsync("api/version");
+        Console.WriteLine($"New: {new_version_commit}");
+        if (!string.IsNullOrEmpty(version_commit) && new_version_commit != version_commit)
+        {
+            version_commit = new_version_commit;
+            Console.WriteLine("Reloading page for newer version !");
+            await js.InvokeVoidAsync("window.location.reload", "true");            
+        }
+
+    }
 }
 
     
