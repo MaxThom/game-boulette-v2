@@ -1,4 +1,5 @@
-﻿@inherits LayoutComponentBase
+﻿@using System.Text.Json.Nodes
+@inherits LayoutComponentBase
 @inject IJSRuntime js
 @inject ThemeManagerService ThemeManager
 @inject LanguageManagerService LanguageManager
@@ -25,25 +26,31 @@
     <br />
     <br />
     <MudText Align="Align.Center" Typo="Typo.subtitle2">@LanguageManager.CurrentLanguage.AppBar.Footer</MudText>
-    <MudText Align="Align.Center" Typo="Typo.subtitle2" Style="opacity:0.5;">@(version_commit.Length > 7 ? version_commit.Substring(0,7): version_commit)</MudText>
+    <MudText Align="Align.Center" Typo="Typo.subtitle2" Style="opacity:0.5;" id="version_commit">@version_commit</MudText>
 </MudLayout> 
 
 @code {
     string version_commit = "";
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Console.WriteLine($"Old: {version_commit}");
-        var new_version_commit = await Http.GetStringAsync("api/version");
-        Console.WriteLine($"New: {new_version_commit}");
-        if (!string.IsNullOrEmpty(version_commit) && new_version_commit != version_commit)
+        if (firstRender)
         {
-            version_commit = new_version_commit;
-            Console.WriteLine("Reloading page for newer version !");
-            await js.InvokeVoidAsync("window.location.reload", "true");            
+            string old_version = await js.InvokeAsync<string>("getVersionCommit");
+            var new_version = await Http.GetStringAsync("api/version");
+            new_version = new_version.Substring(0, 7);
+            Console.WriteLine($"New {old_version}\nOld {new_version}");
+            if (!string.IsNullOrEmpty(old_version) && new_version != old_version)
+            {
+                Console.WriteLine("Reloading page for newer version !");
+                await js.InvokeVoidAsync("setVersionCommit", new_version);
+                await js.InvokeVoidAsync("window.location.reload", "true");
+            }            
+            version_commit = new_version;
+            StateHasChanged();
         }
-
     }
+    
 }
 
     
