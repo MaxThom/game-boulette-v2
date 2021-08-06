@@ -107,7 +107,7 @@ namespace GameBoulette.Server.Hubs
             var game = _gamesService.ChangeTeamName(gameCode, teamOneName, teamTwoName);
             _logger.LogDebug(ObjectDumper.Dump(game));
 
-            await Clients.Groups<IGameClient>(game.Code).UpdateGameRoom(game);
+            await Clients.OthersInGroup(game.Code).UpdateGameRoom(game);
         }
 
         public async Task StartGameRequest(string gameCode)

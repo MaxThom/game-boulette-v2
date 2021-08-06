@@ -20,7 +20,7 @@
                 </MudCardHeader>
                 <MudCardContent  Class="d-flex justify-center">                    
                     <MudButton Variant="Variant.Filled" Style="@("background-color: "+player.Color+"; color: black;")">@player.Name</MudButton>
-                    <MudTextField Class="px-5" Label="@LanguageManager.CurrentLanguage.IndexPage.AvatarInput" Variant="Variant.Outlined" @bind-Value="player.Name" Immediate="true"></MudTextField>                    
+                    <MudTextField Class="px-5" Label="@LanguageManager.CurrentLanguage.IndexPage.AvatarInput" HelperText="@LanguageManager.CurrentLanguage.IndexPage.AvatarInputHelper" Variant="Variant.Outlined" @bind-Value="player.Name" Immediate="true"></MudTextField>                    
                 </MudCardContent>
                 <MudCardContent  Class="d-flex justify-space-around py-2 px-1 "> 
                     <MudFab Class="px-auto" Style="background-color: #f4ff00;" Size="Size.Small" OnClick="@(() => player.Color = "#f4ff00")" />
@@ -73,7 +73,7 @@
                         <MudNumericField Class="pb-3" Margin="Margin.Dense" @bind-Value="config.NumberOfPaperPerPerson" Label="@LanguageManager.CurrentLanguage.CreateGamePage.NumberOfPaper" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="@LanguageManager.CurrentLanguage.CreateGamePage.Papers" Required="true" RequiredError="@LanguageManager.CurrentLanguage.CreateGamePage.MissingField"/>                        
                         <MudTextField T="string" Margin="Margin.Dense" Label="@LanguageManager.CurrentLanguage.CreateGamePage.VideoURL" Variant="Variant.Outlined" />                        
                     </MudForm>
-                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(!success)" OnClick="OnCreateGameClick" Class="mx-auto mt-3" FullWidth="true">@LanguageManager.CurrentLanguage.CreateGamePage.Create</MudButton>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Disabled="@(player.Name.Trim().Length < 3 || !success)" OnClick="OnCreateGameClick" Class="mx-auto mt-3" FullWidth="true">@LanguageManager.CurrentLanguage.CreateGamePage.Create</MudButton>
                 </MudCardContent>
             </MudCard>
         </MudItem>

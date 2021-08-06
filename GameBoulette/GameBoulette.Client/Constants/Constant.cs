@@ -14,5 +14,9 @@ namespace GameBoulette.Client.Constants
             public const string ColorKey = "boulette_color";
         }
         
+        public static class Game
+        {
+            public const int FoundWaitTimeMs = 1500;
+        }
     }
 }

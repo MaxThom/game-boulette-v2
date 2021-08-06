@@ -32,6 +32,7 @@ namespace GameBoulette.Client.Model
         public string Description { get; set; } = "";
         public string AvatarTitle { get; set; } = "";
         public string AvatarInput { get; set; } = "";
+        public string AvatarInputHelper { get; set; } = "";
         public string JoinGame { get; set; } = "";
         public string JoinGameSub { get; set; } = "";
         public string JoinGameCode { get; set; } = "";
