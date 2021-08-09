@@ -48,7 +48,8 @@
                 await js.InvokeVoidAsync("setVersionCommit", new_version);
                 await js.InvokeVoidAsync("window.location.reload", "true");
             }            
-            
+            else if (string.IsNullOrEmpty(old_version))
+                version_commit = new_version;
             StateHasChanged();
         }
     }
