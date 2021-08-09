@@ -153,10 +153,10 @@
             var wordFoundTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => (double)x.WordFound).ToArray();
             var wordSkippedTeamTwo = GameHub.Game.TeamTwo.Players.Select(x => (double)x.WordSkipped).ToArray();
 
-            SeriesTeamOne.Add(new ChartSeries() { Name = "Word Found", Data = wordFoundTeamOne });
-            SeriesTeamOne.Add(new ChartSeries() { Name = "Word Skipped", Data = wordSkippedTeamOne });
-            SeriesTeamTwo.Add(new ChartSeries() { Name = "Word Found", Data = wordFoundTeamTwo });
-            SeriesTeamTwo.Add(new ChartSeries() { Name = "Word Skipped", Data = wordSkippedTeamTwo });
+            SeriesTeamOne.Add(new ChartSeries() { Name = LanguageManager.CurrentLanguage.ScorePage.WordFoundLegend, Data = wordFoundTeamOne });
+            SeriesTeamOne.Add(new ChartSeries() { Name = LanguageManager.CurrentLanguage.ScorePage.WordSkipLegend, Data = wordSkippedTeamOne });
+            SeriesTeamTwo.Add(new ChartSeries() { Name = LanguageManager.CurrentLanguage.ScorePage.WordFoundLegend, Data = wordFoundTeamTwo });
+            SeriesTeamTwo.Add(new ChartSeries() { Name = LanguageManager.CurrentLanguage.ScorePage.WordSkipLegend, Data = wordSkippedTeamTwo });
 
             Elements.AddRange(GameHub.Game.TeamOne.Players.SelectMany(x => x.WrittenWords.Select(y => new ScoreTableRow { WrittenBy = x.Name, Label = y.Label, TimesSkipped = y.TimeSkipped }).Where(x => !string.IsNullOrEmpty(x.Label))).ToList());
             Elements.AddRange(GameHub.Game.TeamTwo.Players.SelectMany(x => x.WrittenWords.Select(y => new ScoreTableRow { WrittenBy = x.Name, Label = y.Label, TimesSkipped = y.TimeSkipped }).Where(x => !string.IsNullOrEmpty(x.Label))).ToList());
