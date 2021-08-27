@@ -13,5 +13,6 @@ namespace GameBoulette.Shared
         public int CurrentRound { get; set; }
         public int CurrentTurn { get; set; }
         public TurnState TurnState { get; set; }
+        public Word LatestWordFound { get; set; }
     }
 }

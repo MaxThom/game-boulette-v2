@@ -8,7 +8,7 @@ namespace GameBoulette.Shared.Utilities
 {
     public static class GameUtility
     {
-        private static string availableCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ0123456789!=@$%&*";
+        private static string availableCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJQLMNOPQRSTUVWXYZ0123456789";
         private static Random random = new Random(); //new Guid().GetHashCode()
         private const int GameCodeSize = 8;
 

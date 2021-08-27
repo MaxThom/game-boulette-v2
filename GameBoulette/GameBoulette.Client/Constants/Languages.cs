@@ -93,6 +93,7 @@ namespace GameBoulette.Client.Constants
                 StartTurn = "Commencer !",
                 MsgYourTurn = "C'est maintenant votre tour de jouer !",
                 MsgNextRound = "C'est maintenant la prochaine manche, vous jouez avec le temps restant !",
+                Latest = "dernier",
             },
             ScorePage = new ScorePage()
             {
@@ -207,6 +208,7 @@ namespace GameBoulette.Client.Constants
                 StartTurn = "Start turn !",
                 MsgYourTurn = "It is now your turn !",
                 MsgNextRound = "It is the next round, you will play with the remaining time !",
+                Latest = "latest",
             },
             ScorePage = new ScorePage()
             {

@@ -162,7 +162,8 @@ namespace GameBoulette.Server.Services
 
         public GameRoom WordFound(string gameCode, int scoreTeamOne, int scoreTeamTwo, string wordLabel)
         {
-            Games[gameCode].CurrentGame.RemainingWords.RemoveAll(x => x.Label.Equals(wordLabel));
+            Games[gameCode].CurrentGame.LatestWordFound = Games[gameCode].CurrentGame.RemainingWords.FirstOrDefault(x => x.Label.Equals(wordLabel));
+            Games[gameCode].CurrentGame.RemainingWords.RemoveAll(x => x.Label.Equals(wordLabel));            
             Games[gameCode].CurrentGame.CurrentPlayer.WordFound += 1;
             Games[gameCode].TeamOne.Score = scoreTeamOne;
             Games[gameCode].TeamTwo.Score = scoreTeamTwo;
