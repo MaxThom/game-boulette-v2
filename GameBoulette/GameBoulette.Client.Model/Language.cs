@@ -97,7 +97,7 @@ namespace GameBoulette.Client.Model
         public string StartTurn { get; set; } = "";
         public string MsgYourTurn { get; set; } = "";
         public string MsgNextRound { get; set; } = "";
-        public string Latest { get; set; }
+        public string Latest { get; set; } = "";
     }
 
     public class ScorePage
