@@ -39,7 +39,7 @@ jobs:
       uses: docker/build-push-action@v2.3.0
       with:
         file: ./GameBoulette.Server/Dockerfile
-        context: .
+        context: ./GameBoulette
         tags: |
           maxthom/game-boulette:latest
           maxthom/game-boulette:${{ github.run_id }}
