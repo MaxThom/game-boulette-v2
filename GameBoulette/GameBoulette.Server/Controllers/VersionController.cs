@@ -26,8 +26,8 @@ namespace GameBoulette.Server.Controllers
         public string Get()
         {
             var version = Environment.GetEnvironmentVariable(Constants.Constant.Settings.VersionKey);
-            _logger.LogInformation(version);
-            return version;
+            _logger.LogInformation(version ?? "not_defined");
+            return version ?? "not_defined";
         }
     }
 }

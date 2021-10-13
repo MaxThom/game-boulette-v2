@@ -49,7 +49,7 @@
         {
             string old_version = await js.InvokeAsync<string>("getVersionCommit");
             var new_version = await Http.GetStringAsync("api/version");
-            if (!string.IsNullOrEmpty(new_version))
+            if (!string.IsNullOrEmpty(new_version) || !new_version.Equals("not_defined"))
             {
                 new_version = new_version.Substring(0, 7);
                 version_commit = old_version;
