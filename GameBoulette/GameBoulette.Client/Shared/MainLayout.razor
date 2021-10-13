@@ -47,21 +47,24 @@
     {
         if (firstRender)
         {
-           string old_version = await js.InvokeAsync<string>("getVersionCommit");
-           var new_version = await Http.GetStringAsync("api/version");
-           new_version = new_version.Substring(0, 7);
-           version_commit = old_version;
-           Console.WriteLine($"New {old_version}\nOld {new_version}");
-           if (!string.IsNullOrEmpty(old_version) && new_version != old_version)
-           {
-               version_commit = new_version;
-               Console.WriteLine("Reloading page for newer version !");
-               await js.InvokeVoidAsync("setVersionCommit", new_version);
-               await js.InvokeVoidAsync("window.location.reload", "true");
-           }            
-           else if (string.IsNullOrEmpty(old_version))
-               version_commit = new_version;
-           StateHasChanged();
+            string old_version = await js.InvokeAsync<string>("getVersionCommit");
+            var new_version = await Http.GetStringAsync("api/version");
+            if (!string.IsNullOrEmpty(new_version))
+            {
+                new_version = new_version.Substring(0, 7);
+                version_commit = old_version;
+                Console.WriteLine($"New {old_version}\nOld {new_version}");
+                if (!string.IsNullOrEmpty(old_version) && new_version != old_version)
+                {
+                    version_commit = new_version;
+                    Console.WriteLine("Reloading page for newer version !");
+                    await js.InvokeVoidAsync("setVersionCommit", new_version);
+                    await js.InvokeVoidAsync("window.location.reload", "true");
+                }
+                else if (string.IsNullOrEmpty(old_version))
+                    version_commit = new_version;
+                StateHasChanged();
+            }
         }
     }
     

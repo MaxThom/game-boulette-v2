@@ -45,8 +45,12 @@ Moreover, the second goal is too push my skills with front end development with 
 2. Run ```docker build -t maxthom/game-boulette -f .\GameBoulette.Server\Dockerfile .```
 
 ### To run
-1. Run ```docker run -d -p 49116:80 -p 49115:443 --name GameBoulette maxthom/game-boulette```
+1. Run ```docker run -d -p 49116:8080 -p 49115:443 --name GameBoulette maxthom/game-boulette```
 2. Navigate to ```http://localhost:49116```
+
+### To push
+1. Run ```docker push maxthom/game-boulette:tagname```
+2. Verify at ```https://hub.docker.com/repository/docker/maxthom/game-boulette```
 
 # Credits
 n/a
